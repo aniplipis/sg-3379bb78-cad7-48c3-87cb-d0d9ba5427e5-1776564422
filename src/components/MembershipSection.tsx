@@ -1,46 +1,71 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Crown, Users, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function MembershipSection() {
-  const freeTier = {
-    title: "Free Access",
-    icon: Users,
-    price: "Free",
-    description: "Start your FCPO trading journey",
-    features: [
-      "Basic FCPO education videos",
-      "Public Telegram community",
-      "Free PDF guides",
-      "Broker setup tutorials",
-      "Weekly market updates",
-      "Access to public webinars"
-    ]
+  const { user, profile } = useAuth();
+  const [promoCode, setPromoCode] = useState("");
+  const [isLoadingCheckout, setIsLoadingCheckout] = useState(false);
+  const [promoError, setPromoError] = useState("");
+
+  const handlePremiumCheckout = async () => {
+    if (!user) {
+      // Show auth modal or redirect to login
+      alert("Please sign in to upgrade to Premium");
+      return;
+    }
+
+    try {
+      setIsLoadingCheckout(true);
+      setPromoError("");
+
+      const response = await fetch('/api/stripe/create-checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          promoCode: promoCode.trim(),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create checkout session');
+      }
+
+      // Redirect to Stripe Checkout
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Failed to start checkout. Please try again.');
+    } finally {
+      setIsLoadingCheckout(false);
+    }
   };
 
-  const premiumTier = {
-    title: "Premium Membership",
-    icon: Crown,
-    price: "RM XXX/year",
-    description: "Unlock the complete Max Saham experience",
-    features: [
-      "Complete video lesson library (Vimeo)",
-      "Downloadable eBooks & trading guides",
-      "Exclusive Premium Telegram (Max Clan)",
-      "Advanced technical analysis notes",
-      "Monthly live Zoom trading sessions",
-      "One-on-one consultation slots",
-      "Priority support & guidance",
-      "Lifetime course updates",
-      "Trading templates & checklists",
-      "Recording of all live sessions"
-    ],
-    highlighted: true
+  const validatePromoCode = () => {
+    const code = promoCode.trim().toUpperCase();
+    if (code === 'PREMIUM363') {
+      setPromoError("");
+      return true;
+    } else if (code !== "") {
+      setPromoError("Invalid promo code");
+      return false;
+    }
+    return true;
   };
+
+  const displayPrice = promoCode.trim().toUpperCase() === 'PREMIUM363' ? 'RM 363' : 'RM 1,350';
 
   return (
-    <section id="membership" className="py-20 px-4 bg-gradient-to-b from-background to-background/50">
+    <section id="membership" className="py-24 bg-gradient-to-br from-background to-muted/30">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-6 py-2 mb-6">
@@ -55,25 +80,43 @@ export function MembershipSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* Free Tier */}
-          <Card className="border-border/50 hover:border-gold/30 transition-all">
+          <Card className="relative border-2 border-muted hover:border-gold/30 transition-all duration-300 bg-card/50 backdrop-blur">
             <CardHeader className="text-center pb-8">
               <div className="w-16 h-16 bg-muted/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <freeTier.icon className="w-8 h-8 text-foreground" />
+                <Users className="w-8 h-8 text-foreground" />
               </div>
-              <CardTitle className="text-3xl mb-2">{freeTier.title}</CardTitle>
-              <p className="text-muted-foreground">{freeTier.description}</p>
-              <div className="text-4xl font-bold mt-4">{freeTier.price}</div>
+              <CardTitle className="text-3xl mb-2">Free Access</CardTitle>
+              <p className="text-muted-foreground">Start your FCPO trading journey</p>
+              <div className="text-4xl font-bold mt-4">Free</div>
             </CardHeader>
             <CardContent>
               <ul className="space-y-4 mb-8">
-                {freeTier.features.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">{feature}</span>
-                  </li>
-                ))}
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Basic FCPO education videos</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Public Telegram community</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Free PDF guides</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Broker setup tutorials</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Weekly market updates</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Access to public webinars</span>
+                </li>
               </ul>
               <Button className="w-full" variant="outline">
                 Join Free Community
@@ -82,33 +125,127 @@ export function MembershipSection() {
           </Card>
 
           {/* Premium Tier */}
-          <Card className="border-gold/50 relative overflow-hidden hover:border-gold transition-all bg-gradient-to-br from-gold/5 to-blue-500/5">
-            <div className="absolute top-0 right-0 bg-gold text-black text-xs font-bold px-4 py-1 rounded-bl-lg">
-              MOST POPULAR
-            </div>
-            <CardHeader className="text-center pb-8">
-              <div className="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <premiumTier.icon className="w-8 h-8 text-gold" />
+          <Card className="relative border-2 border-gold hover:border-gold/70 transition-all duration-300 bg-gradient-to-br from-card via-card to-gold/5 backdrop-blur">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+              <div className="bg-gradient-to-r from-gold to-yellow-500 text-black px-6 py-2 rounded-full font-bold text-sm shadow-lg">
+                MOST POPULAR
               </div>
-              <CardTitle className="text-3xl mb-2">{premiumTier.title}</CardTitle>
-              <p className="text-muted-foreground">{premiumTier.description}</p>
-              <div className="text-4xl font-bold mt-4 text-gold">{premiumTier.price}</div>
-              <p className="text-sm text-muted-foreground">Billed annually</p>
+            </div>
+
+            <CardHeader className="text-center pb-8 pt-12">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-gold to-yellow-500 rounded-2xl flex items-center justify-center shadow-lg">
+                <Crown className="w-8 h-8 text-black" />
+              </div>
+              <CardTitle className="text-3xl mb-2 bg-gradient-to-r from-white to-gold bg-clip-text text-transparent">
+                Premium Member
+              </CardTitle>
+              <div className="space-y-2">
+                {promoCode.trim().toUpperCase() === 'PREMIUM363' && (
+                  <div className="text-2xl text-muted-foreground line-through">
+                    RM 1,350
+                  </div>
+                )}
+                <div className="text-5xl font-bold text-gold">
+                  {displayPrice}
+                </div>
+                <div className="text-muted-foreground">per year</div>
+                {promoCode.trim().toUpperCase() === 'PREMIUM363' && (
+                  <div className="inline-block bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-semibold">
+                    Save RM 987!
+                  </div>
+                )}
+              </div>
             </CardHeader>
-            <CardContent>
-              <ul className="space-y-4 mb-8">
-                {premiumTier.features.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
-                    <span className="text-foreground">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button className="w-full bg-gold hover:bg-gold/90 text-black font-semibold h-12">
-                Upgrade to Premium
+
+            <CardContent className="space-y-6">
+              {/* Promo Code Input */}
+              <div className="space-y-2">
+                <label htmlFor="promoCode" className="text-sm font-medium text-muted-foreground">
+                  Have a promo code?
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    id="promoCode"
+                    type="text"
+                    placeholder="Enter code"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                    onBlur={validatePromoCode}
+                    className="flex-1 px-4 py-2 bg-background/50 border border-muted rounded-lg focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+                  />
+                  <Button
+                    variant="outline"
+                    onClick={validatePromoCode}
+                    className="border-gold/30 hover:border-gold hover:bg-gold/10"
+                  >
+                    Apply
+                  </Button>
+                </div>
+                {promoError && (
+                  <p className="text-sm text-red-400">{promoError}</p>
+                )}
+                {promoCode.trim().toUpperCase() === 'PREMIUM363' && (
+                  <p className="text-sm text-green-400 flex items-center gap-2">
+                    <Check className="w-4 h-4" />
+                    Promo code applied!
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-4 py-6">
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                  <span>Access to all video lessons (Vimeo)</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                  <span>Downloadable eBooks & trading guides</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                  <span>Exclusive Premium Telegram (Max Clan)</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                  <span>Advanced technical analysis notes</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                  <span>Monthly live Zoom trading sessions</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                  <span>One-on-one consultation slots</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                  <span>Priority support & guidance</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                  <span>Lifetime course updates</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                  <span>Trading templates & checklists</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                  <span>Recording of all live sessions</span>
+                </div>
+              </div>
+
+              <Button
+                onClick={handlePremiumCheckout}
+                disabled={isLoadingCheckout || !user}
+                className="w-full bg-gradient-to-r from-gold to-yellow-500 hover:from-gold/90 hover:to-yellow-500/90 text-black font-bold text-lg py-6 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Crown className="w-5 h-5 mr-2" />
+                {isLoadingCheckout ? 'Processing...' : user ? 'Upgrade to Premium' : 'Sign in to Upgrade'}
               </Button>
-              <p className="text-xs text-center text-muted-foreground mt-4">
-                Secure payment via Stripe • Cancel anytime
+
+              <p className="text-xs text-center text-muted-foreground">
+                Secure payment powered by Stripe
               </p>
             </CardContent>
           </Card>
