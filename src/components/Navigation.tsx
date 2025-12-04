@@ -89,14 +89,18 @@ export function Navigation() {
                       </Link>
                     </DropdownMenuItem>
                     {profile?.is_premium ? (
-                      <DropdownMenuItem className="text-neon-blue">
-                        <Crown className="w-4 h-4 mr-2" />
-                        Premium Dashboard
+                      <DropdownMenuItem asChild>
+                        <Link href="/members" className="text-neon-blue">
+                          <Crown className="w-4 h-4 mr-2" />
+                          Premium Dashboard
+                        </Link>
                       </DropdownMenuItem>
                     ) : (
-                      <DropdownMenuItem className="text-gold">
-                        <Crown className="w-4 h-4 mr-2" />
-                        Upgrade to Premium
+                      <DropdownMenuItem asChild>
+                        <Link href="#membership" className="text-gold">
+                          <Crown className="w-4 h-4 mr-2" />
+                          Upgrade to Premium
+                        </Link>
                       </DropdownMenuItem>
                     )}
                     <DropdownMenuSeparator />
