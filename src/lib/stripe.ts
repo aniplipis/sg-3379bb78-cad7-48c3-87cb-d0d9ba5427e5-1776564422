@@ -5,8 +5,8 @@ if (!process.env.STRIPE_SECRET_KEY) {
 }
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  // @ts-ignore - The Stripe webhook is configured for 2022-11-15, but the installed
-  // TypeScript types are for a newer, preview version. Ignoring this to match the webhook.
+  // @ts-expect-error - The Stripe webhook is configured for 2022-11-15, but the installed
+  // TypeScript types are for a newer, preview version. This is expected.
   apiVersion: '2022-11-15',
   typescript: true,
 });
