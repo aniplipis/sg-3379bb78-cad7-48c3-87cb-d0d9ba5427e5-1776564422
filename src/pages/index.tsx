@@ -1,21 +1,34 @@
-import React from 'react'
-import Head from 'next/head'
 
-export default function Home() {
+import { Navigation } from "@/components/Navigation";
+import { HeroSection } from "@/components/HeroSection";
+import { AboutSection } from "@/components/AboutSection";
+import { FuturesExplainedSection } from "@/components/FuturesExplainedSection";
+import { FCPOSection } from "@/components/FCPOSection";
+import { TradingApproachSection } from "@/components/TradingApproachSection";
+import { BrokerSection } from "@/components/BrokerSection";
+import { ClassSection } from "@/components/ClassSection";
+import { MediaSection } from "@/components/MediaSection";
+import { VerificationSection } from "@/components/VerificationSection";
+import { MembershipSection } from "@/components/MembershipSection";
+import { ContactSection } from "@/components/ContactSection";
+import { Footer } from "@/components/Footer";
+
+export default function HomePage() {
   return (
-    <>
-      <Head>
-        <title>Hello World</title>
-        <meta name="description" content="Welcome to my app" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-foreground">Hello World</h1>
-          <p className="text-lg text-muted-foreground">This is going to be your softgen app, start by describing your project.</p>
-        </div>
-      </main>
-    </>
-  )
+    <div className="min-h-screen bg-background text-foreground">
+      <Navigation />
+      <HeroSection />
+      <AboutSection />
+      <FuturesExplainedSection />
+      <FCPOSection />
+      <TradingApproachSection />
+      <BrokerSection />
+      <ClassSection />
+      <MediaSection />
+      <VerificationSection />
+      <MembershipSection />
+      <ContactSection />
+      <Footer />
+    </div>
+  );
 }
