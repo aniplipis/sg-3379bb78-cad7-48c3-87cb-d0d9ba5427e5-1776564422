@@ -67,10 +67,10 @@ export function AboutSection() {
 
             {/* CTA Button */}
             <div className="pt-6">
-              <Button 
+              <Button
                 size="lg"
-                className="bg-gradient-to-r from-gold to-yellow-500 hover:from-gold/90 hover:to-yellow-500/90 text-black font-semibold shadow-lg"
-              >
+                className="bg-gradient-to-r from-gold to-yellow-500 hover:from-gold/90 hover:to-yellow-500/90 text-black font-semibold shadow-lg">
+
                 <Award className="w-5 h-5 mr-2" />
                 View Full Biography
               </Button>
@@ -81,14 +81,14 @@ export function AboutSection() {
           <div className="relative h-full flex items-center">
             <div className="relative w-full h-[600px] md:h-[700px]">
               {/* Image without box - blends with background */}
-              <Image
-                src="/abgmax24.png"
-                alt="Abg Max - FCPO Trading Educator"
-                fill
-                className="object-contain object-bottom"
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
+              
+
+
+
+
+
+
+
 
               {/* Floating Badge */}
               <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-gold to-yellow-500 text-black px-6 py-3 rounded-xl shadow-lg border-2 border-background">
@@ -101,6 +101,6 @@ export function AboutSection() {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 }
