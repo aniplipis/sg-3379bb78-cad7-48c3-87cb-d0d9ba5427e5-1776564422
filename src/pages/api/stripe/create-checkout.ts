@@ -172,15 +172,19 @@ export default async function handler(
       console.log('✅ Using existing Stripe customer:', customerId);
     }
 
-    // Step 4: Determine price and currency based on location
-    // Default to USD, but we'll let Stripe's automatic payment methods detection handle the rest
+    // Step 4: Determine price based on promo code
     const price = promoCode?.toLowerCase() === 'premium363' 
       ? PREMIUM_MEMBERSHIP.discountPrice 
       : PREMIUM_MEMBERSHIP.price;
 
-    console.log('💰 Price:', { original: PREMIUM_MEMBERSHIP.price, final: price, promoCode: promoCode || 'none' });
+    console.log('💰 Price:', { 
+      original: PREMIUM_MEMBERSHIP.price, 
+      final: price, 
+      currency: PREMIUM_MEMBERSHIP.currency,
+      promoCode: promoCode || 'none' 
+    });
 
-    // Step 5: Create checkout session with automatic payment method detection
+    // Step 5: Create checkout session with FPX support for Malaysian users
     console.log('🎫 Creating checkout session...');
     
     try {
@@ -203,8 +207,8 @@ export default async function handler(
             quantity: 1,
           },
         ],
-        // Enable automatic payment method detection
-        // Stripe will automatically show FPX for Malaysian customers
+        // Enable FPX for Malaysian users (MYR currency)
+        // Stripe will automatically show FPX option for users in Malaysia
         payment_method_types: ['card', 'fpx'],
         success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/members?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/#membership`,
