@@ -1,4 +1,6 @@
+
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogOut, User, Crown } from "lucide-react";
 import { useState } from "react";
@@ -29,15 +31,20 @@ export function Navigation() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            <Link href="/" className="flex items-center space-x-3">
-              <motion.div 
-                className="w-10 h-10 bg-gradient-gold rounded-lg flex items-center justify-center"
-                whileHover={{ rotate: 5, scale: 1.05 }}
+            <Link href="/" className="flex items-center">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <span className="text-black font-bold text-xl">MS</span>
+                <Image
+                  src="/max-saham-logo.png"
+                  alt="Max Saham Logo"
+                  width={180}
+                  height={60}
+                  className="h-14 w-auto"
+                  priority
+                />
               </motion.div>
-              <span className="text-2xl font-bold text-gold">Max Saham</span>
             </Link>
 
             <div className="hidden md:flex items-center space-x-8">

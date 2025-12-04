@@ -1,6 +1,6 @@
-
 import Link from "next/link";
 import { Youtube, Music2, Facebook, Send, MessageCircle } from "lucide-react";
+import Image from "next/image";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -40,12 +40,15 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div className="md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-gold rounded-lg flex items-center justify-center">
-                <span className="text-black font-bold text-xl">M</span>
-              </div>
-              <span className="text-xl font-bold">Max Saham</span>
-            </div>
+            <Link href="/" className="flex items-center mb-4">
+              <Image
+                src="/max-saham-logo.png"
+                alt="Max Saham"
+                width={160}
+                height={53}
+                className="h-12 w-auto"
+              />
+            </Link>
             <p className="text-sm text-muted-foreground mb-6">
               Professional FCPO trading education combining Wyckoff, Smart Money Concepts, and Order Flow analysis.
             </p>
