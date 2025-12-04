@@ -59,7 +59,20 @@ export default async function handler(
 
     // Step 1: Try to get the user from auth.users first to verify they exist
     console.log('🔍 Verifying user exists in auth system...');
-    const { data: authData, error: authError } = await supabase.auth.admin.getUserById(userId);
+    let authData;
+    let authError;
+    
+    try {
+      const result = await supabase.auth.admin.getUserById(userId);
+      authData = result.data;
+      authError = result.error;
+    } catch (error) {
+      console.error('❌ Exception calling auth.admin.getUserById:', error);
+      return res.status(500).json({
+        error: 'Failed to verify user authentication',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
 
     if (authError || !authData?.user) {
       console.error('❌ User not found in auth system:', {
@@ -79,11 +92,25 @@ export default async function handler(
 
     // Step 2: Get or create profile from Supabase
     console.log('🔍 Fetching user profile from database...');
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('email, stripe_customer_id, full_name, is_premium')
-      .eq('id', userId)
-      .maybeSingle();
+    let profile;
+    let profileError;
+    
+    try {
+      const result = await supabase
+        .from('profiles')
+        .select('email, stripe_customer_id, full_name, is_premium')
+        .eq('id', userId)
+        .maybeSingle();
+      
+      profile = result.data;
+      profileError = result.error;
+    } catch (error) {
+      console.error('❌ Exception fetching profile:', error);
+      return res.status(500).json({
+        error: 'Failed to fetch user profile',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
 
     // Log the actual Supabase error for debugging
     if (profileError) {
@@ -105,21 +132,45 @@ export default async function handler(
     if (!profile) {
       console.log('⚠️  No profile found, creating one...');
       
-      const { data: newProfile, error: createError } = await supabase
-        .from('profiles')
-        .insert([
-          {
-            id: userId,
-            email: authData.user.email || '',
-            full_name: authData.user.user_metadata?.full_name || authData.user.email?.split('@')[0] || 'User',
-            avatar_url: authData.user.user_metadata?.avatar_url || null,
-          },
-        ])
-        .select('email, stripe_customer_id, full_name, is_premium')
-        .single();
+      const profileData = {
+        id: userId,
+        email: authData.user.email || '',
+        full_name: authData.user.user_metadata?.full_name || authData.user.email?.split('@')[0] || 'User',
+        avatar_url: authData.user.user_metadata?.avatar_url || null,
+      };
+
+      console.log('📝 Profile data to insert:', {
+        ...profileData,
+        avatar_url: profileData.avatar_url ? 'provided' : 'null'
+      });
+
+      let newProfile;
+      let createError;
+      
+      try {
+        const result = await supabase
+          .from('profiles')
+          .insert([profileData])
+          .select('email, stripe_customer_id, full_name, is_premium')
+          .single();
+        
+        newProfile = result.data;
+        createError = result.error;
+      } catch (error) {
+        console.error('❌ Exception creating profile:', error);
+        return res.status(500).json({
+          error: 'Failed to create user profile',
+          details: error instanceof Error ? error.message : 'Unknown error'
+        });
+      }
 
       if (createError) {
-        console.error('❌ Failed to create profile:', createError);
+        console.error('❌ Failed to create profile:', {
+          code: createError.code,
+          message: createError.message,
+          details: createError.details,
+          hint: createError.hint
+        });
         return res.status(500).json({
           error: 'Failed to create user profile',
           details: createError.message
@@ -158,11 +209,22 @@ export default async function handler(
 
     if (!customerId) {
       console.log('📝 Creating new Stripe customer...');
-      const customer = await stripe.customers.create({
-        email: profileToUse.email,
-        name: profileToUse.full_name || undefined,
-        metadata: { supabase_user_id: userId },
-      });
+      
+      let customer;
+      try {
+        customer = await stripe.customers.create({
+          email: profileToUse.email,
+          name: profileToUse.full_name || undefined,
+          metadata: { supabase_user_id: userId },
+        });
+      } catch (error) {
+        console.error('❌ Failed to create Stripe customer:', error);
+        return res.status(500).json({
+          error: 'Failed to create Stripe customer',
+          details: error instanceof Error ? error.message : 'Unknown error'
+        });
+      }
+
       customerId = customer.id;
       console.log('✅ Created Stripe customer:', customerId);
 
@@ -196,40 +258,50 @@ export default async function handler(
 
     // Step 4: Create checkout session
     console.log('🎫 Creating Stripe checkout session...');
-    const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
-      customer: customerId,
-      line_items: [
-        {
-          price_data: {
-            currency: PREMIUM_MEMBERSHIP.currency,
-            product_data: {
-              name: PREMIUM_MEMBERSHIP.name,
-              description: PREMIUM_MEMBERSHIP.description,
-              images: [`${process.env.NEXT_PUBLIC_SITE_URL}/LOGO-square-for-rounded-crop.jpg`],
+    
+    let session;
+    try {
+      session = await stripe.checkout.sessions.create({
+        mode: 'subscription',
+        customer: customerId,
+        line_items: [
+          {
+            price_data: {
+              currency: PREMIUM_MEMBERSHIP.currency,
+              product_data: {
+                name: PREMIUM_MEMBERSHIP.name,
+                description: PREMIUM_MEMBERSHIP.description,
+                images: [`${process.env.NEXT_PUBLIC_SITE_URL}/LOGO-square-for-rounded-crop.jpg`],
+              },
+              unit_amount: price,
+              recurring: {
+                interval: PREMIUM_MEMBERSHIP.interval,
+              },
             },
-            unit_amount: price,
-            recurring: {
-              interval: PREMIUM_MEMBERSHIP.interval,
-            },
+            quantity: 1,
           },
-          quantity: 1,
-        },
-      ],
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/members?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/#membership`,
-      metadata: {
-        supabase_user_id: userId,
-        promo_code: promoCode || 'none',
-        original_price: PREMIUM_MEMBERSHIP.price.toString(),
-        final_price: price.toString(),
-      },
-      subscription_data: {
+        ],
+        success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/members?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/#membership`,
         metadata: {
           supabase_user_id: userId,
+          promo_code: promoCode || 'none',
+          original_price: PREMIUM_MEMBERSHIP.price.toString(),
+          final_price: price.toString(),
         },
-      },
-    });
+        subscription_data: {
+          metadata: {
+            supabase_user_id: userId,
+          },
+        },
+      });
+    } catch (error) {
+      console.error('❌ Failed to create checkout session:', error);
+      return res.status(500).json({
+        error: 'Failed to create checkout session',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
 
     console.log('✅ Checkout session created:', session.id);
     console.log('=== CHECKOUT REQUEST SUCCESS ===');
