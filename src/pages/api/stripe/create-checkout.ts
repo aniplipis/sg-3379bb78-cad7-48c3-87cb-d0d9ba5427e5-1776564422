@@ -65,11 +65,18 @@ export default async function handler(
       .eq('id', userId)
       .maybeSingle();
 
+    // Log the EXACT error from Supabase
     if (profileFetchError) {
-      console.error('❌ Profile query error:', profileFetchError);
+      console.error('❌ Profile query error:', {
+        message: profileFetchError.message,
+        details: profileFetchError.details,
+        hint: profileFetchError.hint,
+        code: profileFetchError.code
+      });
       return res.status(500).json({
         error: 'Database error',
-        details: `Failed to fetch profile: ${profileFetchError.message}`
+        details: `Failed to fetch profile: ${profileFetchError.message}`,
+        supabaseError: profileFetchError
       });
     }
 
@@ -95,6 +102,7 @@ export default async function handler(
         .select('id, email, full_name, stripe_customer_id, is_premium')
         .single();
 
+      // Log the EXACT error from Supabase
       if (createError) {
         console.error('❌ Profile creation failed:', {
           message: createError.message,
@@ -104,7 +112,8 @@ export default async function handler(
         });
         return res.status(500).json({
           error: 'Failed to create user profile',
-          details: `Database error: ${createError.message}. Code: ${createError.code}`
+          details: `Database error: ${createError.message}. Code: ${createError.code}`,
+          supabaseError: createError
         });
       }
 
@@ -225,7 +234,8 @@ export default async function handler(
     
     return res.status(500).json({
       error: 'Checkout failed',
-      details: error instanceof Error ? error.message : 'An unexpected error occurred'
+      details: error instanceof Error ? error.message : 'An unexpected error occurred',
+      fullError: error
     });
   }
 }
