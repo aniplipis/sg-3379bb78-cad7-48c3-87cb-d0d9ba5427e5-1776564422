@@ -57,60 +57,59 @@ export default async function handler(
 
     console.log('✅ Valid userId format');
 
-    // Step 1: Get user from auth.users to verify they exist
-    console.log('🔍 Verifying user in auth system...');
-    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.getUserById(userId);
-
-    if (authError || !authData?.user) {
-      console.error('❌ User not found in auth:', authError?.message);
-      return res.status(404).json({
-        error: 'User not found in authentication system',
-        details: 'Your account may have been deleted or your session expired. Please log out and log back in.'
-      });
-    }
-
-    const userEmail = authData.user.email;
-    if (!userEmail) {
-      console.error('❌ User has no email');
-      return res.status(400).json({ 
-        error: 'Email address required',
-        details: 'Your account must have an email address to subscribe to Premium.'
-      });
-    }
-
-    console.log('✅ User verified:', userEmail);
-
-    // Step 2: Get or create profile (using admin client to bypass RLS)
-    console.log('🔍 Fetching profile...');
-    
-    const { data: existingProfile, error: fetchError } = await supabaseAdmin
+    // Step 1: Try to get profile first (profile should exist from AuthContext)
+    console.log('🔍 Checking if profile exists...');
+    const { data: existingProfile, error: profileFetchError } = await supabaseAdmin
       .from('profiles')
       .select('id, email, full_name, stripe_customer_id, is_premium')
       .eq('id', userId)
       .maybeSingle();
 
-    if (fetchError) {
-      console.error('❌ Profile query error:', fetchError);
+    if (profileFetchError) {
+      console.error('❌ Profile query error:', profileFetchError);
       return res.status(500).json({
         error: 'Database error',
-        details: `Failed to fetch user profile: ${fetchError.message}`
+        details: `Failed to fetch user profile: ${profileFetchError.message}`
       });
     }
 
     let profile = existingProfile;
+    let userEmail: string;
 
-    // Create profile if it doesn't exist
+    // If profile doesn't exist, try to get user from auth and create profile
     if (!profile) {
-      console.log('⚠️ Profile not found, creating new profile...');
+      console.log('⚠️ Profile not found, checking auth system...');
       
+      // Try to get user from auth system
+      const { data: authData, error: authError } = await supabaseAdmin.auth.admin.getUserById(userId);
+
+      if (authError || !authData?.user) {
+        console.error('❌ User not found in auth system:', authError?.message);
+        return res.status(404).json({
+          error: 'User not found',
+          details: 'Your account session may have expired. Please log out and log back in to refresh your session.'
+        });
+      }
+
+      userEmail = authData.user.email || '';
+      if (!userEmail) {
+        console.error('❌ User has no email');
+        return res.status(400).json({ 
+          error: 'Email address required',
+          details: 'Your account must have an email address to subscribe to Premium.'
+        });
+      }
+
+      console.log('✅ User found in auth:', userEmail);
+      console.log('📝 Creating profile...');
+
+      // Create profile
       const newProfileData = {
         id: userId,
         email: userEmail,
         full_name: authData.user.user_metadata?.full_name || userEmail.split('@')[0],
         avatar_url: authData.user.user_metadata?.avatar_url || null,
       };
-
-      console.log('📝 Creating profile with data:', { ...newProfileData, avatar_url: newProfileData.avatar_url ? 'provided' : 'null' });
 
       const { data: newProfile, error: createError } = await supabaseAdmin
         .from('profiles')
@@ -138,9 +137,18 @@ export default async function handler(
       console.log('✅ Profile created successfully');
     } else {
       console.log('✅ Profile found');
+      userEmail = profile.email || '';
+      
+      if (!userEmail) {
+        console.error('❌ Profile has no email');
+        return res.status(400).json({ 
+          error: 'Email address required',
+          details: 'Your profile must have an email address to subscribe to Premium.'
+        });
+      }
     }
 
-    // Step 3: Get or create Stripe customer
+    // Step 2: Get or create Stripe customer
     console.log('💳 Managing Stripe customer...');
     let customerId = profile.stripe_customer_id;
 
@@ -149,7 +157,7 @@ export default async function handler(
       
       try {
         const customer = await stripe.customers.create({
-          email: profile.email || userEmail,
+          email: userEmail,
           name: profile.full_name || undefined,
           metadata: { supabase_user_id: userId },
         });
@@ -180,7 +188,7 @@ export default async function handler(
       console.log('✅ Using existing Stripe customer:', customerId);
     }
 
-    // Step 4: Determine price
+    // Step 3: Determine price
     const price = promoCode?.toLowerCase() === 'premium363' 
       ? PREMIUM_MEMBERSHIP.discountPrice 
       : PREMIUM_MEMBERSHIP.price;
@@ -191,7 +199,7 @@ export default async function handler(
       promoCode: promoCode || 'none'
     });
 
-    // Step 5: Create checkout session
+    // Step 4: Create checkout session
     console.log('🎫 Creating checkout session...');
     
     try {
