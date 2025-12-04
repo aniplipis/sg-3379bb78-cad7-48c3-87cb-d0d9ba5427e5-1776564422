@@ -1,9 +1,8 @@
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthContext";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,7 +32,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 export default function ProfilePage() {
-  const { user, profile, loading, logout } = useAuth();
+  const { user, profile, isLoading, logout } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   
@@ -42,10 +41,10 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!isLoading && !user) {
       router.push("/");
     }
-  }, [user, loading, router]);
+  }, [user, isLoading, router]);
 
   useEffect(() => {
     if (profile?.full_name) {
@@ -105,7 +104,7 @@ export default function ProfilePage() {
     });
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-black flex items-center justify-center">
         <div className="text-center">
