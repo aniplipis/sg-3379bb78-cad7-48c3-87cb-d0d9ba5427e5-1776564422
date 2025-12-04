@@ -1,73 +1,96 @@
 
-import { Card, CardContent } from "@/components/ui/card";
-import { GitBranch, KeyRound, BarChartHorizontal } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { TrendingUp, Brain, Activity, BarChart2 } from "lucide-react";
 
 export function TradingApproachSection() {
+  const pillars = [
+    {
+      icon: TrendingUp,
+      title: "Wyckoff Method",
+      description: "Master market phases: Accumulation, Markup, Distribution, and Markdown. Understand institutional footprints and smart money positioning.",
+      highlights: [
+        "Market cycle analysis",
+        "Volume spread analysis",
+        "Cause and effect principle",
+        "Trading ranges identification"
+      ]
+    },
+    {
+      icon: Brain,
+      title: "Smart Money Concepts",
+      description: "Track institutional order flow through Break of Structure (BOS), Change of Character (CHoCH), liquidity sweeps, Order Blocks (OB), and Fair Value Gaps (FVG).",
+      highlights: [
+        "BOS & CHoCH patterns",
+        "Liquidity grab setups",
+        "Order block confirmation",
+        "Fair value gap entries"
+      ]
+    },
+    {
+      icon: Activity,
+      title: "Order Flow & Volume",
+      description: "Decode real-time market intentions through footprint charts, delta analysis, volume profile, and aggressive buying/selling patterns.",
+      highlights: [
+        "Footprint chart reading",
+        "Delta divergence signals",
+        "Volume profile levels",
+        "Aggressive order detection"
+      ]
+    }
+  ];
+
   return (
-    <section id="approach" className="py-20 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="text-sm font-mono text-gold mb-2">METHODOLOGY</div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Max Saham Trading <span className="text-neon-blue">Approach</span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              My strategy is built on three core pillars to identify high-probability trades.
-            </p>
+    <section id="approach" className="py-20 px-4 bg-gradient-to-b from-background to-background/50">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-6 py-2 mb-6">
+            <BarChart2 className="w-5 h-5 text-gold" />
+            <span className="text-gold font-semibold">Trading Methodology</span>
           </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            Max Saham <span className="text-gold">Trading Approach</span>
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            A comprehensive trading system combining institutional analysis, smart money tracking, and order flow precision
+          </p>
+        </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="bg-card/50 backdrop-blur border-border hover:border-gold/50 transition-all group">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gold/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <GitBranch className="w-8 h-8 text-gold" />
+        <div className="grid md:grid-cols-3 gap-8">
+          {pillars.map((pillar, index) => (
+            <Card key={index} className="border-border/50 hover:border-gold/50 transition-all duration-300 group bg-card/50 backdrop-blur">
+              <CardHeader>
+                <div className="w-16 h-16 bg-gold/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-gold/20 transition-colors">
+                  <pillar.icon className="w-8 h-8 text-gold" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4">The Wyckoff Method</h3>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  We analyze market cycles to identify accumulation and distribution phases, allowing us to anticipate major market moves before they happen.
+                <CardTitle className="text-2xl mb-2">{pillar.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-6">
+                  {pillar.description}
                 </p>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li className="flex items-start"><span className="text-gold mr-2">•</span>Phases & Events</li>
-                  <li className="flex items-start"><span className="text-gold mr-2">•</span>Volume Spread Analysis</li>
-                  <li className="flex items-start"><span className="text-gold mr-2">•</span>Composite Man Theory</li>
-                </ul>
+                <div className="space-y-3">
+                  <p className="text-sm font-semibold text-foreground/80 uppercase tracking-wide">Key Elements:</p>
+                  <ul className="space-y-2">
+                    {pillar.highlights.map((highlight, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
+                        <span className="text-gold mt-1">•</span>
+                        <span>{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </CardContent>
             </Card>
+          ))}
+        </div>
 
-            <Card className="bg-card/50 backdrop-blur border-border hover:border-neon-blue/50 transition-all group">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-neon-blue/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <KeyRound className="w-8 h-8 text-neon-blue" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">Smart Money Concepts</h3>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  By tracking the "smart money," we pinpoint key liquidity zones and high-precision entry points that institutional traders use.
-                </p>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li className="flex items-start"><span className="text-neon-blue mr-2">•</span>BOS/CHoCH Structure</li>
-                  <li className="flex items-start"><span className="text-neon-blue mr-2">•</span>Order Blocks & FVGs</li>
-                  <li className="flex items-start"><span className="text-neon-blue mr-2">•</span>Liquidity Sweeps</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 backdrop-blur border-border hover:border-gold/50 transition-all group">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gold/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <BarChartHorizontal className="w-8 h-8 text-gold" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">Order Flow & Volume</h3>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  We confirm our trade ideas by analyzing real-time buying and selling pressure, giving us the ultimate edge in execution.
-                </p>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li className="flex items-start"><span className="text-gold mr-2">•</span>Volume Profile</li>
-                  <li className="flex items-start"><span className="text-gold mr-2">•</span>Cumulative Delta</li>
-                  <li className="flex items-start"><span className="text-gold mr-2">•</span>Absorption & Exhaustion</li>
-                </ul>
-              </CardContent>
-            </Card>
+        <div className="mt-12 text-center">
+          <p className="text-muted-foreground mb-6">
+            These three pillars work together to provide a complete picture of market structure, institutional behavior, and optimal entry timing.
+          </p>
+          <div className="inline-flex items-center gap-2 text-gold">
+            <Activity className="w-5 h-5" />
+            <span className="font-semibold">Precision • Confirmation • Execution</span>
           </div>
         </div>
       </div>
