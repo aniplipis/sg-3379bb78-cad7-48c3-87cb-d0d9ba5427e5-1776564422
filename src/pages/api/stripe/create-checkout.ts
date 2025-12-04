@@ -39,14 +39,20 @@ export default async function handler(
     // Validate userId
     if (!userId) {
       console.error('❌ No userId provided');
-      return res.status(400).json({ error: 'User ID is required' });
+      return res.status(400).json({ 
+        error: 'User ID is required',
+        details: 'Please ensure you are logged in before upgrading to Premium.'
+      });
     }
 
     // Validate userId format (UUID)
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!uuidRegex.test(userId)) {
       console.error('❌ Invalid userId format:', userId);
-      return res.status(400).json({ error: 'Invalid user ID format' });
+      return res.status(400).json({ 
+        error: 'Invalid user ID format',
+        details: 'Your session may be corrupted. Please log out and log back in.'
+      });
     }
 
     console.log('✅ Valid userId format');
@@ -58,15 +64,18 @@ export default async function handler(
     if (authError || !authData?.user) {
       console.error('❌ User not found in auth:', authError?.message);
       return res.status(404).json({
-        error: 'User not found',
-        details: 'Please log out and log back in, then try again.'
+        error: 'User not found in authentication system',
+        details: 'Your account may have been deleted or your session expired. Please log out and log back in.'
       });
     }
 
     const userEmail = authData.user.email;
     if (!userEmail) {
       console.error('❌ User has no email');
-      return res.status(400).json({ error: 'User must have an email address' });
+      return res.status(400).json({ 
+        error: 'Email address required',
+        details: 'Your account must have an email address to subscribe to Premium.'
+      });
     }
 
     console.log('✅ User verified:', userEmail);
@@ -74,26 +83,25 @@ export default async function handler(
     // Step 2: Get or create profile (using admin client to bypass RLS)
     console.log('🔍 Fetching profile...');
     
-    // Use const for initial fetch, then assign to a let variable for mutation if needed
-    const { data: fetchedProfile, error: profileError } = await supabaseAdmin
+    const { data: existingProfile, error: fetchError } = await supabaseAdmin
       .from('profiles')
       .select('id, email, full_name, stripe_customer_id, is_premium')
       .eq('id', userId)
       .maybeSingle();
 
-    if (profileError) {
-      console.error('❌ Profile query error:', profileError.message);
+    if (fetchError) {
+      console.error('❌ Profile query error:', fetchError);
       return res.status(500).json({
         error: 'Database error',
-        details: 'Failed to fetch user profile'
+        details: `Failed to fetch user profile: ${fetchError.message}`
       });
     }
 
-    let profile = fetchedProfile;
+    let profile = existingProfile;
 
     // Create profile if it doesn't exist
     if (!profile) {
-      console.log('⚠️ Profile not found, creating...');
+      console.log('⚠️ Profile not found, creating new profile...');
       
       const newProfileData = {
         id: userId,
@@ -102,22 +110,32 @@ export default async function handler(
         avatar_url: authData.user.user_metadata?.avatar_url || null,
       };
 
+      console.log('📝 Creating profile with data:', { ...newProfileData, avatar_url: newProfileData.avatar_url ? 'provided' : 'null' });
+
       const { data: newProfile, error: createError } = await supabaseAdmin
         .from('profiles')
         .insert([newProfileData])
         .select('id, email, full_name, stripe_customer_id, is_premium')
         .single();
 
-      if (createError || !newProfile) {
-        console.error('❌ Profile creation failed:', createError?.message);
+      if (createError) {
+        console.error('❌ Profile creation failed:', createError);
         return res.status(500).json({
-          error: 'Failed to create profile',
-          details: 'Unable to create user profile'
+          error: 'Failed to create user profile',
+          details: `Database error: ${createError.message}. Please contact support if this persists.`
+        });
+      }
+
+      if (!newProfile) {
+        console.error('❌ Profile creation returned null');
+        return res.status(500).json({
+          error: 'Profile creation failed',
+          details: 'Unable to create user profile. Please contact support.'
         });
       }
 
       profile = newProfile;
-      console.log('✅ Profile created');
+      console.log('✅ Profile created successfully');
     } else {
       console.log('✅ Profile found');
     }
@@ -129,22 +147,35 @@ export default async function handler(
     if (!customerId) {
       console.log('📝 Creating Stripe customer...');
       
-      const customer = await stripe.customers.create({
-        email: profile.email || userEmail,
-        name: profile.full_name || undefined,
-        metadata: { supabase_user_id: userId },
-      });
+      try {
+        const customer = await stripe.customers.create({
+          email: profile.email || userEmail,
+          name: profile.full_name || undefined,
+          metadata: { supabase_user_id: userId },
+        });
 
-      customerId = customer.id;
-      console.log('✅ Stripe customer created:', customerId);
+        customerId = customer.id;
+        console.log('✅ Stripe customer created:', customerId);
 
-      // Save customer ID to profile
-      await supabaseAdmin
-        .from('profiles')
-        .update({ stripe_customer_id: customerId })
-        .eq('id', userId);
+        // Save customer ID to profile
+        const { error: updateError } = await supabaseAdmin
+          .from('profiles')
+          .update({ stripe_customer_id: customerId })
+          .eq('id', userId);
 
-      console.log('✅ Customer ID saved to profile');
+        if (updateError) {
+          console.error('⚠️ Failed to save customer ID to profile:', updateError);
+          // Continue anyway - we can still create the checkout session
+        } else {
+          console.log('✅ Customer ID saved to profile');
+        }
+      } catch (stripeError: unknown) {
+        console.error('❌ Stripe customer creation failed:', stripeError);
+        return res.status(500).json({
+          error: 'Payment system error',
+          details: stripeError instanceof Error ? `Stripe error: ${stripeError.message}` : 'Failed to create Stripe customer. Please try again.'
+        });
+      }
     } else {
       console.log('✅ Using existing Stripe customer:', customerId);
     }
@@ -163,50 +194,59 @@ export default async function handler(
     // Step 5: Create checkout session
     console.log('🎫 Creating checkout session...');
     
-    const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
-      customer: customerId,
-      line_items: [
-        {
-          price_data: {
-            currency: PREMIUM_MEMBERSHIP.currency,
-            product_data: {
-              name: PREMIUM_MEMBERSHIP.name,
-              description: PREMIUM_MEMBERSHIP.description,
+    try {
+      const session = await stripe.checkout.sessions.create({
+        mode: 'subscription',
+        customer: customerId,
+        line_items: [
+          {
+            price_data: {
+              currency: PREMIUM_MEMBERSHIP.currency,
+              product_data: {
+                name: PREMIUM_MEMBERSHIP.name,
+                description: PREMIUM_MEMBERSHIP.description,
+              },
+              unit_amount: price,
+              recurring: {
+                interval: PREMIUM_MEMBERSHIP.interval,
+              },
             },
-            unit_amount: price,
-            recurring: {
-              interval: PREMIUM_MEMBERSHIP.interval,
-            },
+            quantity: 1,
           },
-          quantity: 1,
-        },
-      ],
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/members?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/#membership`,
-      metadata: {
-        supabase_user_id: userId,
-        promo_code: promoCode || 'none',
-      },
-      subscription_data: {
+        ],
+        success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/members?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/#membership`,
         metadata: {
           supabase_user_id: userId,
+          promo_code: promoCode || 'none',
         },
-      },
-    });
+        subscription_data: {
+          metadata: {
+            supabase_user_id: userId,
+          },
+        },
+      });
 
-    console.log('✅ Checkout session created:', session.id);
-    console.log('=== CHECKOUT SUCCESS ===');
+      console.log('✅ Checkout session created:', session.id);
+      console.log('=== CHECKOUT SUCCESS ===');
 
-    return res.status(200).json({ url: session.url });
+      return res.status(200).json({ url: session.url });
 
-  } catch (error) {
+    } catch (stripeError: unknown) {
+      console.error('❌ Stripe checkout session creation failed:', stripeError);
+      return res.status(500).json({
+        error: 'Payment system error',
+        details: stripeError instanceof Error ? `Stripe error: ${stripeError.message}` : 'Failed to create checkout session. Please try again.'
+      });
+    }
+
+  } catch (error: unknown) {
     console.error('=== CHECKOUT FAILED ===');
-    console.error('❌ Error:', error);
+    console.error('❌ Unexpected error:', error);
     
     return res.status(500).json({
       error: 'Checkout failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: error instanceof Error ? error.message : 'An unexpected error occurred. Please try again or contact support.'
     });
   }
 }

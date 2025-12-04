@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, Crown, Users, Sparkles } from "lucide-react";
+import { Check, Crown, Users, Sparkles, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -9,17 +9,20 @@ export function MembershipSection() {
   const [promoCode, setPromoCode] = useState("");
   const [isLoadingCheckout, setIsLoadingCheckout] = useState(false);
   const [promoError, setPromoError] = useState("");
+  const [checkoutError, setCheckoutError] = useState("");
 
   const handlePremiumCheckout = async () => {
     if (!user) {
-      // Show auth modal or redirect to login
-      alert("Please sign in to upgrade to Premium");
+      setCheckoutError("Please sign in to upgrade to Premium");
       return;
     }
 
     try {
       setIsLoadingCheckout(true);
       setPromoError("");
+      setCheckoutError("");
+
+      console.log("Starting checkout for user:", user.id);
 
       const response = await fetch('/api/stripe/create-checkout', {
         method: 'POST',
@@ -33,18 +36,24 @@ export function MembershipSection() {
       });
 
       const data = await response.json();
+      
+      console.log("Checkout response:", { status: response.status, data });
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to create checkout session');
+        throw new Error(data.error || data.details || 'Failed to create checkout session');
       }
 
       // Redirect to Stripe Checkout
       if (data.url) {
+        console.log("Redirecting to Stripe Checkout:", data.url);
         window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL received from server");
       }
     } catch (error) {
       console.error('Checkout error:', error);
-      alert('Failed to start checkout. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+      setCheckoutError(errorMessage);
     } finally {
       setIsLoadingCheckout(false);
     }
@@ -66,7 +75,7 @@ export function MembershipSection() {
 
   return (
     <section id="membership" className="py-24 bg-gradient-to-br from-background to-muted/30">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-6 py-2 mb-6">
             <Sparkles className="w-5 h-5 text-gold" />
@@ -79,6 +88,28 @@ export function MembershipSection() {
             Start free or upgrade to premium for complete access to professional FCPO trading education
           </p>
         </div>
+
+        {/* Error Display */}
+        {checkoutError && (
+          <div className="max-w-2xl mx-auto mb-8 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <h4 className="font-semibold text-red-400 mb-1">Checkout Failed</h4>
+                <p className="text-sm text-red-300">{checkoutError}</p>
+                <p className="text-xs text-red-300/70 mt-2">
+                  If this problem persists, please contact support or try refreshing the page.
+                </p>
+              </div>
+              <button
+                onClick={() => setCheckoutError("")}
+                className="text-red-400 hover:text-red-300"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* Free Tier */}
