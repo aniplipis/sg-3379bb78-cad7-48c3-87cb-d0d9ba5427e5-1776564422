@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { Loader2, Mail, Lock, Chrome } from "lucide-react";
+import { Loader2, Mail, Lock, Chrome, AlertCircle } from "lucide-react";
+import { authService } from "@/services/authService";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -23,15 +23,20 @@ interface LoginFormProps {
 export function LoginForm({ onSuccess }: LoginFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmailSent, setResetEmailSent] = useState(false);
   const { login, loginWithGoogle } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
+
+  const emailValue = watch("email");
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
@@ -41,7 +46,52 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
       await login(data.email, data.password);
       onSuccess();
     } catch (err: any) {
-      setError(err.message || "Login failed. Please check your credentials.");
+      console.error("Login error:", err);
+      
+      // Provide specific error messages based on error type
+      let errorMessage = "Login failed. Please check your credentials.";
+      
+      if (err.message) {
+        if (err.message.includes("Invalid login credentials")) {
+          errorMessage = "Invalid email or password. Please check your credentials and try again.";
+        } else if (err.message.includes("Email not confirmed")) {
+          errorMessage = "Please verify your email address before logging in. Check your inbox for the confirmation email.";
+        } else if (err.message.includes("User not found")) {
+          errorMessage = "No account found with this email address. Please sign up first.";
+        } else {
+          errorMessage = err.message;
+        }
+      }
+      
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!emailValue || !emailValue.includes("@")) {
+      setError("Please enter your email address first.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const { error } = await authService.resetPassword(emailValue);
+      
+      if (error) {
+        setError(error.message);
+      } else {
+        setResetEmailSent(true);
+        setTimeout(() => {
+          setResetEmailSent(false);
+          setShowForgotPassword(false);
+        }, 5000);
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to send password reset email.");
     } finally {
       setIsLoading(false);
     }
@@ -90,8 +140,16 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
       </div>
 
       {error && (
-        <div className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm">
-          {error}
+        <div className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm flex items-start gap-2">
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <span>{error}</span>
+        </div>
+      )}
+
+      {resetEmailSent && (
+        <div className="bg-green-500/10 border border-green-500/30 text-green-600 px-4 py-3 rounded-lg text-sm flex items-start gap-2">
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <span>Password reset email sent! Check your inbox.</span>
         </div>
       )}
 
@@ -143,11 +201,33 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           </div>
           <button
             type="button"
+            onClick={() => setShowForgotPassword(!showForgotPassword)}
             className="text-gold hover:text-gold/80 transition-colors"
           >
             Forgot password?
           </button>
         </div>
+
+        {showForgotPassword && (
+          <div className="bg-muted/50 border border-border rounded-lg p-4 space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Enter your email above and click the button below to receive a password reset link.
+            </p>
+            <Button
+              type="button"
+              onClick={handleForgotPassword}
+              disabled={isLoading}
+              variant="outline"
+              className="w-full"
+            >
+              {isLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                "Send Reset Email"
+              )}
+            </Button>
+          </div>
+        )}
 
         <Button
           type="submit"
