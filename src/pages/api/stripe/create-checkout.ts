@@ -28,25 +28,15 @@ export default async function handler(
     // First, verify the user exists in auth.users using admin API
     const { data: authData, error: authError } = await supabase.auth.admin.getUserById(userId);
     
-    if (authError) {
-      console.error('❌ Auth error:', {
+    if (authError || !authData?.user) {
+      console.error('❌ User verification failed:', {
         userId,
-        error: authError.message,
-        code: authError.name
+        error: authError?.message,
+        hasUserData: !!authData?.user
       });
-      return res.status(404).json({ 
-        error: 'User not found in authentication system',
-        details: 'Your account could not be verified. Please try logging out and logging back in.',
-        userId: userId
-      });
-    }
-
-    if (!authData?.user) {
-      console.error('❌ No user data returned from auth.users:', { userId });
       return res.status(404).json({ 
         error: 'User not found',
-        details: 'Your account data is incomplete. Please contact support.',
-        userId: userId
+        details: 'Your account could not be verified. Please try logging out and logging back in.'
       });
     }
 
@@ -77,8 +67,7 @@ export default async function handler(
       hasAvatar: !!userAvatar
     });
 
-    // Now try to get or create the profile
-    let profile = null;
+    // Try to get or create the profile
     let customerEmail = userEmail;
     let customerName = userName;
 
@@ -87,15 +76,7 @@ export default async function handler(
       .from('profiles')
       .select('email, full_name, is_premium')
       .eq('id', userId)
-      .maybeSingle(); // Use maybeSingle instead of single to handle no rows gracefully
-
-    if (profileError) {
-      console.error('❌ Profile lookup error:', {
-        code: profileError.code,
-        message: profileError.message,
-        details: profileError.details
-      });
-    }
+      .maybeSingle();
 
     if (existingProfile) {
       console.log('✅ Profile found:', {
@@ -104,7 +85,6 @@ export default async function handler(
         isPremium: existingProfile.is_premium
       });
       
-      profile = existingProfile;
       customerEmail = existingProfile.email;
       customerName = existingProfile.full_name;
     } else {
@@ -129,14 +109,11 @@ export default async function handler(
         console.error('❌ Profile creation error:', {
           code: createError.code,
           message: createError.message,
-          details: createError.details,
-          hint: createError.hint
+          details: createError.details
         });
 
-        // If profile creation fails, we can still proceed with auth data
+        // Proceed with auth data even if profile creation fails
         console.log('⚠️ Proceeding with auth user data despite profile creation failure');
-        customerEmail = userEmail;
-        customerName = userName;
       } else {
         console.log('✅ Successfully created profile:', {
           userId: authData.user.id,
@@ -144,7 +121,6 @@ export default async function handler(
           name: newProfile.full_name
         });
 
-        profile = newProfile;
         customerEmail = newProfile.email;
         customerName = newProfile.full_name;
       }
