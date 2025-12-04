@@ -89,15 +89,6 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         </div>
       </div>
 
-      {/* Premium Test Account Info */}
-      <div className="bg-gold/10 border border-gold/30 rounded-lg p-4">
-        <div className="text-sm font-semibold text-gold mb-2">🎉 Premium Test Account</div>
-        <div className="text-xs text-muted-foreground space-y-1">
-          <div><span className="font-mono">Email:</span> premium@maxsaham.com</div>
-          <div><span className="font-mono">Password:</span> Premium123!</div>
-        </div>
-      </div>
-
       {error && (
         <div className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm">
           {error}

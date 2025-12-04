@@ -57,6 +57,7 @@ export type Database = {
     }
     Functions: {
       make_user_premium: { Args: { user_email: string }; Returns: undefined }
+      set_user_premium: { Args: { user_email: string }; Returns: string }
     }
     Enums: {
       [_ in never]: never
