@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -37,11 +36,11 @@ export function Navigation() {
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 <Image
-                  src="/max-saham-logo.png"
+                  src="/LOGO-square-for-rounded-crop.jpg"
                   alt="Max Saham Logo"
                   width={180}
                   height={60}
-                  className="h-14 w-auto"
+                  className="h-14 w-auto rounded-lg"
                   priority
                 />
               </motion.div>

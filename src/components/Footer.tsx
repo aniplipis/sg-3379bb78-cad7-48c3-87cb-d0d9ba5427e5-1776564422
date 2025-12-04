@@ -42,11 +42,11 @@ export function Footer() {
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center mb-4">
               <Image
-                src="/max-saham-logo.png"
+                src="/LOGO-square-for-rounded-crop.jpg"
                 alt="Max Saham"
                 width={160}
                 height={53}
-                className="h-12 w-auto"
+                className="h-12 w-auto rounded-lg"
               />
             </Link>
             <p className="text-sm text-muted-foreground mb-6">
