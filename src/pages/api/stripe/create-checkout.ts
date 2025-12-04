@@ -57,32 +57,7 @@ export default async function handler(
 
     console.log('✅ Valid userId format');
 
-    // Step 1: Get user from auth.users first to get email
-    console.log('🔍 Fetching user from auth.users...');
-    const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.getUserById(userId);
-
-    if (authError) {
-      console.error('❌ Auth user fetch error:', authError);
-      return res.status(500).json({
-        error: 'Authentication error',
-        details: `Failed to verify user: ${authError.message}`
-      });
-    }
-
-    if (!authUser?.user) {
-      console.error('❌ No auth user found');
-      return res.status(404).json({
-        error: 'User not found',
-        details: 'Your account could not be found. Please log out and log back in.'
-      });
-    }
-
-    const userEmail = authUser.user.email || `user_${userId.substring(0, 8)}@maxsaham.temporary`;
-    const userName = authUser.user.user_metadata?.full_name || authUser.user.email?.split('@')[0] || 'Premium Member';
-
-    console.log('✅ Auth user found:', { email: userEmail, name: userName });
-
-    // Step 2: Try to get profile
+    // Step 1: Try to get existing profile
     console.log('🔍 Checking if profile exists...');
     const { data: existingProfile, error: profileFetchError } = await supabaseAdmin
       .from('profiles')
@@ -99,8 +74,10 @@ export default async function handler(
     }
 
     let profile = existingProfile;
+    let userEmail = existingProfile?.email || `user_${userId.substring(0, 8)}@maxsaham.temporary`;
+    let userName = existingProfile?.full_name || 'Premium Member';
 
-    // Step 3: Create profile if it doesn't exist
+    // Step 2: Create profile if it doesn't exist
     if (!profile) {
       console.log('⚠️ Profile not found, creating new profile...');
       
@@ -140,12 +117,14 @@ export default async function handler(
       }
 
       profile = newProfile;
+      userEmail = newProfile.email || userEmail;
+      userName = newProfile.full_name || userName;
       console.log('✅ Profile created successfully');
     } else {
       console.log('✅ Profile found:', { id: profile.id, email: profile.email, is_premium: profile.is_premium });
     }
 
-    // Step 4: Get or create Stripe customer
+    // Step 3: Get or create Stripe customer
     console.log('💳 Managing Stripe customer...');
     let customerId = profile.stripe_customer_id;
 
@@ -184,14 +163,14 @@ export default async function handler(
       console.log('✅ Using existing Stripe customer:', customerId);
     }
 
-    // Step 5: Determine price
+    // Step 4: Determine price
     const price = promoCode?.toLowerCase() === 'premium363' 
       ? PREMIUM_MEMBERSHIP.discountPrice 
       : PREMIUM_MEMBERSHIP.price;
 
     console.log('💰 Price:', { original: PREMIUM_MEMBERSHIP.price, final: price, promoCode: promoCode || 'none' });
 
-    // Step 6: Create checkout session
+    // Step 5: Create checkout session
     console.log('🎫 Creating checkout session...');
     
     try {
