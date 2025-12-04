@@ -14,15 +14,18 @@ export function AboutSection() {
               {/* Decorative Background */}
               <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-neon-blue/20 rounded-2xl transform rotate-3"></div>
               
-              {/* Main Image Container */}
+              {/* Main Image Container - Cropped to focus on upper portion */}
               <div className="relative w-full h-full bg-gradient-to-br from-background to-muted/30 rounded-2xl overflow-hidden border-2 border-gold/30 shadow-2xl">
-                <Image
-                  src="/abg-max-profile.jpg"
-                  alt="Abg Max - FCPO Trading Educator"
-                  fill
-                  className="object-cover object-top"
-                  priority
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/abgmax24.png"
+                    alt="Abg Max - FCPO Trading Educator"
+                    fill
+                    className="object-cover object-[center_20%]"
+                    priority
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
               </div>
 
               {/* Floating Badge */}
