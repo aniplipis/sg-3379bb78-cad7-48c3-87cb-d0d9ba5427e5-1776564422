@@ -8,14 +8,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Search, Crown, User, AlertCircle, CheckCircle, Shield } from "lucide-react";
+import { Search, Crown, User, AlertCircle, CheckCircle } from "lucide-react";
 
 interface Profile {
   id: string;
   email: string | null;
   full_name: string | null;
   is_premium: boolean;
-  is_admin: boolean;
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
   created_at: string;
@@ -28,18 +27,16 @@ export default function MembershipsPage() {
   const [filteredProfiles, setFilteredProfiles] = useState<Profile[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [checkingAdmin, setCheckingAdmin] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [processingUserId, setProcessingUserId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) {
-      router.push("/admin/login");
+      router.push("/");
       return;
     }
-    checkAdminStatus();
+    loadProfiles();
   }, [user, router]);
 
   useEffect(() => {
@@ -56,33 +53,6 @@ export default function MembershipsPage() {
       setFilteredProfiles(filtered);
     }
   }, [searchQuery, profiles]);
-
-  const checkAdminStatus = async () => {
-    try {
-      setCheckingAdmin(true);
-      
-      const { data, error: fetchError } = await supabase
-        .from("profiles")
-        .select("is_admin")
-        .eq("id", user?.id)
-        .single();
-
-      if (fetchError) throw fetchError;
-
-      if (!data?.is_admin) {
-        router.push("/");
-        return;
-      }
-
-      setIsAdmin(true);
-      loadProfiles();
-    } catch (err) {
-      console.error("Error checking admin status:", err);
-      router.push("/");
-    } finally {
-      setCheckingAdmin(false);
-    }
-  };
 
   const loadProfiles = async () => {
     try {
@@ -119,6 +89,7 @@ export default function MembershipsPage() {
 
       if (updateError) throw updateError;
 
+      // Update local state
       setProfiles((prev) =>
         prev.map((p) =>
           p.id === profileId ? { ...p, is_premium: !currentStatus } : p
@@ -131,6 +102,7 @@ export default function MembershipsPage() {
         } premium`
       );
 
+      // Clear success message after 3 seconds
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       console.error("Error updating premium status:", err);
@@ -140,60 +112,14 @@ export default function MembershipsPage() {
     }
   };
 
-  const toggleAdminStatus = async (profileId: string, currentStatus: boolean) => {
-    try {
-      setProcessingUserId(profileId);
-      setError(null);
-      setSuccess(null);
-
-      const { error: updateError } = await supabase
-        .from("profiles")
-        .update({ is_admin: !currentStatus })
-        .eq("id", profileId);
-
-      if (updateError) throw updateError;
-
-      setProfiles((prev) =>
-        prev.map((p) =>
-          p.id === profileId ? { ...p, is_admin: !currentStatus } : p
-        )
-      );
-
-      setSuccess(
-        `Successfully ${!currentStatus ? "granted" : "revoked"} admin access ${
-          !currentStatus ? "to" : "from"
-        } user`
-      );
-
-      setTimeout(() => setSuccess(null), 3000);
-    } catch (err) {
-      console.error("Error updating admin status:", err);
-      setError(err instanceof Error ? err.message : "Failed to update admin status");
-    } finally {
-      setProcessingUserId(null);
-    }
-  };
-
   const stats = {
     total: profiles.length,
     premium: profiles.filter((p) => p.is_premium).length,
     free: profiles.filter((p) => !p.is_premium).length,
-    admins: profiles.filter((p) => p.is_admin).length,
     withStripe: profiles.filter((p) => p.stripe_customer_id).length,
   };
 
-  if (!user || checkingAdmin) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900 dark:border-white mb-4"></div>
-          <p className="text-slate-600 dark:text-slate-400">Verifying admin access...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
+  if (!user) {
     return null;
   }
 
@@ -202,19 +128,16 @@ export default function MembershipsPage() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <Shield className="w-8 h-8 text-red-600" />
-            <h1 className="text-4xl font-bold text-slate-900 dark:text-white">
-              Admin Dashboard
-            </h1>
-          </div>
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+            Membership Management
+          </h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Manage user premium memberships, subscriptions, and admin access
+            Manage user premium memberships and subscriptions
           </p>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <Card>
             <CardHeader className="pb-3">
               <CardDescription>Total Users</CardDescription>
@@ -223,59 +146,46 @@ export default function MembershipsPage() {
             <CardContent>
               <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                 <User className="w-4 h-4 mr-2" />
-                All registered
+                All registered users
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-3">
-              <CardDescription>Premium</CardDescription>
+              <CardDescription>Premium Members</CardDescription>
               <CardTitle className="text-3xl text-amber-600">{stats.premium}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                 <Crown className="w-4 h-4 mr-2" />
-                Active premium
+                Active premium users
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-3">
-              <CardDescription>Free</CardDescription>
+              <CardDescription>Free Members</CardDescription>
               <CardTitle className="text-3xl text-slate-600">{stats.free}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                 <User className="w-4 h-4 mr-2" />
-                Non-premium
+                Non-premium users
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-3">
-              <CardDescription>Admins</CardDescription>
-              <CardTitle className="text-3xl text-red-600">{stats.admins}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
-                <Shield className="w-4 h-4 mr-2" />
-                Admin access
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardDescription>Stripe</CardDescription>
+              <CardDescription>Stripe Connected</CardDescription>
               <CardTitle className="text-3xl text-blue-600">{stats.withStripe}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                 <CheckCircle className="w-4 h-4 mr-2" />
-                Connected
+                With payment info
               </div>
             </CardContent>
           </Card>
@@ -340,7 +250,7 @@ export default function MembershipsPage() {
                       <TableHead>Email</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Stripe</TableHead>
+                      <TableHead>Stripe Customer</TableHead>
                       <TableHead>Joined</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
@@ -355,68 +265,50 @@ export default function MembershipsPage() {
                           {profile.full_name || <span className="text-slate-400">No name</span>}
                         </TableCell>
                         <TableCell>
-                          <div className="flex gap-2">
-                            {profile.is_admin && (
-                              <Badge className="bg-red-500 hover:bg-red-600">
-                                <Shield className="w-3 h-3 mr-1" />
-                                Admin
-                              </Badge>
-                            )}
-                            {profile.is_premium ? (
-                              <Badge className="bg-amber-500 hover:bg-amber-600">
-                                <Crown className="w-3 h-3 mr-1" />
-                                Premium
-                              </Badge>
-                            ) : (
-                              <Badge variant="outline">Free</Badge>
-                            )}
-                          </div>
+                          {profile.is_premium ? (
+                            <Badge className="bg-amber-500 hover:bg-amber-600">
+                              <Crown className="w-3 h-3 mr-1" />
+                              Premium
+                            </Badge>
+                          ) : (
+                            <Badge variant="outline">Free</Badge>
+                          )}
                         </TableCell>
                         <TableCell>
                           {profile.stripe_customer_id ? (
                             <span className="text-xs text-blue-600 dark:text-blue-400 font-mono">
-                              {profile.stripe_customer_id.substring(0, 15)}...
+                              {profile.stripe_customer_id.substring(0, 20)}...
                             </span>
                           ) : (
-                            <span className="text-slate-400 text-xs">None</span>
+                            <span className="text-slate-400 text-xs">Not connected</span>
                           )}
                         </TableCell>
                         <TableCell className="text-sm text-slate-600 dark:text-slate-400">
                           {new Date(profile.created_at).toLocaleDateString()}
                         </TableCell>
                         <TableCell className="text-right">
-                          <div className="flex gap-2 justify-end">
-                            <Button
-                              size="sm"
-                              variant={profile.is_premium ? "outline" : "default"}
-                              onClick={() => togglePremiumStatus(profile.id, profile.is_premium)}
-                              disabled={processingUserId === profile.id}
-                              className={
-                                profile.is_premium
-                                  ? ""
-                                  : "bg-amber-500 hover:bg-amber-600 text-white"
-                              }
-                            >
-                              {processingUserId === profile.id ? (
-                                <div className="flex items-center">
-                                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
-                                  ...
-                                </div>
-                              ) : profile.is_premium ? (
-                                "Remove Premium"
-                              ) : (
-                                "Make Premium"
-                              )}
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant={profile.is_admin ? "destructive" : "secondary"}
-                              onClick={() => toggleAdminStatus(profile.id, profile.is_admin)}
-                              disabled={processingUserId === profile.id || profile.id === user?.id}
-                            >
-                              {profile.is_admin ? "Revoke Admin" : "Make Admin"}
-                            </Button>
-                          </div>
+                          <Button
+                            size="sm"
+                            variant={profile.is_premium ? "outline" : "default"}
+                            onClick={() => togglePremiumStatus(profile.id, profile.is_premium)}
+                            disabled={processingUserId === profile.id}
+                            className={
+                              profile.is_premium
+                                ? ""
+                                : "bg-amber-500 hover:bg-amber-600 text-white"
+                            }
+                          >
+                            {processingUserId === profile.id ? (
+                              <div className="flex items-center">
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                                Processing...
+                              </div>
+                            ) : profile.is_premium ? (
+                              "Remove Premium"
+                            ) : (
+                              "Make Premium"
+                            )}
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))}
