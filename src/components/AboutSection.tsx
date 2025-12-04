@@ -1,65 +1,106 @@
 
 import { Button } from "@/components/ui/button";
 import { Award, TrendingUp, Target, Brain } from "lucide-react";
+import Image from "next/image";
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-20 bg-background">
+    <section id="about" className="py-24 bg-gradient-to-br from-background via-background/95 to-muted/20">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <div className="inline-block">
-                <div className="text-sm font-mono text-gold mb-2">MEET YOUR MENTOR</div>
-                <h2 className="text-4xl md:text-5xl font-bold">About Abg Max</h2>
+        <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+          {/* Left Column - Image */}
+          <div className="relative">
+            <div className="relative w-full aspect-square max-w-md mx-auto">
+              {/* Decorative Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-neon-blue/20 rounded-2xl transform rotate-3"></div>
+              
+              {/* Main Image Container */}
+              <div className="relative w-full h-full bg-gradient-to-br from-background to-muted/30 rounded-2xl overflow-hidden border-2 border-gold/30 shadow-2xl">
+                <Image
+                  src="/abg-max-profile.jpg"
+                  alt="Abg Max - FCPO Trading Educator"
+                  fill
+                  className="object-cover object-top"
+                  priority
+                />
               </div>
 
-              <div className="w-full aspect-square bg-gradient-to-br from-gold/20 to-neon-blue/20 rounded-3xl flex items-center justify-center border border-gold/30">
-                <div className="text-center space-y-4">
-                  <div className="w-32 h-32 mx-auto bg-gold/20 rounded-full flex items-center justify-center">
-                    <Award className="w-16 h-16 text-gold" />
-                  </div>
-                  <p className="text-muted-foreground">Professional Photo Placeholder</p>
+              {/* Floating Badge */}
+              <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-gold to-yellow-500 text-black px-6 py-3 rounded-xl shadow-lg border-2 border-background">
+                <div className="flex items-center gap-2">
+                  <Award className="w-5 h-5" />
+                  <div className="font-bold">SC Registered</div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-gold">Muhammad Haniff (Abg Max)</h3>
+          {/* Right Column - Content */}
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gold bg-clip-text text-transparent">
+                Meet Abg Max
+              </h2>
+              <div className="h-1 w-24 bg-gradient-to-r from-gold to-neon-blue rounded-full"></div>
+            </div>
+
+            <div className="text-lg text-muted-foreground space-y-4">
+              <p>
+                <span className="font-semibold text-gold">Muhammad Haniff</span>, professionally known as <span className="font-semibold">Abg Max</span>, is a seasoned FCPO futures trader and educator specializing in advanced technical analysis methodologies.
+              </p>
               
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                A seasoned FCPO (Crude Palm Oil Futures) trader with over 8 years of experience in the Malaysian derivatives market. Abg Max specializes in Smart Money Concepts (SMC), Wyckoff Method, and advanced Order Flow analysis.
+              <p>
+                With years of hands-on experience in the Malaysian derivatives market, Abg Max has mastered the art of combining <span className="font-semibold text-neon-blue">Wyckoff Method</span>, <span className="font-semibold text-neon-blue">Smart Money Concepts</span>, and <span className="font-semibold text-neon-blue">Order Flow Analysis</span> to identify high-probability trading opportunities.
               </p>
 
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                As a registered Marketing Representative with the Securities Commission Malaysia, Abg Max has trained over 500 traders in mastering intraday precision trading strategies specifically designed for FCPO markets.
+              <p>
+                As a registered Marketing Representative with the Securities Commission Malaysia, Abg Max is committed to providing professional education and guidance to aspiring FCPO traders across the country.
               </p>
+            </div>
 
-              <div className="grid grid-cols-2 gap-4 pt-4">
-                <div className="bg-card border border-border rounded-xl p-4">
-                  <TrendingUp className="w-8 h-8 text-gold mb-2" />
-                  <div className="font-semibold">SMC Expert</div>
-                  <div className="text-sm text-muted-foreground">Smart Money Concepts</div>
+            {/* Achievement Highlights */}
+            <div className="grid grid-cols-2 gap-4 pt-4">
+              <div className="bg-muted/30 p-4 rounded-xl border border-gold/20">
+                <div className="flex items-center gap-3 mb-2">
+                  <TrendingUp className="w-5 h-5 text-gold" />
+                  <h4 className="font-semibold">Experience</h4>
                 </div>
-                <div className="bg-card border border-border rounded-xl p-4">
-                  <Target className="w-8 h-8 text-neon-blue mb-2" />
-                  <div className="font-semibold">Wyckoff Method</div>
-                  <div className="text-sm text-muted-foreground">Accumulation & Distribution</div>
-                </div>
-                <div className="bg-card border border-border rounded-xl p-4">
-                  <Brain className="w-8 h-8 text-gold mb-2" />
-                  <div className="font-semibold">Order Flow</div>
-                  <div className="text-sm text-muted-foreground">Volume Profile Analysis</div>
-                </div>
-                <div className="bg-card border border-border rounded-xl p-4">
-                  <Award className="w-8 h-8 text-neon-blue mb-2" />
-                  <div className="font-semibold">SC Registered</div>
-                  <div className="text-sm text-muted-foreground">Marketing Representative</div>
-                </div>
+                <p className="text-sm text-muted-foreground">Years of Active FCPO Trading</p>
               </div>
 
-              <Button size="lg" className="bg-gold hover:bg-gold/90 text-black font-semibold w-full md:w-auto">
-                Read Full Biography
+              <div className="bg-muted/30 p-4 rounded-xl border border-neon-blue/20">
+                <div className="flex items-center gap-3 mb-2">
+                  <Target className="w-5 h-5 text-neon-blue" />
+                  <h4 className="font-semibold">Specialization</h4>
+                </div>
+                <p className="text-sm text-muted-foreground">Intraday FCPO Precision Trading</p>
+              </div>
+
+              <div className="bg-muted/30 p-4 rounded-xl border border-gold/20">
+                <div className="flex items-center gap-3 mb-2">
+                  <Brain className="w-5 h-5 text-gold" />
+                  <h4 className="font-semibold">Methodology</h4>
+                </div>
+                <p className="text-sm text-muted-foreground">Wyckoff + SMC + Order Flow</p>
+              </div>
+
+              <div className="bg-muted/30 p-4 rounded-xl border border-neon-blue/20">
+                <div className="flex items-center gap-3 mb-2">
+                  <Award className="w-5 h-5 text-neon-blue" />
+                  <h4 className="font-semibold">Registration</h4>
+                </div>
+                <p className="text-sm text-muted-foreground">SC Malaysia Approved</p>
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <div className="pt-6">
+              <Button 
+                size="lg"
+                className="bg-gradient-to-r from-gold to-yellow-500 hover:from-gold/90 hover:to-yellow-500/90 text-black font-semibold shadow-lg"
+              >
+                <Award className="w-5 h-5 mr-2" />
+                View Full Biography
               </Button>
             </div>
           </div>
