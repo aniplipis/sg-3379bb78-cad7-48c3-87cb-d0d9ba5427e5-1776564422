@@ -184,7 +184,7 @@ export default async function handler(
       promoCode: promoCode || 'none' 
     });
 
-    // Step 5: Create checkout session with FPX support for Malaysian users
+    // Step 5: Create checkout session
     console.log('🎫 Creating checkout session...');
     
     try {
@@ -207,9 +207,7 @@ export default async function handler(
             quantity: 1,
           },
         ],
-        // Enable FPX for Malaysian users (MYR currency)
-        // Stripe will automatically show FPX option for users in Malaysia
-        payment_method_types: ['card', 'fpx'],
+        payment_method_types: ['card'],
         success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/members?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/#membership`,
         metadata: {
