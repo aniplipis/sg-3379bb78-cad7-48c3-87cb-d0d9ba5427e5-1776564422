@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,10 +8,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { Loader2, Mail, Lock, Chrome } from "lucide-react";
-import { motion } from "framer-motion";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -21,9 +21,9 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
-  const { login, loginWithGoogle, isLoading } = useAuth();
-  const [error, setError] = useState<string>("");
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { login, loginWithGoogle } = useAuth();
 
   const {
     register,
@@ -34,148 +34,142 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   });
 
   const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
+    setError(null);
+
     try {
-      setError("");
       await login(data.email, data.password);
       onSuccess();
     } catch (err: any) {
-      setError(err.message || "Login failed. Please try again.");
+      setError(err.message || "Login failed. Please check your credentials.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setError(null);
+
     try {
-      setIsGoogleLoading(true);
-      setError("");
       await loginWithGoogle();
-      onSuccess();
+      // OAuth redirect will handle the rest
     } catch (err: any) {
       setError(err.message || "Google sign-in failed. Please try again.");
-    } finally {
-      setIsGoogleLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <motion.form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-6"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      {/* Premium Test Account Info */}
-      <motion.div
-        className="bg-gradient-to-r from-gold/10 to-neon-blue/10 border border-gold/30 rounded-lg p-4"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+    <div className="space-y-6">
+      {/* Google Sign-In Button */}
+      <Button
+        type="button"
+        onClick={handleGoogleLogin}
+        disabled={isLoading}
+        className="w-full h-12 bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 font-semibold relative overflow-hidden group"
       >
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-6 h-6 bg-gold/20 rounded-full flex items-center justify-center">
-            <Lock className="w-3 h-3 text-gold" />
-          </div>
-          <span className="text-sm font-semibold text-gold">Test Premium Access</span>
-        </div>
-        <div className="text-xs text-muted-foreground space-y-1">
-          <p><span className="text-gold">Email:</span> premium@maxsaham.com</p>
-          <p><span className="text-gold">Password:</span> premium123</p>
-        </div>
-      </motion.div>
-
-      <div className="space-y-2">
-        <Label htmlFor="email" className="text-foreground">Email Address</Label>
-        <div className="relative">
-          <Mail className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-          <Input
-            id="email"
-            type="email"
-            placeholder="your@email.com"
-            className="pl-10 bg-background/50 border-border focus:border-gold"
-            {...register("email")}
-          />
-        </div>
-        {errors.email && (
-          <p className="text-sm text-destructive">{errors.email.message}</p>
+        {isLoading ? (
+          <Loader2 className="w-5 h-5 animate-spin" />
+        ) : (
+          <>
+            <Chrome className="w-5 h-5 mr-3 text-blue-600" />
+            <span>Continue with Google</span>
+          </>
         )}
+      </Button>
+
+      {/* Divider */}
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-border"></div>
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-4 bg-card text-muted-foreground">Or continue with email</span>
+        </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="password" className="text-foreground">Password</Label>
-        <div className="relative">
-          <Lock className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-          <Input
-            id="password"
-            type="password"
-            placeholder="••••••••"
-            className="pl-10 bg-background/50 border-border focus:border-gold"
-            {...register("password")}
-          />
+      {/* Premium Test Account Info */}
+      <div className="bg-gold/10 border border-gold/30 rounded-lg p-4">
+        <div className="text-sm font-semibold text-gold mb-2">🎉 Premium Test Account</div>
+        <div className="text-xs text-muted-foreground space-y-1">
+          <div><span className="font-mono">Email:</span> premium@maxsaham.com</div>
+          <div><span className="font-mono">Password:</span> Premium123!</div>
         </div>
-        {errors.password && (
-          <p className="text-sm text-destructive">{errors.password.message}</p>
-        )}
       </div>
 
       {error && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm"
-        >
+        <div className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm">
           {error}
-        </motion.div>
+        </div>
       )}
 
-      <Button
-        type="submit"
-        disabled={isLoading || isGoogleLoading}
-        className="w-full bg-gold hover:bg-gold/90 text-black font-semibold text-lg h-12"
-      >
-        {isLoading ? (
-          <>
-            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-            Logging in...
-          </>
-        ) : (
-          "Login to Account"
-        )}
-      </Button>
-
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-border" />
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <Label htmlFor="email" className="text-foreground/90">Email Address</Label>
+          <div className="relative mt-1.5">
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              {...register("email")}
+            />
+          </div>
+          {errors.email && (
+            <p className="text-destructive text-sm mt-1">{errors.email.message}</p>
+          )}
         </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+
+        <div>
+          <Label htmlFor="password" className="text-foreground/90">Password</Label>
+          <div className="relative mt-1.5">
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              {...register("password")}
+            />
+          </div>
+          {errors.password && (
+            <p className="text-destructive text-sm mt-1">{errors.password.message}</p>
+          )}
         </div>
-      </div>
 
-      <Button
-        type="button"
-        variant="outline"
-        disabled={isLoading || isGoogleLoading}
-        onClick={handleGoogleLogin}
-        className="w-full border-border hover:bg-background/50 h-12"
-      >
-        {isGoogleLoading ? (
-          <>
-            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-            Connecting to Google...
-          </>
-        ) : (
-          <>
-            <Chrome className="w-5 h-5 mr-2" />
-            Sign in with Google
-          </>
-        )}
-      </Button>
+        <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="remember"
+              className="w-4 h-4 rounded border-border text-gold focus:ring-gold"
+            />
+            <label htmlFor="remember" className="ml-2 text-muted-foreground">
+              Remember me
+            </label>
+          </div>
+          <button
+            type="button"
+            className="text-gold hover:text-gold/80 transition-colors"
+          >
+            Forgot password?
+          </button>
+        </div>
 
-      <div className="text-center text-sm text-muted-foreground">
-        <button type="button" className="text-gold hover:underline">
-          Forgot password?
-        </button>
-      </div>
-    </motion.form>
+        <Button
+          type="submit"
+          disabled={isLoading}
+          className="w-full h-12 bg-gold hover:bg-gold/90 text-black font-semibold"
+        >
+          {isLoading ? (
+            <Loader2 className="w-5 h-5 animate-spin" />
+          ) : (
+            "Sign In"
+          )}
+        </Button>
+      </form>
+    </div>
   );
 }

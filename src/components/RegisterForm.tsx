@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -5,17 +6,17 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
 import { Loader2, User, Mail, Lock, Chrome } from "lucide-react";
-import { motion } from "framer-motion";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   confirmPassword: z.string(),
-  terms: z.boolean().refine(val => val === true, "You must accept the terms"),
+  terms: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms and conditions",
+  }),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
@@ -28,206 +29,201 @@ interface RegisterFormProps {
 }
 
 export function RegisterForm({ onSuccess }: RegisterFormProps) {
-  const { register: registerUser, loginWithGoogle, isLoading } = useAuth();
-  const [error, setError] = useState<string>("");
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const { register: registerUser, loginWithGoogle } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    watch,
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
-    defaultValues: {
-      terms: false,
-    },
   });
 
-  const termsAccepted = watch("terms");
-
   const onSubmit = async (data: RegisterFormData) => {
+    setIsLoading(true);
+    setError(null);
+    setSuccess(false);
+
     try {
-      setError("");
       await registerUser(data.name, data.email, data.password);
-      onSuccess();
+      setSuccess(true);
+      setTimeout(() => {
+        onSuccess();
+      }, 2000);
     } catch (err: any) {
       setError(err.message || "Registration failed. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGoogleSignUp = async () => {
+    setIsLoading(true);
+    setError(null);
+
     try {
-      setIsGoogleLoading(true);
-      setError("");
       await loginWithGoogle();
-      onSuccess();
+      // OAuth redirect will handle the rest
     } catch (err: any) {
       setError(err.message || "Google sign-up failed. Please try again.");
-    } finally {
-      setIsGoogleLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <motion.form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-5"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
+    <div className="space-y-6">
+      {/* Google Sign-Up Button */}
       <Button
         type="button"
-        variant="outline"
-        disabled={isLoading || isGoogleLoading}
         onClick={handleGoogleSignUp}
-        className="w-full border-border hover:bg-background/50 h-12 mb-2"
-      >
-        {isGoogleLoading ? (
-          <>
-            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-            Connecting to Google...
-          </>
-        ) : (
-          <>
-            <Chrome className="w-5 h-5 mr-2" />
-            Sign up with Google
-          </>
-        )}
-      </Button>
-
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-border" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-2 text-muted-foreground">Or register with email</span>
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="name" className="text-foreground">Full Name</Label>
-        <div className="relative">
-          <User className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-          <Input
-            id="name"
-            type="text"
-            placeholder="Muhammad Ali"
-            className="pl-10 bg-background/50 border-border focus:border-neon-blue"
-            {...register("name")}
-          />
-        </div>
-        {errors.name && (
-          <p className="text-sm text-destructive">{errors.name.message}</p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="register-email" className="text-foreground">Email Address</Label>
-        <div className="relative">
-          <Mail className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-          <Input
-            id="register-email"
-            type="email"
-            placeholder="your@email.com"
-            className="pl-10 bg-background/50 border-border focus:border-neon-blue"
-            {...register("email")}
-          />
-        </div>
-        {errors.email && (
-          <p className="text-sm text-destructive">{errors.email.message}</p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="register-password" className="text-foreground">Password</Label>
-        <div className="relative">
-          <Lock className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-          <Input
-            id="register-password"
-            type="password"
-            placeholder="••••••••"
-            className="pl-10 bg-background/50 border-border focus:border-neon-blue"
-            {...register("password")}
-          />
-        </div>
-        {errors.password && (
-          <p className="text-sm text-destructive">{errors.password.message}</p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="confirmPassword" className="text-foreground">Confirm Password</Label>
-        <div className="relative">
-          <Lock className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-          <Input
-            id="confirmPassword"
-            type="password"
-            placeholder="••••••••"
-            className="pl-10 bg-background/50 border-border focus:border-neon-blue"
-            {...register("confirmPassword")}
-          />
-        </div>
-        {errors.confirmPassword && (
-          <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
-        )}
-      </div>
-
-      <div className="flex items-start space-x-3 pt-2">
-        <Checkbox
-          id="terms"
-          checked={termsAccepted}
-          onCheckedChange={(checked) => setValue("terms", checked as boolean)}
-          className="mt-1"
-        />
-        <label
-          htmlFor="terms"
-          className="text-sm text-muted-foreground leading-relaxed cursor-pointer"
-        >
-          I agree to the{" "}
-          <button type="button" className="text-gold hover:underline">
-            Terms of Service
-          </button>{" "}
-          and{" "}
-          <button type="button" className="text-gold hover:underline">
-            Privacy Policy
-          </button>
-        </label>
-      </div>
-      {errors.terms && (
-        <p className="text-sm text-destructive">{errors.terms.message}</p>
-      )}
-
-      {error && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm"
-        >
-          {error}
-        </motion.div>
-      )}
-
-      <Button
-        type="submit"
-        disabled={isLoading || isGoogleLoading}
-        className="w-full bg-neon-blue hover:bg-neon-blue/90 text-black font-semibold text-lg h-12"
+        disabled={isLoading}
+        className="w-full h-12 bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 font-semibold relative overflow-hidden group"
       >
         {isLoading ? (
-          <>
-            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-            Creating account...
-          </>
+          <Loader2 className="w-5 h-5 animate-spin" />
         ) : (
-          "Create Free Account"
+          <>
+            <Chrome className="w-5 h-5 mr-3 text-blue-600" />
+            <span>Sign up with Google</span>
+          </>
         )}
       </Button>
 
-      <p className="text-xs text-center text-muted-foreground">
-        By registering, you'll get instant access to free FCPO trading resources
-      </p>
-    </motion.form>
+      {/* Divider */}
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-border"></div>
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-4 bg-card text-muted-foreground">Or register with email</span>
+        </div>
+      </div>
+
+      {error && (
+        <div className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm">
+          {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="bg-green-500/10 border border-green-500/30 text-green-500 px-4 py-3 rounded-lg text-sm">
+          <div className="font-semibold mb-1">Account created successfully! 🎉</div>
+          <div className="text-xs">Please check your email to confirm your account. You'll be redirected shortly...</div>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <Label htmlFor="name" className="text-foreground/90">Full Name</Label>
+          <div className="relative mt-1.5">
+            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              id="name"
+              type="text"
+              placeholder="Muhammad Haniff"
+              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              {...register("name")}
+            />
+          </div>
+          {errors.name && (
+            <p className="text-destructive text-sm mt-1">{errors.name.message}</p>
+          )}
+        </div>
+
+        <div>
+          <Label htmlFor="email" className="text-foreground/90">Email Address</Label>
+          <div className="relative mt-1.5">
+            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              {...register("email")}
+            />
+          </div>
+          {errors.email && (
+            <p className="text-destructive text-sm mt-1">{errors.email.message}</p>
+          )}
+        </div>
+
+        <div>
+          <Label htmlFor="password" className="text-foreground/90">Password</Label>
+          <div className="relative mt-1.5">
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              {...register("password")}
+            />
+          </div>
+          {errors.password && (
+            <p className="text-destructive text-sm mt-1">{errors.password.message}</p>
+          )}
+        </div>
+
+        <div>
+          <Label htmlFor="confirmPassword" className="text-foreground/90">Confirm Password</Label>
+          <div className="relative mt-1.5">
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              id="confirmPassword"
+              type="password"
+              placeholder="••••••••"
+              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              {...register("confirmPassword")}
+            />
+          </div>
+          {errors.confirmPassword && (
+            <p className="text-destructive text-sm mt-1">{errors.confirmPassword.message}</p>
+          )}
+        </div>
+
+        <div className="flex items-start">
+          <input
+            type="checkbox"
+            id="terms"
+            className="w-4 h-4 mt-1 rounded border-border text-gold focus:ring-gold"
+            {...register("terms")}
+          />
+          <label htmlFor="terms" className="ml-2 text-sm text-muted-foreground">
+            I agree to the{" "}
+            <button type="button" className="text-gold hover:text-gold/80">
+              Terms of Service
+            </button>{" "}
+            and{" "}
+            <button type="button" className="text-gold hover:text-gold/80">
+              Privacy Policy
+            </button>
+          </label>
+        </div>
+        {errors.terms && (
+          <p className="text-destructive text-sm">{errors.terms.message}</p>
+        )}
+
+        <Button
+          type="submit"
+          disabled={isLoading || success}
+          className="w-full h-12 bg-gold hover:bg-gold/90 text-black font-semibold"
+        >
+          {isLoading ? (
+            <Loader2 className="w-5 h-5 animate-spin" />
+          ) : success ? (
+            "Redirecting..."
+          ) : (
+            "Create Account"
+          )}
+        </Button>
+
+        <div className="text-center text-sm text-muted-foreground">
+          By creating an account, you'll get access to free FCPO trading resources and community features.
+        </div>
+      </form>
+    </div>
   );
 }
