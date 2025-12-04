@@ -59,24 +59,12 @@ export default async function handler(
 
     // Step 1: Try to get the user from auth.users first to verify they exist
     console.log('🔍 Verifying user exists in auth system...');
-    let authData;
-    let authError;
     
-    try {
-      const result = await supabase.auth.admin.getUserById(userId);
-      authData = result.data;
-      authError = result.error;
-    } catch (error) {
-      console.error('❌ Exception calling auth.admin.getUserById:', error);
-      return res.status(500).json({
-        error: 'Failed to verify user authentication',
-        details: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
+    const { data: authData, error: authError } = await supabase.auth.admin.getUserById(userId);
 
     if (authError || !authData?.user) {
       console.error('❌ User not found in auth system:', {
-        error: authError,
+        error: authError?.message,
         userId: userId
       });
       return res.status(404).json({
@@ -90,39 +78,27 @@ export default async function handler(
       created_at: authData.user.created_at
     });
 
-    // Step 2: Get or create profile from Supabase
+    // Step 2: Get or create profile from Supabase with proper error handling
     console.log('🔍 Fetching user profile from database...');
-    let profile;
-    let profileError;
     
-    try {
-      const result = await supabase
-        .from('profiles')
-        .select('email, stripe_customer_id, full_name, is_premium')
-        .eq('id', userId)
-        .maybeSingle();
-      
-      profile = result.data;
-      profileError = result.error;
-    } catch (error) {
-      console.error('❌ Exception fetching profile:', error);
-      return res.status(500).json({
-        error: 'Failed to fetch user profile',
-        details: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('email, stripe_customer_id, full_name, is_premium')
+      .eq('id', userId)
+      .maybeSingle();
 
-    // Log the actual Supabase error for debugging
+    // Log detailed error information
     if (profileError) {
-      console.error('❌ Supabase profile error:', {
+      console.error('❌ Profile query error details:', {
         code: profileError.code,
         message: profileError.message,
         details: profileError.details,
-        hint: profileError.hint
+        hint: profileError.hint,
+        userId: userId
       });
       return res.status(500).json({
         error: 'Database query failed',
-        details: profileError.message
+        details: `Failed to fetch profile: ${profileError.message}. Please try again or contact support if the issue persists.`
       });
     }
 
@@ -130,7 +106,7 @@ export default async function handler(
     let profileToUse = profile;
     
     if (!profile) {
-      console.log('⚠️  No profile found, creating one...');
+      console.log('⚠️  No profile found, creating one with auth data...');
       
       const profileData = {
         id: userId,
@@ -139,33 +115,21 @@ export default async function handler(
         avatar_url: authData.user.user_metadata?.avatar_url || null,
       };
 
-      console.log('📝 Profile data to insert:', {
-        ...profileData,
-        avatar_url: profileData.avatar_url ? 'provided' : 'null'
+      console.log('📝 Creating profile with data:', {
+        id: profileData.id,
+        email: profileData.email,
+        full_name: profileData.full_name,
+        has_avatar: !!profileData.avatar_url
       });
 
-      let newProfile;
-      let createError;
-      
-      try {
-        const result = await supabase
-          .from('profiles')
-          .insert([profileData])
-          .select('email, stripe_customer_id, full_name, is_premium')
-          .single();
-        
-        newProfile = result.data;
-        createError = result.error;
-      } catch (error) {
-        console.error('❌ Exception creating profile:', error);
-        return res.status(500).json({
-          error: 'Failed to create user profile',
-          details: error instanceof Error ? error.message : 'Unknown error'
-        });
-      }
+      const { data: newProfile, error: createError } = await supabase
+        .from('profiles')
+        .insert([profileData])
+        .select('email, stripe_customer_id, full_name, is_premium')
+        .single();
 
       if (createError) {
-        console.error('❌ Failed to create profile:', {
+        console.error('❌ Profile creation error details:', {
           code: createError.code,
           message: createError.message,
           details: createError.details,
@@ -173,30 +137,34 @@ export default async function handler(
         });
         return res.status(500).json({
           error: 'Failed to create user profile',
-          details: createError.message
+          details: `Profile creation failed: ${createError.message}. Please contact support.`
         });
       }
 
-      console.log('✅ Profile created successfully');
-      profileToUse = newProfile;
-    }
+      if (!newProfile) {
+        console.error('❌ Profile creation returned null');
+        return res.status(500).json({
+          error: 'Profile creation failed',
+          details: 'No profile data returned after creation. Please contact support.'
+        });
+      }
 
-    if (!profileToUse) {
-      console.error('❌ Profile is null after fetch/create');
-      return res.status(500).json({
-        error: 'Profile data is missing',
-        details: 'Unable to retrieve or create your profile. Please try again.'
+      console.log('✅ Profile created successfully:', {
+        email: newProfile.email,
+        full_name: newProfile.full_name
+      });
+      profileToUse = newProfile;
+    } else {
+      console.log('✅ Profile found:', {
+        email: profile.email,
+        hasStripeCustomer: !!profile.stripe_customer_id,
+        isPremium: profile.is_premium
       });
     }
 
-    console.log('✅ Profile data:', {
-      email: profileToUse.email,
-      hasStripeCustomer: !!profileToUse.stripe_customer_id,
-      isPremium: profileToUse.is_premium
-    });
-
-    if (!profileToUse.email) {
-      console.error('❌ Profile has no email:', userId);
+    // Validate profile has required data
+    if (!profileToUse?.email) {
+      console.error('❌ Profile missing email:', { userId, profile: profileToUse });
       return res.status(400).json({
         error: 'User email not found',
         details: 'Your account must have an email address. Please contact support.'
