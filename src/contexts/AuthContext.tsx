@@ -1,4 +1,10 @@
+
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import type { User as SupabaseUser, Session } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
+
+type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
 interface User {
   id: string;
@@ -19,147 +25,200 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Premium test account credentials
-const TEST_PREMIUM_ACCOUNT = {
-  id: "premium-test-001",
-  name: "Premium Member",
-  email: "premium@maxsaham.com",
-  password: "premium123",
-  isPremium: true,
-  createdAt: new Date().toISOString(),
-};
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Initialize test accounts in localStorage if not exists
-    const users = JSON.parse(localStorage.getItem("maxSahamUsers") || "[]");
-    const hasPremiumTest = users.some((u: any) => u.email === TEST_PREMIUM_ACCOUNT.email);
-    
-    if (!hasPremiumTest) {
-      users.push(TEST_PREMIUM_ACCOUNT);
-      localStorage.setItem("maxSahamUsers", JSON.stringify(users));
-    }
+  // Fetch user profile from Supabase
+  const fetchUserProfile = async (supabaseUser: SupabaseUser): Promise<User | null> => {
+    try {
+      const { data: profile, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", supabaseUser.id)
+        .single();
 
-    // Check for existing user session
-    const storedUser = localStorage.getItem("maxSahamUser");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      if (error) {
+        console.error("Error fetching profile:", error);
+        return null;
+      }
+
+      if (!profile) {
+        // Create profile if it doesn't exist
+        const { data: newProfile, error: createError } = await supabase
+          .from("profiles")
+          .insert([
+            {
+              id: supabaseUser.id,
+              email: supabaseUser.email || "",
+              full_name: supabaseUser.user_metadata?.full_name || supabaseUser.email?.split("@")[0] || "User",
+              is_premium: false,
+            },
+          ])
+          .select()
+          .single();
+
+        if (createError) {
+          console.error("Error creating profile:", createError);
+          return null;
+        }
+
+        return {
+          id: newProfile.id,
+          email: newProfile.email || "",
+          name: newProfile.full_name || "User",
+          isPremium: newProfile.is_premium || false,
+        };
+      }
+
+      return {
+        id: profile.id,
+        email: profile.email || "",
+        name: profile.full_name || "User",
+        isPremium: profile.is_premium || false,
+      };
+    } catch (error) {
+      console.error("Error in fetchUserProfile:", error);
+      return null;
     }
-    setIsLoading(false);
+  };
+
+  // Initialize auth state
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.user) {
+          const userProfile = await fetchUserProfile(session.user);
+          setUser(userProfile);
+        }
+      } catch (error) {
+        console.error("Error initializing auth:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initAuth();
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session?.user) {
+          const userProfile = await fetchUserProfile(session.user);
+          setUser(userProfile);
+        } else {
+          setUser(null);
+        }
+        setIsLoading(false);
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    const users = JSON.parse(localStorage.getItem("maxSahamUsers") || "[]");
-    const existingUser = users.find(
-      (u: any) => u.email === email && u.password === password
-    );
+      if (error) {
+        throw new Error(error.message);
+      }
 
-    if (!existingUser) {
+      if (data.user) {
+        const userProfile = await fetchUserProfile(data.user);
+        setUser(userProfile);
+      }
+    } catch (error: any) {
+      throw new Error(error.message || "Login failed");
+    } finally {
       setIsLoading(false);
-      throw new Error("Invalid email or password");
     }
-
-    const userData: User = {
-      id: existingUser.id,
-      email: existingUser.email,
-      name: existingUser.name,
-      isPremium: existingUser.isPremium || false,
-    };
-
-    setUser(userData);
-    localStorage.setItem("maxSahamUser", JSON.stringify(userData));
-    setIsLoading(false);
   };
 
   const loginWithGoogle = async () => {
     setIsLoading(true);
     
-    // Simulate Google OAuth flow
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
 
-    // Simulate successful Google authentication
-    // In production, this would integrate with Google OAuth API
-    const googleUser = {
-      id: `google-${Date.now()}`,
-      name: "Google User",
-      email: "user@gmail.com",
-      isPremium: false,
-    };
+      if (error) {
+        throw new Error(error.message);
+      }
 
-    // Check if user already exists
-    const users = JSON.parse(localStorage.getItem("maxSahamUsers") || "[]");
-    let existingUser = users.find((u: any) => u.email === googleUser.email);
-
-    if (!existingUser) {
-      // Create new user from Google account
-      existingUser = {
-        ...googleUser,
-        password: `google-oauth-${Date.now()}`, // OAuth users don't need password
-        createdAt: new Date().toISOString(),
-      };
-      users.push(existingUser);
-      localStorage.setItem("maxSahamUsers", JSON.stringify(users));
+      // OAuth redirect will handle the rest
+    } catch (error: any) {
+      setIsLoading(false);
+      throw new Error(error.message || "Google sign-in failed");
     }
-
-    const userData: User = {
-      id: existingUser.id,
-      email: existingUser.email,
-      name: existingUser.name,
-      isPremium: existingUser.isPremium || false,
-    };
-
-    setUser(userData);
-    localStorage.setItem("maxSahamUser", JSON.stringify(userData));
-    setIsLoading(false);
   };
 
   const register = async (name: string, email: string, password: string) => {
     setIsLoading(true);
     
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: name,
+          },
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
 
-    const users = JSON.parse(localStorage.getItem("maxSahamUsers") || "[]");
-    
-    const existingUser = users.find((u: any) => u.email === email);
-    if (existingUser) {
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (data.user) {
+        // Create profile in database
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .insert([
+            {
+              id: data.user.id,
+              email: data.user.email || "",
+              full_name: name,
+              is_premium: false,
+            },
+          ]);
+
+        if (profileError) {
+          console.error("Error creating profile:", profileError);
+        }
+
+        const userProfile = await fetchUserProfile(data.user);
+        setUser(userProfile);
+      }
+    } catch (error: any) {
+      throw new Error(error.message || "Registration failed");
+    } finally {
       setIsLoading(false);
-      throw new Error("Email already registered");
     }
-
-    const newUser = {
-      id: Date.now().toString(),
-      name,
-      email,
-      password,
-      isPremium: false,
-      createdAt: new Date().toISOString(),
-    };
-
-    users.push(newUser);
-    localStorage.setItem("maxSahamUsers", JSON.stringify(users));
-
-    const userData: User = {
-      id: newUser.id,
-      email: newUser.email,
-      name: newUser.name,
-      isPremium: newUser.isPremium,
-    };
-
-    setUser(userData);
-    localStorage.setItem("maxSahamUser", JSON.stringify(userData));
-    setIsLoading(false);
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("maxSahamUser");
+  const logout = async () => {
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (
