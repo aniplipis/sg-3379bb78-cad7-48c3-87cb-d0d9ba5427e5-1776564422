@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
-import { Loader2, User, Mail, Lock } from "lucide-react";
+import { Loader2, User, Mail, Lock, Chrome } from "lucide-react";
 import { motion } from "framer-motion";
 
 const registerSchema = z.object({
@@ -29,8 +28,9 @@ interface RegisterFormProps {
 }
 
 export function RegisterForm({ onSuccess }: RegisterFormProps) {
-  const { register: registerUser, isLoading } = useAuth();
+  const { register: registerUser, loginWithGoogle, isLoading } = useAuth();
   const [error, setError] = useState<string>("");
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const {
     register,
@@ -57,6 +57,19 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     }
   };
 
+  const handleGoogleSignUp = async () => {
+    try {
+      setIsGoogleLoading(true);
+      setError("");
+      await loginWithGoogle();
+      onSuccess();
+    } catch (err: any) {
+      setError(err.message || "Google sign-up failed. Please try again.");
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
+
   return (
     <motion.form
       onSubmit={handleSubmit(onSubmit)}
@@ -65,6 +78,35 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
+      <Button
+        type="button"
+        variant="outline"
+        disabled={isLoading || isGoogleLoading}
+        onClick={handleGoogleSignUp}
+        className="w-full border-border hover:bg-background/50 h-12 mb-2"
+      >
+        {isGoogleLoading ? (
+          <>
+            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+            Connecting to Google...
+          </>
+        ) : (
+          <>
+            <Chrome className="w-5 h-5 mr-2" />
+            Sign up with Google
+          </>
+        )}
+      </Button>
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t border-border" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-card px-2 text-muted-foreground">Or register with email</span>
+        </div>
+      </div>
+
       <div className="space-y-2">
         <Label htmlFor="name" className="text-foreground">Full Name</Label>
         <div className="relative">
@@ -170,7 +212,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
       <Button
         type="submit"
-        disabled={isLoading}
+        disabled={isLoading || isGoogleLoading}
         className="w-full bg-neon-blue hover:bg-neon-blue/90 text-black font-semibold text-lg h-12"
       >
         {isLoading ? (
