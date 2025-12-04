@@ -23,11 +23,14 @@ export default async function handler(
     }
 
     // Get user profile from Supabase
-    let { data: profile, error: profileError } = await supabase
+    const profileResponse = await supabase
       .from('profiles')
       .select('email, full_name')
       .eq('id', userId)
       .single();
+    
+    let profile = profileResponse.data;
+    const profileError = profileResponse.error;
 
     if (profileError || !profile) {
       console.error('Profile lookup error:', {
