@@ -25,34 +25,71 @@ export default async function handler(
 
     console.log('🔍 Starting checkout process for userId:', userId);
 
-    // First, verify the user exists in auth.users
+    // First, verify the user exists in auth.users using admin API
     const { data: authData, error: authError } = await supabase.auth.admin.getUserById(userId);
     
-    if (authError || !authData?.user) {
-      console.error('❌ User not found in auth.users:', {
+    if (authError) {
+      console.error('❌ Auth error:', {
         userId,
-        error: authError?.message || 'User does not exist'
+        error: authError.message,
+        code: authError.name
       });
       return res.status(404).json({ 
-        error: 'User not found',
-        details: 'Your account could not be found. Please try logging out and logging back in.',
+        error: 'User not found in authentication system',
+        details: 'Your account could not be verified. Please try logging out and logging back in.',
         userId: userId
       });
     }
 
-    console.log('✅ User exists in auth.users:', {
+    if (!authData?.user) {
+      console.error('❌ No user data returned from auth.users:', { userId });
+      return res.status(404).json({ 
+        error: 'User not found',
+        details: 'Your account data is incomplete. Please contact support.',
+        userId: userId
+      });
+    }
+
+    console.log('✅ User verified in auth.users:', {
       userId: authData.user.id,
-      email: authData.user.email
+      email: authData.user.email,
+      created_at: authData.user.created_at
     });
 
-    // Now try to get the profile
-    const { data: profile, error: profileError } = await supabase
+    // Extract user data with fallbacks
+    const userEmail = authData.user.email || '';
+    const userName = authData.user.user_metadata?.full_name || 
+                     authData.user.email?.split('@')[0] || 
+                     'User';
+    const userAvatar = authData.user.user_metadata?.avatar_url || null;
+
+    if (!userEmail) {
+      console.error('❌ User has no email:', { userId });
+      return res.status(400).json({ 
+        error: 'User email not found',
+        details: 'Your account must have an email address.'
+      });
+    }
+
+    console.log('📧 User data extracted:', {
+      email: userEmail,
+      name: userName,
+      hasAvatar: !!userAvatar
+    });
+
+    // Now try to get or create the profile
+    let profile = null;
+    let customerEmail = userEmail;
+    let customerName = userName;
+
+    // Try to fetch existing profile
+    const { data: existingProfile, error: profileError } = await supabase
       .from('profiles')
       .select('email, full_name, is_premium')
       .eq('id', userId)
-      .single();
+      .maybeSingle(); // Use maybeSingle instead of single to handle no rows gracefully
 
-    if (profileError && profileError.code !== 'PGRST116') {
+    if (profileError) {
       console.error('❌ Profile lookup error:', {
         code: profileError.code,
         message: profileError.message,
@@ -60,10 +97,17 @@ export default async function handler(
       });
     }
 
-    let customerEmail: string;
-    let customerName: string;
-
-    if (!profile) {
+    if (existingProfile) {
+      console.log('✅ Profile found:', {
+        email: existingProfile.email,
+        name: existingProfile.full_name,
+        isPremium: existingProfile.is_premium
+      });
+      
+      profile = existingProfile;
+      customerEmail = existingProfile.email;
+      customerName = existingProfile.full_name;
+    } else {
       console.log('⚠️ Profile not found, creating new profile...');
       
       // Create profile using auth user data
@@ -72,9 +116,9 @@ export default async function handler(
         .insert([
           {
             id: authData.user.id,
-            email: authData.user.email || '',
-            full_name: authData.user.user_metadata?.full_name || authData.user.email?.split('@')[0] || 'User',
-            avatar_url: authData.user.user_metadata?.avatar_url || null,
+            email: userEmail,
+            full_name: userName,
+            avatar_url: userAvatar,
             is_premium: false,
           },
         ])
@@ -85,30 +129,25 @@ export default async function handler(
         console.error('❌ Profile creation error:', {
           code: createError.code,
           message: createError.message,
-          details: createError.details
+          details: createError.details,
+          hint: createError.hint
         });
-        return res.status(500).json({ 
-          error: 'Failed to create user profile',
-          details: 'Please contact support for assistance'
+
+        // If profile creation fails, we can still proceed with auth data
+        console.log('⚠️ Proceeding with auth user data despite profile creation failure');
+        customerEmail = userEmail;
+        customerName = userName;
+      } else {
+        console.log('✅ Successfully created profile:', {
+          userId: authData.user.id,
+          email: newProfile.email,
+          name: newProfile.full_name
         });
+
+        profile = newProfile;
+        customerEmail = newProfile.email;
+        customerName = newProfile.full_name;
       }
-
-      console.log('✅ Successfully created profile:', {
-        userId: authData.user.id,
-        email: newProfile.email
-      });
-
-      customerEmail = newProfile.email;
-      customerName = newProfile.full_name;
-    } else {
-      console.log('✅ Profile found:', {
-        email: profile.email,
-        name: profile.full_name,
-        isPremium: profile.is_premium
-      });
-
-      customerEmail = profile.email;
-      customerName = profile.full_name;
     }
 
     // Determine the price based on promo code
@@ -118,6 +157,7 @@ export default async function handler(
 
     console.log('💳 Creating checkout session...', {
       email: customerEmail,
+      name: customerName,
       price: price,
       promoCode: promoCode || 'none'
     });
@@ -184,9 +224,19 @@ export default async function handler(
     return res.status(200).json({ sessionId: session.id, url: session.url });
   } catch (error) {
     console.error('❌ Error creating checkout session:', error);
+    
+    // Provide more detailed error information
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : undefined;
+    
+    console.error('Full error details:', {
+      message: errorMessage,
+      stack: errorStack
+    });
+    
     return res.status(500).json({ 
       error: 'Failed to create checkout session',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: errorMessage
     });
   }
 }
