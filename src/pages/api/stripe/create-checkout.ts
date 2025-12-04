@@ -30,7 +30,48 @@ export default async function handler(
       .single();
 
     if (profileError || !profile) {
-      return res.status(404).json({ error: 'User profile not found' });
+      console.error('Profile lookup error:', {
+        userId,
+        error: profileError,
+        hasProfile: !!profile
+      });
+
+      // Try to get user from auth.users as fallback
+      const { data: { user }, error: userError } = await supabase.auth.admin.getUserById(userId);
+      
+      if (userError || !user) {
+        console.error('User lookup error:', { userId, error: userError });
+        return res.status(404).json({ 
+          error: 'User not found',
+          details: 'Please ensure you are logged in with a valid account'
+        });
+      }
+
+      // Create profile if it doesn't exist
+      console.log('Creating profile for user:', userId);
+      const { data: newProfile, error: createError } = await supabase
+        .from('profiles')
+        .insert([
+          {
+            id: user.id,
+            email: user.email || '',
+            full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
+            avatar_url: user.user_metadata?.avatar_url || null,
+          },
+        ])
+        .select()
+        .single();
+
+      if (createError || !newProfile) {
+        console.error('Profile creation error:', { userId, error: createError });
+        return res.status(500).json({ 
+          error: 'Failed to create user profile',
+          details: 'Please contact support for assistance'
+        });
+      }
+
+      // Use the newly created profile
+      profile = newProfile;
     }
 
     // Determine the price based on promo code
