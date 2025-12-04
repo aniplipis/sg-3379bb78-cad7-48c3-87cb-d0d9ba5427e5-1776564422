@@ -23,7 +23,7 @@ export default async function handler(
     }
 
     // Get user profile from Supabase
-    const { data: profile, error: profileError } = await supabase
+    let { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('email, full_name')
       .eq('id', userId)
