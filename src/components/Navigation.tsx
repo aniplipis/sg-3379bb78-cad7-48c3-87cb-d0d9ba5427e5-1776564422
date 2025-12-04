@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogOut, User, Crown } from "lucide-react";
@@ -18,7 +17,7 @@ import {
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, profile, isAuthenticated, logout } = useAuth();
 
   const handleLogout = () => {
     logout();
@@ -63,8 +62,8 @@ export function Navigation() {
                   <DropdownMenuTrigger asChild>
                     <Button className="bg-gold hover:bg-gold/90 text-black font-semibold relative">
                       <User className="w-4 h-4 mr-2" />
-                      {user?.name}
-                      {user?.isPremium && (
+                      {profile?.full_name}
+                      {profile?.is_premium && (
                         <motion.div
                           className="absolute -top-1 -right-1 w-5 h-5 bg-neon-blue rounded-full flex items-center justify-center"
                           animate={{ scale: [1, 1.2, 1] }}
@@ -78,16 +77,18 @@ export function Navigation() {
                   <DropdownMenuContent align="end" className="w-56 bg-card border-gold/30">
                     <DropdownMenuLabel>
                       <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium">{user?.name}</p>
+                        <p className="text-sm font-medium">{profile?.full_name}</p>
                         <p className="text-xs text-muted-foreground">{user?.email}</p>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <User className="w-4 h-4 mr-2" />
-                      Profile
+                    <DropdownMenuItem asChild>
+                      <Link href="/profile">
+                        <User className="w-4 h-4 mr-2" />
+                        Profile
+                      </Link>
                     </DropdownMenuItem>
-                    {user?.isPremium ? (
+                    {profile?.is_premium ? (
                       <DropdownMenuItem className="text-neon-blue">
                         <Crown className="w-4 h-4 mr-2" />
                         Premium Dashboard
@@ -157,7 +158,7 @@ export function Navigation() {
                             <User className="w-5 h-5 text-gold" />
                           </div>
                           <div>
-                            <div className="font-semibold">{user?.name}</div>
+                            <div className="font-semibold">{profile?.full_name}</div>
                             <div className="text-xs text-muted-foreground">{user?.email}</div>
                           </div>
                         </div>
