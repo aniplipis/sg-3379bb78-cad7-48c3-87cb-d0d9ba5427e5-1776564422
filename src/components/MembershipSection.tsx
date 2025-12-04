@@ -37,9 +37,18 @@ export function MembershipSection() {
 
       const data = await response.json();
       
-      console.log("Checkout response:", { status: response.status, data });
+      // Log FULL response details
+      console.log("Checkout response:", { 
+        status: response.status, 
+        ok: response.ok,
+        data: data,
+        fullResponse: data 
+      });
+      console.log("Full error details:", JSON.stringify(data, null, 2));
 
       if (!response.ok) {
+        // Log the complete error object
+        console.error("Checkout failed with full details:", data);
         throw new Error(data.error || data.details || 'Failed to create checkout session');
       }
 
