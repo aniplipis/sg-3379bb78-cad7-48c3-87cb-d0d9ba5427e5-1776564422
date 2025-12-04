@@ -74,7 +74,8 @@ export default async function handler(
     // Step 2: Get or create profile (using admin client to bypass RLS)
     console.log('🔍 Fetching profile...');
     
-    let { data: profile, error: profileError } = await supabaseAdmin
+    // Use const for initial fetch, then assign to a let variable for mutation if needed
+    const { data: fetchedProfile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('id, email, full_name, stripe_customer_id, is_premium')
       .eq('id', userId)
@@ -87,6 +88,8 @@ export default async function handler(
         details: 'Failed to fetch user profile'
       });
     }
+
+    let profile = fetchedProfile;
 
     // Create profile if it doesn't exist
     if (!profile) {
