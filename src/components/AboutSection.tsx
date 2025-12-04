@@ -9,24 +9,17 @@ export function AboutSection() {
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
           {/* Left Column - Image */}
-          <div className="relative">
-            <div className="relative w-full aspect-square max-w-md mx-auto">
-              {/* Decorative Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-neon-blue/20 rounded-2xl transform rotate-3"></div>
-              
-              {/* Main Image Container - Cropped to focus on upper portion */}
-              <div className="relative w-full h-full bg-gradient-to-br from-background to-muted/30 rounded-2xl overflow-hidden border-2 border-gold/30 shadow-2xl">
-                <div className="relative w-full h-full">
-                  <Image
-                    src="/abgmax24.png"
-                    alt="Abg Max - FCPO Trading Educator"
-                    fill
-                    className="object-cover object-[center_20%]"
-                    priority
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </div>
-              </div>
+          <div className="relative h-full flex items-center">
+            <div className="relative w-full h-[600px] md:h-[700px]">
+              {/* Image without box - blends with background */}
+              <Image
+                src="/abgmax24.png"
+                alt="Abg Max - FCPO Trading Educator"
+                fill
+                className="object-contain object-bottom"
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
 
               {/* Floating Badge */}
               <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-gold to-yellow-500 text-black px-6 py-3 rounded-xl shadow-lg border-2 border-background">
@@ -112,3 +105,4 @@ export function AboutSection() {
     </section>
   );
 }
+  
