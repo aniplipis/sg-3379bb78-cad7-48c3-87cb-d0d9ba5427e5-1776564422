@@ -79,12 +79,144 @@ export default async function handler(
       });
     }
 
+    // If no profile exists, try to create one
     if (!profile) {
-      console.error('❌ No profile found for userId:', userId);
-      return res.status(404).json({
-        error: 'User profile not found',
-        details: 'Please ensure you are logged in and try again. If the issue persists, try logging out and logging back in.'
+      console.log('⚠️  No profile found, attempting to create one...');
+      
+      // Get user email from auth.users table
+      const { data: { user }, error: userError } = await supabase.auth.admin.getUserById(userId);
+      
+      if (userError || !user) {
+        console.error('❌ Could not fetch user from auth:', userError);
+        return res.status(404).json({
+          error: 'User not found in authentication system',
+          details: 'Please ensure you are logged in and try again. If the issue persists, try logging out and logging back in.'
+        });
+      }
+
+      // Create the profile
+      const { data: newProfile, error: createError } = await supabase
+        .from('profiles')
+        .insert([
+          {
+            id: userId,
+            email: user.email || '',
+            full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
+            avatar_url: user.user_metadata?.avatar_url || null,
+          },
+        ])
+        .select('email, stripe_customer_id, full_name, is_premium')
+        .single();
+
+      if (createError) {
+        console.error('❌ Failed to create profile:', createError);
+        return res.status(500).json({
+          error: 'Failed to create user profile',
+          details: createError.message
+        });
+      }
+
+      console.log('✅ Profile created successfully');
+      
+      // Use the newly created profile
+      const profileToUse = newProfile;
+      
+      if (!profileToUse.email) {
+        console.error('❌ Profile has no email:', userId);
+        return res.status(400).json({
+          error: 'User email not found',
+          details: 'Your account must have an email address. Please contact support.'
+        });
+      }
+
+      console.log('✅ Profile data:', {
+        email: profileToUse.email,
+        hasStripeCustomer: !!profileToUse.stripe_customer_id,
+        isPremium: profileToUse.is_premium
       });
+
+      // Continue with checkout using the new profile
+      let customerId = profileToUse.stripe_customer_id;
+
+      if (!customerId) {
+        console.log('📝 Creating new Stripe customer...');
+        const customer = await stripe.customers.create({
+          email: profileToUse.email,
+          name: profileToUse.full_name || undefined,
+          metadata: { supabase_user_id: userId },
+        });
+        customerId = customer.id;
+        console.log('✅ Created Stripe customer:', customerId);
+
+        // Update profile with Stripe customer ID
+        const { error: updateError } = await supabase
+          .from('profiles')
+          .update({ stripe_customer_id: customerId })
+          .eq('id', userId);
+
+        if (updateError) {
+          console.error('⚠️  Failed to save Stripe customer ID:', updateError);
+          // Continue anyway - we have the customer ID in memory
+        } else {
+          console.log('✅ Saved Stripe customer ID to profile');
+        }
+      } else {
+        console.log('✅ Using existing Stripe customer:', customerId);
+      }
+
+      // Determine the price based on promo code
+      const price = promoCode?.toLowerCase() === 'premium363' 
+        ? PREMIUM_MEMBERSHIP.discountPrice 
+        : PREMIUM_MEMBERSHIP.price;
+
+      console.log('💰 Price calculation:', {
+        originalPrice: PREMIUM_MEMBERSHIP.price,
+        promoCode: promoCode || 'none',
+        finalPrice: price,
+        discount: PREMIUM_MEMBERSHIP.price - price
+      });
+
+      // Step 3: Create checkout session
+      console.log('🎫 Creating Stripe checkout session...');
+      const session = await stripe.checkout.sessions.create({
+        mode: 'subscription',
+        customer: customerId,
+        line_items: [
+          {
+            price_data: {
+              currency: PREMIUM_MEMBERSHIP.currency,
+              product_data: {
+                name: PREMIUM_MEMBERSHIP.name,
+                description: PREMIUM_MEMBERSHIP.description,
+                images: [`${process.env.NEXT_PUBLIC_SITE_URL}/LOGO-square-for-rounded-crop.jpg`],
+              },
+              unit_amount: price,
+              recurring: {
+                interval: PREMIUM_MEMBERSHIP.interval,
+              },
+            },
+            quantity: 1,
+          },
+        ],
+        success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/members?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/#membership`,
+        metadata: {
+          supabase_user_id: userId,
+          promo_code: promoCode || 'none',
+          original_price: PREMIUM_MEMBERSHIP.price.toString(),
+          final_price: price.toString(),
+        },
+        subscription_data: {
+          metadata: {
+            supabase_user_id: userId,
+          },
+        },
+      });
+
+      console.log('✅ Checkout session created:', session.id);
+      console.log('=== CHECKOUT REQUEST SUCCESS ===');
+
+      return res.status(200).json({ url: session.url });
     }
 
     console.log('✅ Profile found:', {
