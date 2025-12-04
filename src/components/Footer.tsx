@@ -1,77 +1,133 @@
 
 import Link from "next/link";
-import { Leaf } from "lucide-react";
+import { Youtube, Music2, Facebook, Send, MessageCircle } from "lucide-react";
 
 export function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  const footerLinks = {
+    platform: [
+      { label: "About", href: "#about" },
+      { label: "Trading Approach", href: "#approach" },
+      { label: "Classes", href: "#class" },
+      { label: "Membership", href: "#membership" }
+    ],
+    resources: [
+      { label: "FCPO Guide", href: "#fcpo" },
+      { label: "Open Account", href: "#broker" },
+      { label: "Media", href: "#media" },
+      { label: "Contact", href: "#contact" }
+    ],
+    legal: [
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "SC Verification", href: "https://www.sc.com.my" },
+      { label: "Disclaimer", href: "/disclaimer" }
+    ]
+  };
+
+  const socialLinks = [
+    { icon: Youtube, url: "https://youtube.com/@maxsaham", label: "YouTube" },
+    { icon: Music2, url: "https://tiktok.com/@maxsaham", label: "TikTok" },
+    { icon: Facebook, url: "https://facebook.com/maxsaham", label: "Facebook" },
+    { icon: Send, url: "https://t.me/maxsaham", label: "Telegram" },
+    { icon: MessageCircle, url: "https://wa.me/60123456789", label: "WhatsApp" }
+  ];
+
   return (
-    <footer className="bg-card border-t border-border py-12">
-      <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div className="space-y-4">
-              <Link href="/" className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-gold rounded-lg flex items-center justify-center">
-                  <span className="text-black font-bold text-xl">MS</span>
-                </div>
-                <span className="text-xl font-bold text-gold">Max Saham</span>
-              </Link>
-              <p className="text-muted-foreground text-sm">
-                Professional FCPO trading education and mentorship by Abg Max (Muhammad Haniff)
-              </p>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li><Link href="#about" className="hover:text-gold transition-colors">About</Link></li>
-                <li><Link href="#approach" className="hover:text-gold transition-colors">Trading Approach</Link></li>
-                <li><Link href="#class" className="hover:text-gold transition-colors">Classes</Link></li>
-                <li><Link href="#membership" className="hover:text-gold transition-colors">Membership</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Resources</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li><Link href="#" className="hover:text-gold transition-colors">Free Videos</Link></li>
-                <li><Link href="#" className="hover:text-gold transition-colors">Trading Guides</Link></li>
-                <li><Link href="#" className="hover:text-gold transition-colors">Broker Setup</Link></li>
-                <li><Link href="#" className="hover:text-gold transition-colors">FAQ</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li><Link href="#" className="hover:text-gold transition-colors">Terms of Service</Link></li>
-                <li><Link href="#" className="hover:text-gold transition-colors">Privacy Policy</Link></li>
-                <li><Link href="#" className="hover:text-gold transition-colors">Disclaimer</Link></li>
-                <li><Link href="#" className="hover:text-gold transition-colors">Risk Warning</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-border pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-muted-foreground text-sm">
-                © {new Date().getFullYear()} Max Saham. All rights reserved.
-              </p>
-              <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                <Leaf className="w-4 h-4 text-green-500" />
-                <span>Registered with Securities Commission Malaysia</span>
+    <footer className="bg-background border-t border-border/50">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid md:grid-cols-4 gap-8 mb-12">
+          {/* Brand */}
+          <div className="md:col-span-1">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 bg-gold rounded-lg flex items-center justify-center">
+                <span className="text-black font-bold text-xl">M</span>
               </div>
+              <span className="text-xl font-bold">Max Saham</span>
             </div>
-
-            <div className="mt-6 text-center text-xs text-muted-foreground">
-              <p className="mb-2">
-                <strong>Risk Warning:</strong> Trading futures involves substantial risk of loss and is not suitable for all investors. 
-                Past performance is not indicative of future results.
-              </p>
-              <p>
-                The information provided on this website is for educational purposes only and should not be considered as financial advice.
-              </p>
+            <p className="text-sm text-muted-foreground mb-6">
+              Professional FCPO trading education combining Wyckoff, Smart Money Concepts, and Order Flow analysis.
+            </p>
+            <div className="flex gap-3">
+              {socialLinks.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 bg-muted/50 hover:bg-gold/20 rounded-lg flex items-center justify-center transition-colors"
+                  aria-label={social.label}
+                >
+                  <social.icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </div>
+
+          {/* Platform Links */}
+          <div>
+            <h3 className="font-semibold mb-4">Platform</h3>
+            <ul className="space-y-3">
+              {footerLinks.platform.map((link, index) => (
+                <li key={index}>
+                  <Link href={link.href} className="text-sm text-muted-foreground hover:text-gold transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h3 className="font-semibold mb-4">Resources</h3>
+            <ul className="space-y-3">
+              {footerLinks.resources.map((link, index) => (
+                <li key={index}>
+                  <Link href={link.href} className="text-sm text-muted-foreground hover:text-gold transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="font-semibold mb-4">Legal</h3>
+            <ul className="space-y-3">
+              {footerLinks.legal.map((link, index) => (
+                <li key={index}>
+                  <Link href={link.href} className="text-sm text-muted-foreground hover:text-gold transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-border/50">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-sm text-muted-foreground text-center md:text-left">
+              © {currentYear} Max Saham. All rights reserved. | Trading involves risk. Past performance does not guarantee future results.
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Registered Marketing Representative - Securities Commission Malaysia
+            </p>
+          </div>
+        </div>
+
+        {/* Disclaimer */}
+        <div className="mt-8 p-4 bg-muted/30 rounded-lg">
+          <p className="text-xs text-muted-foreground text-center">
+            <strong>Risk Disclaimer:</strong> Trading futures and derivatives involves substantial risk of loss and is not suitable for all investors. 
+            The high degree of leverage can work against you as well as for you. Before deciding to trade, you should carefully consider your investment objectives, 
+            level of experience, and risk appetite. The possibility exists that you could sustain a loss of some or all of your initial investment. 
+            You should only trade with money you can afford to lose.
+          </p>
         </div>
       </div>
     </footer>

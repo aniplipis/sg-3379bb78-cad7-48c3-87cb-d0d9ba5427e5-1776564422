@@ -1,70 +1,120 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { MessageCircle, Send, Youtube, Music, Facebook } from "lucide-react";
+import { MessageCircle, Send, Youtube, Music2, Facebook, Mail } from "lucide-react";
 
 export function ContactSection() {
+  const contacts = [
+    {
+      icon: MessageCircle,
+      title: "WhatsApp Direct",
+      description: "Chat with me directly",
+      action: "Start Chat",
+      url: "https://wa.me/60123456789",
+      color: "text-green-500",
+      bgColor: "bg-green-500/10"
+    },
+    {
+      icon: Send,
+      title: "Telegram Channel",
+      description: "Join the community",
+      action: "Join Now",
+      url: "https://t.me/maxsaham",
+      color: "text-blue-400",
+      bgColor: "bg-blue-400/10"
+    },
+    {
+      icon: Youtube,
+      title: "YouTube",
+      description: "Educational videos",
+      action: "Subscribe",
+      url: "https://youtube.com/@maxsaham",
+      color: "text-red-500",
+      bgColor: "bg-red-500/10"
+    },
+    {
+      icon: Music2,
+      title: "TikTok",
+      description: "Daily trading tips",
+      action: "Follow",
+      url: "https://tiktok.com/@maxsaham",
+      color: "text-cyan-400",
+      bgColor: "bg-cyan-400/10"
+    },
+    {
+      icon: Facebook,
+      title: "Facebook",
+      description: "Community updates",
+      action: "Like Page",
+      url: "https://facebook.com/maxsaham",
+      color: "text-blue-500",
+      bgColor: "bg-blue-500/10"
+    },
+    {
+      icon: Mail,
+      title: "Email",
+      description: "Business inquiries",
+      action: "Send Email",
+      url: "mailto:contact@maxsaham.com",
+      color: "text-gold",
+      bgColor: "bg-gold/10"
+    }
+  ];
+
   return (
-    <section className="py-20 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="text-sm font-mono text-neon-blue mb-2">GET IN TOUCH</div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Contact & Community</h2>
-            <p className="text-xl text-muted-foreground">
-              Join our growing community of professional FCPO traders
-            </p>
+    <section id="contact" className="py-20 px-4 bg-background">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-6 py-2 mb-6">
+            <MessageCircle className="w-5 h-5 text-gold" />
+            <span className="text-gold font-semibold">Get Connected</span>
           </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            Contact & <span className="text-gold">Community</span>
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Connect with me and join thousands of FCPO traders in the Max Saham community
+          </p>
+        </div>
 
-          <Card className="bg-card/50 backdrop-blur border-gold/30 mb-8">
+        <div className="grid md:grid-cols-3 gap-6">
+          {contacts.map((contact, index) => (
+            <Card key={index} className="border-border/50 hover:border-gold/50 transition-all group">
+              <CardContent className="p-6 text-center">
+                <div className={`w-16 h-16 ${contact.bgColor} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
+                  <contact.icon className={`w-8 h-8 ${contact.color}`} />
+                </div>
+                <h3 className="text-lg font-bold mb-2">{contact.title}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{contact.description}</p>
+                <Button 
+                  variant="outline" 
+                  className="w-full border-border/50 hover:border-gold/50"
+                  asChild
+                >
+                  <a href={contact.url} target="_blank" rel="noopener noreferrer">
+                    {contact.action}
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="mt-16 text-center">
+          <Card className="border-border/50 bg-gradient-to-r from-gold/5 to-blue-500/5 inline-block">
             <CardContent className="p-8">
-              <div className="grid sm:grid-cols-2 gap-6">
-                <Button size="lg" className="h-20 bg-green-600 hover:bg-green-700 text-white flex-col gap-2">
-                  <MessageCircle className="w-6 h-6" />
-                  <div>
-                    <div className="font-semibold">WhatsApp Direct Chat</div>
-                    <div className="text-xs opacity-80">Quick response guaranteed</div>
-                  </div>
-                </Button>
-
-                <Button size="lg" className="h-20 bg-neon-blue hover:bg-neon-blue/90 text-black flex-col gap-2">
-                  <Send className="w-6 h-6" />
-                  <div>
-                    <div className="font-semibold">Telegram Public Channel</div>
-                    <div className="text-xs opacity-80">Daily market updates</div>
-                  </div>
-                </Button>
-
-                <Button size="lg" className="h-20 bg-red-600 hover:bg-red-700 text-white flex-col gap-2">
-                  <Youtube className="w-6 h-6" />
-                  <div>
-                    <div className="font-semibold">YouTube Subscribe</div>
-                    <div className="text-xs opacity-80">Trading tutorials</div>
-                  </div>
-                </Button>
-
-                <Button size="lg" className="h-20 bg-pink-600 hover:bg-pink-700 text-white flex-col gap-2">
-                  <Music className="w-6 h-6" />
-                  <div>
-                    <div className="font-semibold">TikTok Follow</div>
-                    <div className="text-xs opacity-80">Quick trading tips</div>
-                  </div>
-                </Button>
-              </div>
-
-              <div className="mt-6 pt-6 border-t border-border">
-                <Button size="lg" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                  <Facebook className="w-6 h-6 mr-2" />
-                  Follow on Facebook
-                </Button>
+              <h3 className="text-2xl font-bold mb-3">Questions? Let's Talk!</h3>
+              <p className="text-muted-foreground mb-6 max-w-2xl">
+                Whether you're new to FCPO trading or looking to refine your strategy, I'm here to help. 
+                Reach out through any platform above.
+              </p>
+              <div className="flex flex-wrap justify-center gap-3 text-sm">
+                <span className="bg-muted/50 rounded-full px-4 py-2">📞 Fast Response</span>
+                <span className="bg-muted/50 rounded-full px-4 py-2">🤝 Friendly Support</span>
+                <span className="bg-muted/50 rounded-full px-4 py-2">💼 Professional Guidance</span>
               </div>
             </CardContent>
           </Card>
-
-          <div className="text-center text-muted-foreground">
-            <p className="mb-2">Average response time: Under 2 hours</p>
-            <p className="text-sm">Available Monday - Friday, 9 AM - 6 PM (MYT)</p>
-          </div>
         </div>
       </div>
     </section>
