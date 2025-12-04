@@ -1,4 +1,4 @@
- 
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 export type Json =
   | string
   | number
@@ -23,6 +23,9 @@ export type Database = {
           full_name: string | null
           id: string
           is_premium: boolean | null
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          stripe_subscription_status: string | null
           subscription_end_date: string | null
           subscription_status: string | null
           updated_at: string | null
@@ -34,6 +37,9 @@ export type Database = {
           full_name?: string | null
           id: string
           is_premium?: boolean | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          stripe_subscription_status?: string | null
           subscription_end_date?: string | null
           subscription_status?: string | null
           updated_at?: string | null
@@ -45,6 +51,9 @@ export type Database = {
           full_name?: string | null
           id?: string
           is_premium?: boolean | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          stripe_subscription_status?: string | null
           subscription_end_date?: string | null
           subscription_status?: string | null
           updated_at?: string | null

@@ -57,7 +57,32 @@ export default async function handler(
 
     console.log('✅ Valid userId format');
 
-    // Step 1: Try to get profile first (profile should exist from AuthContext)
+    // Step 1: Get user from auth.users first to get email
+    console.log('🔍 Fetching user from auth.users...');
+    const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.getUserById(userId);
+
+    if (authError) {
+      console.error('❌ Auth user fetch error:', authError);
+      return res.status(500).json({
+        error: 'Authentication error',
+        details: `Failed to verify user: ${authError.message}`
+      });
+    }
+
+    if (!authUser?.user) {
+      console.error('❌ No auth user found');
+      return res.status(404).json({
+        error: 'User not found',
+        details: 'Your account could not be found. Please log out and log back in.'
+      });
+    }
+
+    const userEmail = authUser.user.email || `user_${userId.substring(0, 8)}@maxsaham.temporary`;
+    const userName = authUser.user.user_metadata?.full_name || authUser.user.email?.split('@')[0] || 'Premium Member';
+
+    console.log('✅ Auth user found:', { email: userEmail, name: userName });
+
+    // Step 2: Try to get profile
     console.log('🔍 Checking if profile exists...');
     const { data: existingProfile, error: profileFetchError } = await supabaseAdmin
       .from('profiles')
@@ -66,36 +91,23 @@ export default async function handler(
       .maybeSingle();
 
     if (profileFetchError) {
-      console.error('❌ Profile query error:', {
-        message: profileFetchError.message,
-        details: profileFetchError.details,
-        hint: profileFetchError.hint,
-        code: profileFetchError.code
-      });
+      console.error('❌ Profile query error:', profileFetchError);
       return res.status(500).json({
         error: 'Database error',
-        details: `Failed to fetch user profile: ${profileFetchError.message}. Code: ${profileFetchError.code}. Details: ${profileFetchError.details || 'none'}`
+        details: `Failed to fetch profile: ${profileFetchError.message}`
       });
     }
 
     let profile = existingProfile;
-    let userEmail: string;
 
-    // If profile doesn't exist, create it
+    // Step 3: Create profile if it doesn't exist
     if (!profile) {
       console.log('⚠️ Profile not found, creating new profile...');
       
-      // Since we don't have the email from auth, we'll create a temporary email
-      // The user should update this later
-      userEmail = `user_${userId.substring(0, 8)}@maxsaham.temporary`;
-      
-      console.log('📝 Creating profile with temporary email...');
-
-      // Create profile
       const newProfileData = {
         id: userId,
         email: userEmail,
-        full_name: 'Premium Member',
+        full_name: userName,
       };
 
       console.log('📝 Profile data to insert:', newProfileData);
@@ -115,7 +127,7 @@ export default async function handler(
         });
         return res.status(500).json({
           error: 'Failed to create user profile',
-          details: `Database error: ${createError.message}. Code: ${createError.code}. Details: ${createError.details || 'none'}. Please try logging out and back in.`
+          details: `Database error: ${createError.message}. Code: ${createError.code}`
         });
       }
 
@@ -123,22 +135,17 @@ export default async function handler(
         console.error('❌ Profile creation returned null');
         return res.status(500).json({
           error: 'Profile creation failed',
-          details: 'Database returned no data after insert. Please contact support.'
+          details: 'Database returned no data after insert.'
         });
       }
 
       profile = newProfile;
-      console.log('✅ Profile created successfully:', { id: profile.id, email: profile.email });
+      console.log('✅ Profile created successfully');
     } else {
       console.log('✅ Profile found:', { id: profile.id, email: profile.email, is_premium: profile.is_premium });
-      userEmail = profile.email || `user_${userId.substring(0, 8)}@maxsaham.temporary`;
-      
-      if (!profile.email) {
-        console.log('⚠️ Profile has no email, using temporary email');
-      }
     }
 
-    // Step 2: Get or create Stripe customer
+    // Step 4: Get or create Stripe customer
     console.log('💳 Managing Stripe customer...');
     let customerId = profile.stripe_customer_id;
 
@@ -148,7 +155,7 @@ export default async function handler(
       try {
         const customer = await stripe.customers.create({
           email: userEmail,
-          name: profile.full_name || undefined,
+          name: userName,
           metadata: { supabase_user_id: userId },
         });
 
@@ -162,12 +169,7 @@ export default async function handler(
           .eq('id', userId);
 
         if (updateError) {
-          console.error('⚠️ Failed to save customer ID to profile:', {
-            message: updateError.message,
-            details: updateError.details,
-            code: updateError.code
-          });
-          // Continue anyway - we can still create the checkout session
+          console.error('⚠️ Failed to save customer ID:', updateError);
         } else {
           console.log('✅ Customer ID saved to profile');
         }
@@ -175,25 +177,21 @@ export default async function handler(
         console.error('❌ Stripe customer creation failed:', stripeError);
         return res.status(500).json({
           error: 'Payment system error',
-          details: stripeError instanceof Error ? `Stripe error: ${stripeError.message}` : 'Failed to create Stripe customer. Please try again.'
+          details: stripeError instanceof Error ? stripeError.message : 'Failed to create Stripe customer'
         });
       }
     } else {
       console.log('✅ Using existing Stripe customer:', customerId);
     }
 
-    // Step 3: Determine price
+    // Step 5: Determine price
     const price = promoCode?.toLowerCase() === 'premium363' 
       ? PREMIUM_MEMBERSHIP.discountPrice 
       : PREMIUM_MEMBERSHIP.price;
 
-    console.log('💰 Price:', {
-      original: PREMIUM_MEMBERSHIP.price,
-      final: price,
-      promoCode: promoCode || 'none'
-    });
+    console.log('💰 Price:', { original: PREMIUM_MEMBERSHIP.price, final: price, promoCode: promoCode || 'none' });
 
-    // Step 4: Create checkout session
+    // Step 6: Create checkout session
     console.log('🎫 Creating checkout session...');
     
     try {
@@ -238,7 +236,7 @@ export default async function handler(
       console.error('❌ Stripe checkout session creation failed:', stripeError);
       return res.status(500).json({
         error: 'Payment system error',
-        details: stripeError instanceof Error ? `Stripe error: ${stripeError.message}` : 'Failed to create checkout session. Please try again.'
+        details: stripeError instanceof Error ? stripeError.message : 'Failed to create checkout session'
       });
     }
 
@@ -248,7 +246,7 @@ export default async function handler(
     
     return res.status(500).json({
       error: 'Checkout failed',
-      details: error instanceof Error ? error.message : 'An unexpected error occurred. Please try again or contact support.'
+      details: error instanceof Error ? error.message : 'An unexpected error occurred'
     });
   }
 }
