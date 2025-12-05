@@ -12,8 +12,8 @@ export function HeroSection() {
   useEffect(() => {
     const timer1 = setInterval(() => {
       setCounters(prev => ({
-        years: prev.years < 8 ? prev.years + 1 : 8,
-        students: prev.students < 500 ? prev.students + 25 : 500,
+        years: prev.years < 20 ? prev.years + 1 : 20,
+        students: prev.students < 1001 ? prev.students + 50 : 1001,
         success: prev.success < 95 ? prev.success + 5 : 95,
       }));
     }, 100);
@@ -326,12 +326,12 @@ export function HeroSection() {
               />
               <motion.div
                 className="text-4xl font-bold text-gold mb-2"
-                animate={{ scale: counters.years === 8 ? [1, 1.1, 1] : 1 }}
+                animate={{ scale: counters.years === 20 ? [1, 1.1, 1] : 1 }}
                 transition={{ duration: 0.3 }}
               >
                 {counters.years}+
               </motion.div>
-              <div className="text-muted-foreground">Years Trading FCPO</div>
+              <div className="text-muted-foreground">Years Trading Experience</div>
             </motion.div>
 
             <motion.div
@@ -348,7 +348,7 @@ export function HeroSection() {
               />
               <motion.div
                 className="text-4xl font-bold text-neon-blue mb-2"
-                animate={{ scale: counters.students === 500 ? [1, 1.1, 1] : 1 }}
+                animate={{ scale: counters.students === 1001 ? [1, 1.1, 1] : 1 }}
                 transition={{ duration: 0.3 }}
               >
                 {counters.students}+
