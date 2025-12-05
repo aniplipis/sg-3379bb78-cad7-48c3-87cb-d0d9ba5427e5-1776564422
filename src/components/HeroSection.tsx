@@ -7,19 +7,9 @@ import { motion, Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export function HeroSection() {
-  const [mounted, setMounted] = useState(false);
-  const [counters, setCounters] = useState({ years: 8, students: 500, success: 95 });
+  const [counters, setCounters] = useState({ years: 0, students: 0, success: 0 });
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
-    // Reset counters to 0 after mount, then animate
-    setCounters({ years: 0, students: 0, success: 0 });
-
     const timer1 = setInterval(() => {
       setCounters(prev => ({
         years: prev.years < 8 ? prev.years + 1 : 8,
@@ -29,7 +19,7 @@ export function HeroSection() {
     }, 100);
 
     return () => clearInterval(timer1);
-  }, [mounted]);
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
