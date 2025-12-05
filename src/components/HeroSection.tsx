@@ -184,7 +184,7 @@ export function HeroSection() {
               className="block text-gold"
               style={{ display: "inline-block" }}
             >
-              Max Saham
+              MaxSaham
             </motion.span>
             <br />
             <motion.span
@@ -192,7 +192,7 @@ export function HeroSection() {
               className="block text-foreground"
               style={{ display: "inline-block" }}
             >
-              Smart Money Futures Trader
+              Malaysia's Hybrid SMC
             </motion.span>
             <br />
             <motion.span
@@ -200,7 +200,7 @@ export function HeroSection() {
               className="block text-neon-blue"
               style={{ display: "inline-block" }}
             >
-              & FCPO Educator
+              Futures Trading Academy
             </motion.span>
           </motion.h1>
 
@@ -209,10 +209,9 @@ export function HeroSection() {
             variants={itemVariants}
             className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
           >
-            Learn <span className="text-gold font-semibold">Wyckoff</span> +{" "}
-            <span className="text-gold font-semibold">Smart Money</span> +{" "}
-            <span className="text-neon-blue font-semibold">Order Flow</span> for FCPO Trading. Master
-            intraday precision with Abg Max.
+            Master FCPO using a structured, repeatable{" "}
+            <span className="text-gold font-semibold">Hybrid Smart Money Concept (SMC)</span> with
+            powerful indicator assistance. Trade with clarity. Execute with confidence. Build consistency.
           </motion.p>
 
           {/* CTA Buttons with Advanced Hover Effects */}
@@ -236,7 +235,7 @@ export function HeroSection() {
                   transition={{ duration: 0.5 }}
                 />
                 <Users className="w-5 h-5 mr-2 relative z-10" />
-                <span className="relative z-10">Join Free Telegram</span>
+                <span className="relative z-10">Join Free Telegram Channel</span>
                 <motion.div
                   className="absolute inset-0 rounded-xl"
                   animate={{
@@ -268,7 +267,7 @@ export function HeroSection() {
                   transition={{ duration: 0.3 }}
                 />
                 <TrendingUp className="w-5 h-5 mr-2 relative z-10" />
-                <span className="relative z-10">Open FCPO Account</span>
+                <span className="relative z-10">Open FCPO Trading Account</span>
               </Button>
             </motion.div>
 
@@ -292,7 +291,7 @@ export function HeroSection() {
                   transition={{ duration: 2, repeat: Infinity }}
                 />
                 <Sparkles className="w-5 h-5 mr-2 relative z-10" />
-                <span className="relative z-10">Enter Premium Area</span>
+                <span className="relative z-10">Daftar Sekarang / Register Now</span>
                 <motion.div
                   className="absolute inset-0 rounded-xl"
                   animate={{

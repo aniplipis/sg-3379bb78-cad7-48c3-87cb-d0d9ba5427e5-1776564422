@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ShieldCheck, ExternalLink } from "lucide-react";
@@ -6,53 +5,106 @@ import { ShieldCheck, ExternalLink } from "lucide-react";
 export function VerificationSection() {
   return (
     <section className="py-16 px-4 bg-gradient-to-b from-background/50 to-background">
-      <div className="max-w-4xl mx-auto">
-        <Card className="border-gold/20 bg-gradient-to-r from-gold/5 to-blue-500/5">
-          <CardContent className="p-8 md:p-12">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="flex-shrink-0">
-                <div className="w-24 h-24 bg-gold/10 rounded-full flex items-center justify-center">
-                  <ShieldCheck className="w-12 h-12 text-gold" />
-                </div>
-              </div>
-              
-              <div className="flex-1 text-center md:text-left">
-                <h3 className="text-2xl md:text-3xl font-bold mb-3">
-                  Verified <span className="text-gold">Marketing Representative</span>
-                </h3>
-                <p className="text-muted-foreground mb-6">
-                  Check my official registration as a Marketing Representative with the Securities Commission Malaysia (SC). 
-                  Your trust and safety are my top priorities.
-                </p>
-                <Button 
-                  className="bg-gold hover:bg-gold/90 text-black font-semibold"
-                  asChild
-                >
-                  <a href="https://www.sc.com.my" target="_blank" rel="noopener noreferrer">
-                    Verify My SC Registration
-                    <ExternalLink className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
-              </div>
-            </div>
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            Regulatory Status & <span className="text-gold">Professional Registrations</span>
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Team Max Saham is composed of individuals who are officially registered with Malaysian financial authorities.
+          </p>
+        </div>
 
-            <div className="mt-8 pt-8 border-t border-border/50">
-              <div className="grid md:grid-cols-3 gap-6 text-center text-sm">
-                <div>
-                  <ShieldCheck className="w-6 h-6 text-gold mx-auto mb-2" />
-                  <p className="font-semibold">SC Registered</p>
-                  <p className="text-muted-foreground text-xs">Official Marketing Rep</p>
-                </div>
-                <div>
-                  <ShieldCheck className="w-6 h-6 text-gold mx-auto mb-2" />
-                  <p className="font-semibold">Compliant Operations</p>
-                  <p className="text-muted-foreground text-xs">Following Malaysian Regulations</p>
-                </div>
-                <div>
-                  <ShieldCheck className="w-6 h-6 text-gold mx-auto mb-2" />
-                  <p className="font-semibold">Transparent Education</p>
-                  <p className="text-muted-foreground text-xs">Honest & Ethical Teaching</p>
-                </div>
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <Card className="border-gold/20 bg-card/50">
+            <CardContent className="p-6">
+              <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <ShieldCheck className="w-8 h-8 text-gold" />
+              </div>
+              <h3 className="text-lg font-bold mb-3 text-center">Suruhanjaya Sekuriti Malaysia (SC)</h3>
+              <p className="text-sm text-muted-foreground mb-4 text-center">Registered Individual</p>
+              <Button 
+                variant="outline"
+                size="sm"
+                className="w-full border-gold/30 hover:border-gold"
+                asChild
+              >
+                <a href="https://www.sc.com.my/regulation/licensing/licensed-and-registered-persons" target="_blank" rel="noopener noreferrer">
+                  SC Check
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                </a>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border-gold/20 bg-card/50">
+            <CardContent className="p-6">
+              <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <ShieldCheck className="w-8 h-8 text-gold" />
+              </div>
+              <h3 className="text-lg font-bold mb-3 text-center">Registered Financial Consultant</h3>
+              <p className="text-sm text-muted-foreground mb-4 text-center">PhillipCapital (FIMM)</p>
+              <Button 
+                variant="outline"
+                size="sm"
+                className="w-full border-gold/30 hover:border-gold"
+                asChild
+              >
+                <a href="https://fcs.fimm.com.my/Publics/cons_details/T2NNMWhFU2lFcFFBNnlnaFRBSG1zUT09" target="_blank" rel="noopener noreferrer">
+                  FIMM Check
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                </a>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border-gold/20 bg-card/50">
+            <CardContent className="p-6">
+              <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <ShieldCheck className="w-8 h-8 text-gold" />
+              </div>
+              <h3 className="text-lg font-bold mb-3 text-center">Registered Takaful Consultant</h3>
+              <p className="text-sm text-muted-foreground mb-4 text-center">Takaful Registration</p>
+              <Button 
+                variant="outline"
+                size="sm"
+                className="w-full border-gold/30 hover:border-gold"
+                asChild
+              >
+                <a href="https://sso.ism.net.my/MTAOARS/Enquiry/Result?code=p%2fi1Ck6BCf7g3Hs%2fmP70iw%3d%3d&mta=hbVC74Kbf84%3d" target="_blank" rel="noopener noreferrer">
+                  Takaful Check
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                </a>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="border-gold/30 bg-gradient-to-r from-gold/5 to-neon-blue/5">
+          <CardContent className="p-8">
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-bold mb-3">Why This Matters</h3>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="text-center">
+                <ShieldCheck className="w-8 h-8 text-gold mx-auto mb-3" />
+                <h4 className="font-semibold mb-2">Credible & Transparent</h4>
+                <p className="text-sm text-muted-foreground">Officially registered professionals</p>
+              </div>
+              <div className="text-center">
+                <ShieldCheck className="w-8 h-8 text-gold mx-auto mb-3" />
+                <h4 className="font-semibold mb-2">Patuh Syariah</h4>
+                <p className="text-sm text-muted-foreground">Islamic-compliant operations</p>
+              </div>
+              <div className="text-center">
+                <ShieldCheck className="w-8 h-8 text-gold mx-auto mb-3" />
+                <h4 className="font-semibold mb-2">Avoid Scams</h4>
+                <p className="text-sm text-muted-foreground">No fake gurus here</p>
+              </div>
+              <div className="text-center">
+                <ShieldCheck className="w-8 h-8 text-gold mx-auto mb-3" />
+                <h4 className="font-semibold mb-2">Expert Guidance</h4>
+                <p className="text-sm text-muted-foreground">Licensed professionals support</p>
               </div>
             </div>
           </CardContent>

@@ -11,22 +11,30 @@ export function AboutSection() {
           <div className="space-y-6">
             <div>
               <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gold bg-clip-text text-transparent">
-                Meet Abg Max
+                Meet Abg Max (M. Haniff Hassan)
               </h2>
               <div className="h-1 w-24 bg-gradient-to-r from-gold to-neon-blue rounded-full"></div>
             </div>
 
             <div className="text-lg text-muted-foreground space-y-4">
               <p>
-                <span className="font-semibold text-gold">Muhammad Haniff</span>, professionally known as <span className="font-semibold">Abg Max</span>, is a seasoned FCPO futures trader and educator specializing in advanced technical analysis methodologies.
+                From struggling retail trader to respected FCPO mentor — this is <span className="font-semibold">Abg Max</span>, real name <span className="font-semibold text-gold">M. Haniff Hassan</span>.
               </p>
               
               <p>
-                With years of hands-on experience in the Malaysian derivatives market, Abg Max has mastered the art of combining <span className="font-semibold text-neon-blue">Wyckoff Method</span>, <span className="font-semibold text-neon-blue">Smart Money Concepts</span>, and <span className="font-semibold text-neon-blue">Order Flow Analysis</span> to identify high-probability trading opportunities.
+                Starting with small capital & big dreams over 20 years ago, he went through every trader mistake imaginable. Instead of giving up, he committed to understanding how Smart Money truly moves.
               </p>
 
               <p>
-                As a registered Marketing Representative with the Securities Commission Malaysia, Abg Max is committed to providing professional education and guidance to aspiring FCPO traders across the country.
+                Today — with <span className="font-semibold text-neon-blue">1001+ students</span> and <span className="font-semibold text-neon-blue">6 years teaching FCPO</span> — he teaches the exact system he wished existed when he started:
+              </p>
+
+              <p className="text-gold font-semibold italic">
+                Hybrid Smart Money Concept (SMC) — structured, clean, indicator-assisted, and designed specifically for FCPO.
+              </p>
+
+              <p className="text-foreground italic border-l-4 border-gold pl-4">
+                "If you can follow structure, you can follow success. SMC bukan teori — ia adalah cara Smart Money berfikir."
               </p>
             </div>
 
