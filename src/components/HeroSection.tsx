@@ -7,9 +7,16 @@ import { motion, Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export function HeroSection() {
+  const [mounted, setMounted] = useState(false);
   const [counters, setCounters] = useState({ years: 0, students: 0, success: 0 });
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     const timer1 = setInterval(() => {
       setCounters((prev) => ({
         years: prev.years < 8 ? prev.years + 1 : 8,
@@ -19,7 +26,7 @@ export function HeroSection() {
     }, 100);
 
     return () => clearInterval(timer1);
-  }, []);
+  }, [mounted]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -327,10 +334,9 @@ export function HeroSection() {
 
               <motion.div
                 className="text-4xl font-bold text-gold mb-2"
-                animate={{ scale: counters.years === 8 ? [1, 1.1, 1] : 1 }}
-                transition={{ duration: 0.3 }}>
+                animate={mounted ? { scale: counters.years === 8 ? [1, 1.1, 1] : 1 } : {}}>
 
-                {counters.years}+
+                {mounted ? counters.years : 8}+
               </motion.div>
               <div className="text-muted-foreground">Years Trading FCPO</div>
             </motion.div>
@@ -349,10 +355,9 @@ export function HeroSection() {
 
               <motion.div
                 className="text-4xl font-bold text-neon-blue mb-2"
-                animate={{ scale: counters.students === 500 ? [1, 1.1, 1] : 1 }}
-                transition={{ duration: 0.3 }}>
+                animate={mounted ? { scale: counters.students === 500 ? [1, 1.1, 1] : 1 } : {}}>
 
-                {counters.students}+
+                {mounted ? counters.students : 500}+
               </motion.div>
               <div className="text-muted-foreground">Students Trained</div>
             </motion.div>
@@ -371,10 +376,9 @@ export function HeroSection() {
 
               <motion.div
                 className="text-4xl font-bold text-gold mb-2"
-                animate={{ scale: counters.success === 95 ? [1, 1.1, 1] : 1 }}
-                transition={{ duration: 0.3 }}>
+                animate={mounted ? { scale: counters.success === 95 ? [1, 1.1, 1] : 1 } : {}}>
 
-                {counters.success}%
+                {mounted ? counters.success : 95}%
               </motion.div>
               <div className="text-muted-foreground">Success Rate</div>
             </motion.div>
