@@ -67,75 +67,84 @@ export function FCPOSection() {
             </Card>
           </div>
 
-          <Card className="bg-gradient-to-r from-gold/5 via-transparent to-neon-blue/5 border-gold/30">
+          <Card className="bg-gradient-to-r from-gold/5 via-transparent to-neon-blue/5 border-gold/30 mb-12">
             <CardContent className="p-8 md:p-12">
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div>
-                  <h3 className="text-3xl font-bold mb-6">Why FCPO Works Perfect with SMC + Wyckoff</h3>
+                  <h3 className="text-3xl font-bold mb-6">Shariah-Compliant (Patuh Syariah)</h3>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">
+                    FCPO adalah kontrak derivatif halal, disokong oleh aset sebenar (CPO) dan penghantaran bersijil MSPO.
+                  </p>
                   <div className="space-y-4">
                     <div className="flex items-start gap-4">
                       <div className="w-2 h-2 bg-gold rounded-full mt-2 flex-shrink-0"></div>
                       <div>
-                        <div className="font-semibold text-lg mb-1">Clear Market Structure</div>
-                        <p className="text-muted-foreground">FCPO shows distinct accumulation and distribution phases perfect for Wyckoff analysis</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-4">
-                      <div className="w-2 h-2 bg-neon-blue rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <div className="font-semibold text-lg mb-1">Liquidity Sweeps</div>
-                        <p className="text-muted-foreground">High volatility creates frequent liquidity grabs ideal for SMC setups</p>
+                        <div className="font-semibold text-lg mb-1">Kenapa penting?</div>
                       </div>
                     </div>
                     <div className="flex items-start gap-4">
                       <div className="w-2 h-2 bg-gold rounded-full mt-2 flex-shrink-0"></div>
                       <div>
-                        <div className="font-semibold text-lg mb-1">Order Flow Visibility</div>
-                        <p className="text-muted-foreground">Strong volume profile makes order blocks and fair value gaps clearly visible</p>
+                        <p className="text-muted-foreground">Tiada riba</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4">
                       <div className="w-2 h-2 bg-neon-blue rounded-full mt-2 flex-shrink-0"></div>
                       <div>
-                        <div className="font-semibold text-lg mb-1">Intraday Opportunities</div>
-                        <p className="text-muted-foreground">Multiple killzone setups throughout Asian, European, and US sessions</p>
+                        <p className="text-muted-foreground">Aset wujud secara fizikal</p>
                       </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <p className="text-muted-foreground">Seliaan penuh SC & Bursa Malaysia</p>
+                      </div>
+                    </div>
+                    <div className="mt-6 p-4 bg-gold/10 rounded-lg border border-gold/30">
+                      <p className="text-foreground font-semibold">
+                        Halal, ethical, and fully asset-backed — ideal for Muslim traders.
+                      </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-6">
-                  <div className="bg-card/50 backdrop-blur rounded-2xl p-6 border border-gold/30">
-                    <div className="text-sm font-mono text-gold mb-2">CONTRACT SPECIFICATIONS</div>
-                    <div className="space-y-3">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Contract Size:</span>
-                        <span className="font-semibold">25 metric tonnes</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Tick Size:</span>
-                        <span className="font-semibold">RM 1 per tonne</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Trading Hours:</span>
-                        <span className="font-semibold">10:30 AM - 12:30 PM</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Evening Session:</span>
-                        <span className="font-semibold">3:00 PM - 6:00 PM</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Exchange:</span>
-                        <span className="font-semibold">Bursa Malaysia</span>
+                <div>
+                  <h3 className="text-3xl font-bold mb-6">Why FCPO Works With Hybrid SMC</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <div className="font-semibold text-lg mb-1">Clear BOS/CHoCH</div>
+                        <p className="text-muted-foreground">Distinct break of structure patterns</p>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="bg-gradient-to-br from-gold/20 to-neon-blue/20 rounded-2xl p-6 border border-gold/30">
-                    <div className="text-center">
-                      <div className="text-4xl font-bold text-gold mb-2">RM 500 - 1,000</div>
-                      <div className="text-muted-foreground">Initial margin per contract</div>
-                      <div className="text-sm text-muted-foreground mt-2">(Varies by broker and market conditions)</div>
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-neon-blue rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <div className="font-semibold text-lg mb-1">Clean Liquidity Sweeps</div>
+                        <p className="text-muted-foreground">Easy to identify liquidity grabs</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <div className="font-semibold text-lg mb-1">FVG & OB React Nicely</div>
+                        <p className="text-muted-foreground">Fair value gaps and order blocks are clearly visible</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-neon-blue rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <div className="font-semibold text-lg mb-1">Institutional Volatility</div>
+                        <p className="text-muted-foreground">Strong volume profile for order flow analysis</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                      <div>
+                        <div className="font-semibold text-lg mb-1">Perfect for 10–20 Tick Scalping</div>
+                        <p className="text-muted-foreground">Multiple killzone setups throughout trading sessions</p>
+                      </div>
                     </div>
                   </div>
                 </div>
