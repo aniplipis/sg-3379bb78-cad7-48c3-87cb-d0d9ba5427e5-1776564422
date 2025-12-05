@@ -42,14 +42,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       // Create profile if it doesn't exist
+      // Try to get full_name from multiple sources
+      const fullName = 
+        supabaseUser.user_metadata?.full_name || 
+        supabaseUser.user_metadata?.name ||
+        supabaseUser.user_metadata?.display_name ||
+        (supabaseUser.email ? supabaseUser.email.split("@")[0] : "User");
+
       const { data: newProfile, error: createError } = await supabase
         .from("profiles")
         .insert([
           {
             id: supabaseUser.id,
             email: supabaseUser.email || "",
-            full_name: supabaseUser.user_metadata?.full_name || supabaseUser.email?.split("@")[0] || "User",
-            avatar_url: supabaseUser.user_metadata?.avatar_url || null,
+            full_name: fullName,
+            avatar_url: supabaseUser.user_metadata?.avatar_url || supabaseUser.user_metadata?.picture || null,
           },
         ])
         .select()
