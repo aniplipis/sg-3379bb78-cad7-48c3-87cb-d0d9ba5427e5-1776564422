@@ -81,8 +81,8 @@ export default async function handler(
     }
 
     let profile = existingProfile;
-    let userEmail = existingProfile?.email || `user_${userId.substring(0, 8)}@maxsaham.temporary`;
-    let userName = existingProfile?.full_name || 'Premium Member';
+    let userEmail = existingProfile?.email || `anonymous_${Date.now()}@maxsaham.temporary`;
+    let userName = existingProfile?.full_name || 'Anonymous User';
 
     // Step 2: Create profile if it doesn't exist
     if (!profile) {
