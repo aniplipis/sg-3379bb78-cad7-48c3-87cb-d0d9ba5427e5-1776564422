@@ -66,9 +66,9 @@ export function Navigation() {
               {isAuthenticated ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button className="bg-gold hover:bg-gold/90 text-black font-semibold relative">
+                    <Button className="bg-gold hover:bg-gold/90 text-black font-semibold px-6 py-2 h-auto relative">
                       <User className="w-4 h-4 mr-2" />
-                      {profile?.full_name}
+                      <span className="text-base">{profile?.full_name || "User"}</span>
                       {profile?.is_premium && (
                         <motion.div
                           className="absolute -top-1 -right-1 w-5 h-5 bg-neon-blue rounded-full flex items-center justify-center"
@@ -119,9 +119,10 @@ export function Navigation() {
               ) : (
                 <Button
                   onClick={() => setIsAuthModalOpen(true)}
-                  className="bg-gold hover:bg-gold/90 text-black font-semibold"
+                  className="bg-gold hover:bg-gold/90 text-black font-semibold px-6 py-2 h-auto"
                 >
-                  Login
+                  <User className="w-4 h-4 mr-2" />
+                  <span className="text-base">Login</span>
                 </Button>
               )}
             </div>
