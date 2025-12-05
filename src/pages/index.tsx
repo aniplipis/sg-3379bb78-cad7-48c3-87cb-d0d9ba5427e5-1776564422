@@ -7,6 +7,7 @@ import { FCPOSection } from "@/components/FCPOSection";
 import { TradingApproachSection } from "@/components/TradingApproachSection";
 import { BrokerSection } from "@/components/BrokerSection";
 import { ClassSection } from "@/components/ClassSection";
+import { PublicGoldSection } from "@/components/PublicGoldSection";
 import { MediaSection } from "@/components/MediaSection";
 import { VerificationSection } from "@/components/VerificationSection";
 import { MembershipSection } from "@/components/MembershipSection";
@@ -24,6 +25,7 @@ export default function HomePage() {
       <TradingApproachSection />
       <BrokerSection />
       <ClassSection />
+      <PublicGoldSection />
       <MediaSection />
       <VerificationSection />
       <MembershipSection />
