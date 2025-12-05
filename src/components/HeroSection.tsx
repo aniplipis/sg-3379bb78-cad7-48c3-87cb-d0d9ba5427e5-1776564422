@@ -14,7 +14,7 @@ export function HeroSection() {
       setCounters(prev => ({
         years: prev.years < 20 ? prev.years + 1 : 20,
         students: prev.students < 1001 ? prev.students + 50 : 1001,
-        success: prev.success < 95 ? prev.success + 5 : 95,
+        success: prev.success < 6 ? prev.success + 1 : 6,
       }));
     }, 100);
 
@@ -370,12 +370,12 @@ export function HeroSection() {
               />
               <motion.div
                 className="text-4xl font-bold text-gold mb-2"
-                animate={{ scale: counters.success === 95 ? [1, 1.1, 1] : 1 }}
+                animate={{ scale: counters.success === 6 ? [1, 1.1, 1] : 1 }}
                 transition={{ duration: 0.3 }}
               >
-                {counters.success}%
+                {counters.success}+
               </motion.div>
-              <div className="text-muted-foreground">Success Rate</div>
+              <div className="text-muted-foreground">Years Teaching FCPO</div>
             </motion.div>
           </motion.div>
         </motion.div>
