@@ -218,32 +218,32 @@ export function HeroSection() {
           {/* CTA Buttons with Advanced Hover Effects */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8"
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8"
           >
             <motion.div
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.08, y: -2 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               <Button
                 size="lg"
-                className="bg-neon-blue hover:bg-neon-blue/90 text-black font-semibold text-lg px-8 py-6 rounded-xl relative overflow-hidden group"
+                className="bg-neon-blue hover:bg-neon-blue/90 text-black font-bold text-xl px-12 py-8 rounded-2xl relative overflow-hidden group shadow-2xl shadow-neon-blue/50"
               >
                 <motion.div
-                  className="absolute inset-0 bg-white/20"
+                  className="absolute inset-0 bg-white/30"
                   initial={{ x: "-100%" }}
                   whileHover={{ x: "100%" }}
                   transition={{ duration: 0.5 }}
                 />
-                <Users className="w-5 h-5 mr-2 relative z-10" />
+                <Users className="w-6 h-6 mr-3 relative z-10" />
                 <span className="relative z-10">Join Free Telegram</span>
                 <motion.div
-                  className="absolute inset-0 rounded-xl"
+                  className="absolute inset-0 rounded-2xl"
                   animate={{
                     boxShadow: [
-                      "0 0 20px rgba(0, 217, 255, 0.3)",
-                      "0 0 40px rgba(0, 217, 255, 0.6)",
-                      "0 0 20px rgba(0, 217, 255, 0.3)",
+                      "0 0 30px rgba(0, 217, 255, 0.4)",
+                      "0 0 60px rgba(0, 217, 255, 0.8)",
+                      "0 0 30px rgba(0, 217, 255, 0.4)",
                     ],
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
@@ -252,54 +252,61 @@ export function HeroSection() {
             </motion.div>
 
             <motion.div
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.08, y: -2 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-gold text-gold hover:bg-gold hover:text-black font-semibold text-lg px-8 py-6 rounded-xl relative overflow-hidden group"
+                className="border-3 border-gold text-gold hover:bg-gold hover:text-black font-bold text-xl px-12 py-8 rounded-2xl relative overflow-hidden group shadow-2xl shadow-gold/30"
               >
                 <motion.div
-                  className="absolute inset-0 bg-gold/10"
+                  className="absolute inset-0 bg-gold/20"
                   initial={{ scale: 0, opacity: 0 }}
                   whileHover={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.3 }}
                 />
-                <TrendingUp className="w-5 h-5 mr-2 relative z-10" />
+                <TrendingUp className="w-6 h-6 mr-3 relative z-10" />
                 <span className="relative z-10">Open FCPO Account</span>
               </Button>
             </motion.div>
 
             <motion.div
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.08, y: -2 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               <Button
                 size="lg"
-                className="bg-gold hover:bg-gold/90 text-black font-semibold text-lg px-8 py-6 rounded-xl relative overflow-hidden group"
+                className="bg-gradient-to-r from-gold via-gold to-yellow-500 hover:from-yellow-500 hover:via-gold hover:to-gold text-black font-bold text-xl px-12 py-8 rounded-2xl relative overflow-hidden group shadow-2xl shadow-gold/50"
               >
                 <motion.div
                   className="absolute inset-0"
                   animate={{
                     background: [
-                      "linear-gradient(45deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.3) 50%, rgba(255,215,0,0) 100%)",
-                      "linear-gradient(225deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.3) 50%, rgba(255,215,0,0) 100%)",
+                      "linear-gradient(45deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.4) 50%, rgba(255,215,0,0) 100%)",
+                      "linear-gradient(225deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.4) 50%, rgba(255,215,0,0) 100%)",
                     ],
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
-                <Sparkles className="w-5 h-5 mr-2 relative z-10" />
+                <Sparkles className="w-6 h-6 mr-3 relative z-10" />
                 <span className="relative z-10">Enter Premium Area</span>
                 <motion.div
-                  className="absolute inset-0 rounded-xl"
+                  className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  <span className="text-white text-xs font-bold">!</span>
+                </motion.div>
+                <motion.div
+                  className="absolute inset-0 rounded-2xl"
                   animate={{
                     boxShadow: [
-                      "0 0 20px rgba(255, 215, 0, 0.3)",
-                      "0 0 40px rgba(255, 215, 0, 0.6)",
-                      "0 0 20px rgba(255, 215, 0, 0.3)",
+                      "0 0 30px rgba(255, 215, 0, 0.4)",
+                      "0 0 60px rgba(255, 215, 0, 0.8)",
+                      "0 0 30px rgba(255, 215, 0, 0.4)",
                     ],
                   }}
                   transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
