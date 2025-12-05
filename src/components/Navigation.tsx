@@ -1,8 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogOut, User, Crown } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { AuthModal } from "@/components/AuthModal";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,7 +20,13 @@ import {
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { user, profile, isAuthenticated, logout } = useAuth();
+
+  // Prevent hydration mismatch by only rendering auth UI after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -63,7 +71,10 @@ export function Navigation() {
                 Membership
               </Link>
 
-              {isAuthenticated ? (
+              {/* Only render auth UI after mount to prevent hydration mismatch */}
+              {!mounted ? (
+                <div className="w-24 h-10" /> // Placeholder to prevent layout shift
+              ) : isAuthenticated ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button className="bg-gold hover:bg-gold/90 text-black font-semibold px-6 py-2 h-auto relative">
@@ -167,38 +178,42 @@ export function Navigation() {
                     Membership
                   </Link>
                   
-                  {isAuthenticated ? (
+                  {mounted && (
                     <>
-                      <div className="pt-4 border-t border-border">
-                        <div className="flex items-center gap-3 mb-4">
-                          <div className="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center">
-                            <User className="w-5 h-5 text-gold" />
+                      {isAuthenticated ? (
+                        <>
+                          <div className="pt-4 border-t border-border">
+                            <div className="flex items-center gap-3 mb-4">
+                              <div className="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center">
+                                <User className="w-5 h-5 text-gold" />
+                              </div>
+                              <div>
+                                <div className="font-semibold">{profile?.full_name}</div>
+                                <div className="text-xs text-muted-foreground">{user?.email}</div>
+                              </div>
+                            </div>
                           </div>
-                          <div>
-                            <div className="font-semibold">{profile?.full_name}</div>
-                            <div className="text-xs text-muted-foreground">{user?.email}</div>
-                          </div>
-                        </div>
-                      </div>
-                      <Button
-                        onClick={handleLogout}
-                        variant="outline"
-                        className="w-full border-destructive text-destructive hover:bg-destructive/10"
-                      >
-                        <LogOut className="w-4 h-4 mr-2" />
-                        Logout
-                      </Button>
+                          <Button
+                            onClick={handleLogout}
+                            variant="outline"
+                            className="w-full border-destructive text-destructive hover:bg-destructive/10"
+                          >
+                            <LogOut className="w-4 h-4 mr-2" />
+                            Logout
+                          </Button>
+                        </>
+                      ) : (
+                        <Button
+                          onClick={() => {
+                            setIsAuthModalOpen(true);
+                            setIsMenuOpen(false);
+                          }}
+                          className="w-full bg-gold hover:bg-gold/90 text-black font-semibold"
+                        >
+                          Login
+                        </Button>
+                      )}
                     </>
-                  ) : (
-                    <Button
-                      onClick={() => {
-                        setIsAuthModalOpen(true);
-                        setIsMenuOpen(false);
-                      }}
-                      className="w-full bg-gold hover:bg-gold/90 text-black font-semibold"
-                    >
-                      Login
-                    </Button>
                   )}
                 </div>
               </motion.div>
