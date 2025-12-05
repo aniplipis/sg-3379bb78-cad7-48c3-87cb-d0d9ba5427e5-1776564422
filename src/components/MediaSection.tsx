@@ -32,12 +32,17 @@ export function MediaSection() {
           {/* YouTube Video Embed */}
           <Card className="border-border/50 overflow-hidden">
             <CardContent className="p-0">
-              <div className="aspect-video bg-gradient-to-br from-red-500/20 to-black flex items-center justify-center">
-                <div className="text-center">
-                  <Youtube className="w-16 h-16 text-red-500 mx-auto mb-4" />
-                  <p className="text-muted-foreground">YouTube Video Embed</p>
-                  <p className="text-sm text-muted-foreground/60">Video URL to be added</p>
-                </div>
+              <div className="aspect-video">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/TZcsebQF9UQ"
+                  title="Max Saham Trading Journey"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="w-full h-full"
+                ></iframe>
               </div>
             </CardContent>
           </Card>
