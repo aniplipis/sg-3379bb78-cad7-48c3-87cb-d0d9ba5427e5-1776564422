@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -7,10 +6,20 @@ import { motion, Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export function HeroSection() {
-  const [counters, setCounters] = useState({ years: 0, students: 0, success: 0 });
+  const [mounted, setMounted] = useState(false);
+  const [counters, setCounters] = useState({ years: 8, students: 500, success: 95 });
 
   useEffect(() => {
-    const timer1 = setInterval(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    // Reset counters to 0 for animation
+    setCounters({ years: 0, students: 0, success: 0 });
+
+    const timer = setInterval(() => {
       setCounters(prev => ({
         years: prev.years < 8 ? prev.years + 1 : 8,
         students: prev.students < 500 ? prev.students + 25 : 500,
@@ -18,8 +27,8 @@ export function HeroSection() {
       }));
     }, 100);
 
-    return () => clearInterval(timer1);
-  }, []);
+    return () => clearInterval(timer);
+  }, [mounted]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -40,17 +49,6 @@ export function HeroSection() {
       transition: {
         duration: 0.6,
         ease: "easeOut",
-      },
-    },
-  };
-
-  const floatingVariants = {
-    animate: {
-      y: [0, -20, 0],
-      transition: {
-        duration: 6,
-        repeat: Infinity,
-        ease: "easeInOut",
       },
     },
   };
