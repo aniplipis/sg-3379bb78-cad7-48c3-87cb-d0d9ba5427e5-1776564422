@@ -6,35 +6,35 @@ export function TradingApproachSection() {
   const pillars = [
     {
       icon: TrendingUp,
-      title: "Wyckoff Method",
-      description: "Master market phases: Accumulation, Markup, Distribution, and Markdown. Understand institutional footprints and smart money positioning.",
+      title: "Core Smart Money Concepts",
+      description: "Master the fundamental building blocks of institutional trading through Break of Structure (BOS), Change of Character (CHoCH), and liquidity manipulation patterns.",
       highlights: [
-        "Market cycle analysis",
-        "Volume spread analysis",
-        "Cause and effect principle",
-        "Trading ranges identification"
+        "BOS & CHoCH patterns",
+        "Sweep → Shift → Confirm",
+        "Internal & external liquidity",
+        "High-quality Order Blocks"
       ]
     },
     {
       icon: Brain,
-      title: "Smart Money Concepts",
-      description: "Track institutional order flow through Break of Structure (BOS), Change of Character (CHoCH), liquidity sweeps, Order Blocks (OB), and Fair Value Gaps (FVG).",
+      title: "Indicator-Assisted Precision",
+      description: "Custom indicators help you auto-mark BOS/CHoCH, detect breakers, highlight liquidity zones, see volatility windows, and get clear entry & SL guidelines.",
       highlights: [
-        "BOS & CHoCH patterns",
-        "Liquidity grab setups",
-        "Order block confirmation",
-        "Fair value gap entries"
+        "Auto-mark BOS/CHoCH",
+        "Detect breakers",
+        "Highlight liquidity zones",
+        "Clear entry & SL guidelines"
       ]
     },
     {
       icon: Activity,
-      title: "Order Flow & Volume",
-      description: "Decode real-time market intentions through footprint charts, delta analysis, volume profile, and aggressive buying/selling patterns.",
+      title: "Bonus Lessons",
+      description: "Enhance your trading with foundational concepts from Wyckoff analysis, volume profile reading, order flow basics, and delta confirmation techniques.",
       highlights: [
-        "Footprint chart reading",
-        "Delta divergence signals",
-        "Volume profile levels",
-        "Aggressive order detection"
+        "Wyckoff foundations",
+        "Volume/Order Flow basics",
+        "Delta confirmation",
+        "Premium/discount zones"
       ]
     }
   ];
@@ -48,10 +48,10 @@ export function TradingApproachSection() {
             <span className="text-gold font-semibold">Trading Methodology</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Max Saham <span className="text-gold">Trading Approach</span>
+            Hybrid SMC <span className="text-gold">Trading Approach</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            A comprehensive trading system combining institutional analysis, smart money tracking, and order flow precision
+            Structured, repeatable Smart Money Concepts with powerful indicator assistance for FCPO trading
           </p>
         </div>
 

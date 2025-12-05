@@ -1,18 +1,15 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { GraduationCap, CheckCircle2, Calendar, Users, Video, BookOpen } from "lucide-react";
 
 export function ClassSection() {
   const syllabus = [
-    "Wyckoff Market Phases & Cycle Analysis",
-    "Smart Money Concepts (BOS, CHoCH, OB, FVG)",
-    "Order Flow & Volume Profile Reading",
-    "FCPO Market Structure & Behavior",
-    "Live Trading Session Analysis",
-    "Risk Management & Position Sizing",
-    "Trading Psychology & Discipline",
-    "Q&A and Personalized Guidance"
+    "3 Sesi Kelas Intensif + Rakaman Lengkap",
+    "Access segera: Indicators + Rakaman Lama",
+    "FCPO Alert Channel (Percuma)",
+    "Koleksi Video Training Lama",
+    "Technical Library (Ebook TA & FA)",
+    "Support Komuniti MAX CLAN"
   ];
 
   return (
@@ -24,10 +21,10 @@ export function ClassSection() {
             <span className="text-gold font-semibold">Education</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Max Saham <span className="text-gold">Online Trading Class</span>
+            Hybrid SMC <span className="text-gold">Masterclass — RM1,350</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Comprehensive FCPO trading education combining theory, strategy, and live market analysis
+            Join MAX CLAN and master FCPO trading with structured, repeatable Hybrid Smart Money Concepts
           </p>
         </div>
 
@@ -38,8 +35,8 @@ export function ClassSection() {
               <div className="aspect-[4/3] bg-gradient-to-br from-gold/20 to-blue-500/20 flex items-center justify-center">
                 <div className="text-center p-8">
                   <GraduationCap className="w-24 h-24 text-gold mx-auto mb-4" />
-                  <h3 className="text-3xl font-bold mb-2">FCPO Trading Masterclass</h3>
-                  <p className="text-muted-foreground">Professional Training Program</p>
+                  <h3 className="text-3xl font-bold mb-2">Hybrid SMC Masterclass</h3>
+                  <p className="text-muted-foreground">Professional FCPO Trading Program</p>
                 </div>
               </div>
             </CardContent>
@@ -49,7 +46,7 @@ export function ClassSection() {
           <div className="space-y-6">
             <Card className="border-border/50 bg-card/50 backdrop-blur">
               <CardContent className="p-6">
-                <h3 className="text-2xl font-bold mb-6">What You'll Learn</h3>
+                <h3 className="text-2xl font-bold mb-6">What You Will Receive / Apa Anda Akan Dapat</h3>
                 <ul className="space-y-3">
                   {syllabus.map((item, index) => (
                     <li key={index} className="flex items-start gap-3">
@@ -86,7 +83,7 @@ export function ClassSection() {
             </div>
 
             <Button className="w-full bg-gold hover:bg-gold/90 text-black font-semibold h-14 text-lg">
-              Register for Next Class
+              Daftar Sekarang / Register Now
             </Button>
           </div>
         </div>
@@ -94,15 +91,15 @@ export function ClassSection() {
         <Card className="border-gold/20 bg-gradient-to-r from-gold/5 to-blue-500/5">
           <CardContent className="p-8 text-center">
             <BookOpen className="w-12 h-12 text-gold mx-auto mb-4" />
-            <h3 className="text-2xl font-bold mb-2">Bonus Materials Included</h3>
+            <h3 className="text-2xl font-bold mb-2">Join MAX CLAN Community</h3>
             <p className="text-muted-foreground mb-4">
-              All students receive comprehensive study materials, trading templates, and lifetime access to course recordings
+              All students receive comprehensive study materials, trading templates, indicators, and lifetime access to the MAX CLAN community
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <span className="bg-gold/10 border border-gold/20 rounded-full px-4 py-2">Trading Checklist</span>
+              <span className="bg-gold/10 border border-gold/20 rounded-full px-4 py-2">Trading Indicators</span>
               <span className="bg-gold/10 border border-gold/20 rounded-full px-4 py-2">Strategy Templates</span>
               <span className="bg-gold/10 border border-gold/20 rounded-full px-4 py-2">Course Recordings</span>
-              <span className="bg-gold/10 border border-gold/20 rounded-full px-4 py-2">Community Access</span>
+              <span className="bg-gold/10 border border-gold/20 rounded-full px-4 py-2">MAX CLAN Access</span>
             </div>
           </CardContent>
         </Card>

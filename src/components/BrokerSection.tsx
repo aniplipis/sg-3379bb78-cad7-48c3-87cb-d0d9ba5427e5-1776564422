@@ -4,21 +4,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Shield, ExternalLink, CheckCircle2 } from "lucide-react";
 
 export function BrokerSection() {
-  const brokers = [
-    {
-      name: "Phillip Capital Malaysia",
-      logo: "/placeholder-phillip.svg",
-      features: ["Low commissions", "Advanced trading platform", "24/5 support"],
-      url: "https://www.poems.com.my"
-    },
-    {
-      name: "UOB Kay Hian Futures",
-      logo: "/placeholder-uob.svg",
-      features: ["Professional tools", "Real-time data", "Expert guidance"],
-      url: "https://www.uobkayhian.com.my"
-    }
-  ];
-
   return (
     <section id="broker" className="py-20 px-4 bg-background">
       <div className="max-w-6xl mx-auto">
@@ -31,39 +16,123 @@ export function BrokerSection() {
             Open Your <span className="text-gold">FCPO Trading Account</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Start trading with regulated Malaysian brokers recognized by Securities Commission Malaysia
+            Trade FCPO with trusted, regulated Malaysian brokers below.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {brokers.map((broker, index) => (
-            <Card key={index} className="border-border/50 hover:border-gold/50 transition-all duration-300 bg-card/50 backdrop-blur">
-              <CardContent className="p-8">
-                <div className="h-20 flex items-center justify-center mb-6 bg-muted/30 rounded-lg">
-                  <span className="text-2xl font-bold text-gold">{broker.name}</span>
-                </div>
-                
-                <ul className="space-y-3 mb-8">
-                  {broker.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-center gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0" />
-                      <span className="text-muted-foreground">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+          {/* PhillipCapital - Team Max Saham X Dr Arif FCPO */}
+          <Card className="border-border/50 hover:border-gold/50 transition-all duration-300 bg-card/50 backdrop-blur">
+            <CardContent className="p-8">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-gold mb-2">Phillip Capital Malaysia</h3>
+                <p className="text-lg font-semibold text-muted-foreground">Team Max Saham X Dr. Arif FCPO</p>
+              </div>
 
-                <Button 
-                  className="w-full bg-gold hover:bg-gold/90 text-black font-semibold h-12"
-                  asChild
+              <h4 className="font-bold text-lg mb-4">Why Open Your FCPO Account with Team Max Saham X Dr Arif?</h4>
+              
+              <p className="text-muted-foreground mb-6">
+                PhillipCapital is one of Malaysia's most established futures brokers — trusted, regulated, and ideal for FCPO traders seeking stability & professional support.
+              </p>
+              
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Client Portal lengkap — semua info dalam satu portal</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Grup & Alert Sawit Pro Trader</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Support Team Max Saham X Dr Arif</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Platform stabil & mesra scalper</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Edukasi asas futures & panduan risiko</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Akaun Islamic Futures (Patuh Syariah)</span>
+                </li>
+              </ul>
+
+              <Button 
+                className="w-full bg-gold hover:bg-gold/90 text-black font-semibold h-12 mb-3"
+                asChild
+              >
+                <a href="https://oao.phillip.com.my/?aetag=MAP" target="_blank" rel="noopener noreferrer">
+                  Open Account Now (PhillipCapital)
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                </a>
+              </Button>
+
+              <div className="text-center">
+                <a 
+                  href="https://drive.google.com/file/d/1mEzGX4rN9s6NMIY_itEC5-aCAYIzWjNf/view" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-gold hover:text-gold/80 underline"
                 >
-                  <a href={broker.url} target="_blank" rel="noopener noreferrer">
-                    Open Account
-                    <ExternalLink className="w-4 h-4 ml-2" />
-                  </a>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                  Panduan buka akaun
+                </a>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* UOB Kay Hian - Team Max Saham X Coach Taro */}
+          <Card className="border-border/50 hover:border-gold/50 transition-all duration-300 bg-card/50 backdrop-blur">
+            <CardContent className="p-8">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-gold mb-2">UOB Kay Hian Futures</h3>
+                <p className="text-lg font-semibold text-muted-foreground">Team Max Saham X Coach Taro</p>
+              </div>
+
+              <h4 className="font-bold text-lg mb-4">Why Open Your FCPO Account with Team Max Saham X Coach Taro?</h4>
+              
+              <p className="text-muted-foreground mb-6">
+                UOB Kay Hian is a reputable broker for serious FCPO traders.
+              </p>
+              
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Support Group Coach Taro</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Grup & Alert Sawit Pro Trader</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Special Spread Trading Class</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Execution laju & konsisten</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Onboarding personal assistance</span>
+                </li>
+              </ul>
+
+              <Button 
+                className="w-full bg-gold hover:bg-gold/90 text-black font-semibold h-12"
+                asChild
+              >
+                <a href="https://t.me/abgmax" target="_blank" rel="noopener noreferrer">
+                  PM in Telegram
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                </a>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="bg-muted/30 border border-border/50 rounded-xl p-6 text-center">
