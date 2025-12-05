@@ -254,9 +254,19 @@ export default function Downloads() {
                   >
                     <CardContent className="p-4">
                       {/* Book Cover */}
-                      <div className={`w-full aspect-[3/4] bg-gradient-to-br ${getBookCoverColor(ebook.id)} rounded-lg mb-4 flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg`}>
-                        <BookOpen className="w-16 h-16 text-white/90" />
-                      </div>
+                      {ebook.id === 1 ? (
+                        <div className="w-full aspect-[3/4] rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform shadow-lg">
+                          <img 
+                            src="/3-simple-options-strategies.PNG" 
+                            alt={ebook.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className={`w-full aspect-[3/4] bg-gradient-to-br ${getBookCoverColor(ebook.id)} rounded-lg mb-4 flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg`}>
+                          <BookOpen className="w-16 h-16 text-white/90" />
+                        </div>
+                      )}
 
                       {/* Title */}
                       <h3 className="font-bold text-lg mb-1">{ebook.title}</h3>
