@@ -172,17 +172,12 @@ export default async function handler(
       console.log('✅ Using existing Stripe customer:', customerId);
     }
 
-    // Step 4: Determine price based on promo code
+    // Step 4: Determine price
     const price = promoCode?.toLowerCase() === 'premium363' 
       ? PREMIUM_MEMBERSHIP.discountPrice 
       : PREMIUM_MEMBERSHIP.price;
 
-    console.log('💰 Price:', { 
-      original: PREMIUM_MEMBERSHIP.price, 
-      final: price, 
-      currency: PREMIUM_MEMBERSHIP.currency,
-      promoCode: promoCode || 'none' 
-    });
+    console.log('💰 Price:', { original: PREMIUM_MEMBERSHIP.price, final: price, promoCode: promoCode || 'none' });
 
     // Step 5: Create checkout session
     console.log('🎫 Creating checkout session...');
@@ -207,7 +202,6 @@ export default async function handler(
             quantity: 1,
           },
         ],
-        payment_method_types: ['card'],
         success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/members?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/#membership`,
         metadata: {
