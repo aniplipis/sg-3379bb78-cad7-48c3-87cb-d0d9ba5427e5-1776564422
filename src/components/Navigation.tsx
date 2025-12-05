@@ -94,6 +94,12 @@ export function Navigation() {
                         Profile
                       </Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/account">
+                        <User className="w-4 h-4 mr-2" />
+                        Account Settings
+                      </Link>
+                    </DropdownMenuItem>
                     {profile?.is_premium ? (
                       <DropdownMenuItem asChild>
                         <Link href="/members" className="text-neon-blue">
