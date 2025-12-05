@@ -41,7 +41,7 @@ export default function Downloads() {
   // All 103 eBooks with Google Drive links
   const allEbooks = [
     { id: 1, title: "3 Simple Options Strategies - Andy Crowder", category: "Trading Strategy", link: "https://drive.google.com/file/d/13ER99RSUAlNBCztIpqVyMWHV3UI4S-pQ/view?usp=drive_link" },
-    { id: 2, title: "eBook #2", category: "Trading Strategy", link: "https://drive.google.com/file/d/1rcNVTQnr6qQrmpHYb3RjcaftW_tYrkkZ/view?usp=drive_link" },
+      { id: 2, title: "7 Strategies for Wealth & Happiness - Jim E Rohn", category: "Trading Strategy", link: "https://drive.google.com/file/d/1rcNVTQnr6qQrmpHYb3RjcaftW_tYrkkZ/view?usp=drive_link" },
     { id: 3, title: "eBook #3", category: "Technical Analysis", link: "https://drive.google.com/file/d/1NQQ80TeeCm_Dg56UMvdAbBMR8DwbBG17/view?usp=drive_link" },
     { id: 4, title: "eBook #4", category: "Technical Analysis", link: "https://drive.google.com/file/d/1kZS5Ew8Jn4-0GrMF9CKLv_gDFLd-k2Gi/view?usp=drive_link" },
     { id: 5, title: "eBook #5", category: "Risk Management", link: "https://drive.google.com/file/d/1LSVUv-YFlN2x42XOE6nwWEi1LQ6k-tGG/view?usp=drive_link" },
