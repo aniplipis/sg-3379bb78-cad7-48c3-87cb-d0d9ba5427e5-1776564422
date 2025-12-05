@@ -26,22 +26,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Fetch or create user profile
   const manageUserProfile = async (supabaseUser: SupabaseUser): Promise<Profile | null> => {
     try {
-      const { data: profile, error } = await supabase
+      // First, try to fetch existing profile
+      const { data: existingProfile, error: fetchError } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", supabaseUser.id)
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== "PGRST116") { // PGRST116 = no rows found
-        console.error("Error fetching profile:", error);
+      // If there's an error other than "no rows found", log it
+      if (fetchError && fetchError.code !== "PGRST116") {
+        console.error("Error fetching profile:", fetchError);
         return null;
       }
 
-      if (profile) {
-        return profile;
+      // If profile exists, return it
+      if (existingProfile) {
+        return existingProfile;
       }
 
-      // Create profile if it doesn't exist
+      // Profile doesn't exist, create it
       // Try to get full_name from multiple sources
       const fullName = 
         supabaseUser.user_metadata?.full_name || 
