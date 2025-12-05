@@ -91,7 +91,7 @@ export function MembershipSection() {
             <span className="text-gold font-semibold">Membership Tiers</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Choose Your <span className="text-gold">Learning Path</span>
+            Membership — <span className="text-gold">Free vs Premium</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Start free or upgrade to premium for complete access to professional FCPO trading education
@@ -128,34 +128,22 @@ export function MembershipSection() {
                 <Users className="w-8 h-8 text-foreground" />
               </div>
               <CardTitle className="text-3xl mb-2">Free Access</CardTitle>
-              <p className="text-muted-foreground">Start your FCPO trading journey</p>
+              <p className="text-muted-foreground">Join public Telegram community</p>
               <div className="text-4xl font-bold mt-4">Free</div>
             </CardHeader>
             <CardContent>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Basic FCPO education videos</span>
+                  <span className="text-muted-foreground">Public Telegram access</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Public Telegram community</span>
+                  <span className="text-muted-foreground">Market notes</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Free PDF guides</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Broker setup tutorials</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Weekly market updates</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Access to public webinars</span>
+                  <span className="text-muted-foreground">Sample videos</span>
                 </li>
               </ul>
               <Button className="w-full" variant="outline">
@@ -188,7 +176,7 @@ export function MembershipSection() {
                 <div className="text-5xl font-bold text-gold">
                   {displayPrice}
                 </div>
-                <div className="text-muted-foreground">per year</div>
+                <div className="text-muted-foreground">onboarding + RM 363/year renewal</div>
                 {promoCode.trim().toUpperCase() === 'PREMIUM363' && (
                   <div className="inline-block bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-semibold">
                     Save RM 987!
@@ -235,43 +223,35 @@ export function MembershipSection() {
               <div className="space-y-4 py-6">
                 <div className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
-                  <span>Access to all video lessons (Vimeo)</span>
+                  <span>All classes + recordings</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
-                  <span>Downloadable eBooks & trading guides</span>
+                  <span>Indicators</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
-                  <span>Exclusive Premium Telegram (Max Clan)</span>
+                  <span>Alerts</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
-                  <span>Advanced technical analysis notes</span>
+                  <span>Technical Library (Ebook TA & FA)</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
-                  <span>Monthly live Zoom trading sessions</span>
+                  <span>MAX CLAN community access</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
-                  <span>One-on-one consultation slots</span>
+                  <span>Templates & tools</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
-                  <span>Priority support & guidance</span>
+                  <span>Priority support</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
-                  <span>Lifetime course updates</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
-                  <span>Trading templates & checklists</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
-                  <span>Recording of all live sessions</span>
+                  <span>Affiliate program</span>
                 </div>
               </div>
 
@@ -281,7 +261,7 @@ export function MembershipSection() {
                 className="w-full bg-gradient-to-r from-gold to-yellow-500 hover:from-gold/90 hover:to-yellow-500/90 text-black font-bold text-lg py-6 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Crown className="w-5 h-5 mr-2" />
-                {isLoadingCheckout ? 'Processing...' : user ? 'Upgrade to Premium' : 'Sign in to Upgrade'}
+                {isLoadingCheckout ? 'Processing...' : user ? 'Upgrade Now — Sertai MAX CLAN' : 'Sign in to Upgrade'}
               </Button>
 
               <p className="text-xs text-center text-muted-foreground">

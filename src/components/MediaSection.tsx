@@ -21,7 +21,7 @@ export function MediaSection() {
             <span className="text-blue-400 font-semibold">Media & Community</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Follow My <span className="text-gold">Trading Journey</span>
+            Featured Video — <span className="text-gold">Intro to FCPO</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Daily market analysis, trading insights, and educational content across all platforms
@@ -32,12 +32,17 @@ export function MediaSection() {
           {/* YouTube Video Embed */}
           <Card className="border-border/50 overflow-hidden">
             <CardContent className="p-0">
-              <div className="aspect-video bg-gradient-to-br from-red-500/20 to-black flex items-center justify-center">
-                <div className="text-center">
-                  <Youtube className="w-16 h-16 text-red-500 mx-auto mb-4" />
-                  <p className="text-muted-foreground">YouTube Video Embed</p>
-                  <p className="text-sm text-muted-foreground/60">Video URL to be added</p>
-                </div>
+              <div className="aspect-video">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/tsKPL07KcXw?start=3156"
+                  title="Intro to FCPO Trading"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                ></iframe>
               </div>
             </CardContent>
           </Card>

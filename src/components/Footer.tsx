@@ -126,7 +126,9 @@ export function Footer() {
         {/* Disclaimer */}
         <div className="mt-8 p-4 bg-muted/30 rounded-lg">
           <p className="text-xs text-muted-foreground text-center">
-            <strong>Risk Disclaimer:</strong> Trading futures and derivatives involves substantial risk of loss and is not suitable for all investors. 
+            <strong>Risk Disclaimer:</strong> All content provided by MaxSaham is for educational purposes only and does not constitute financial advice. 
+            Futures trading involves significant risk and may result in the loss of capital. Trade responsibly and within your own risk tolerance. 
+            Trading futures and derivatives involves substantial risk of loss and is not suitable for all investors. 
             The high degree of leverage can work against you as well as for you. Before deciding to trade, you should carefully consider your investment objectives, 
             level of experience, and risk appetite. The possibility exists that you could sustain a loss of some or all of your initial investment. 
             You should only trade with money you can afford to lose.
