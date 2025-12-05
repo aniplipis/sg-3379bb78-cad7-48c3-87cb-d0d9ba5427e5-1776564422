@@ -1,7 +1,7 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MessageCircle, Send, Youtube, Music2, Facebook, Mail } from "lucide-react";
-import { motion } from "framer-motion";
 
 export function ContactSection() {
   const contacts = [
@@ -116,47 +116,6 @@ export function ContactSection() {
             </CardContent>
           </Card>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-
-          <motion.div
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}>
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-neon-blue via-blue-500 to-neon-blue hover:from-blue-500 hover:via-neon-blue hover:to-blue-500 text-black font-bold text-lg px-10 py-7 rounded-2xl shadow-2xl shadow-neon-blue/50 relative overflow-hidden group">
-              <motion.div
-                className="absolute inset-0 bg-white/20"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: "100%" }}
-                transition={{ duration: 0.5 }} />
-              <Send className="w-5 h-5 mr-3 relative z-10" />
-              <span className="relative z-10">Join Telegram Community</span>
-            </Button>
-          </motion.div>
-
-          <motion.div
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-3 border-gold text-gold hover:bg-gold hover:text-black font-bold text-lg px-10 py-7 rounded-2xl shadow-xl shadow-gold/30 relative overflow-hidden group">
-              <motion.div
-                className="absolute inset-0 bg-gold/20"
-                initial={{ scale: 0 }}
-                whileHover={{ scale: 1 }}
-                transition={{ duration: 0.3 }} />
-              <Mail className="w-5 h-5 mr-3 relative z-10" />
-              <span className="relative z-10">Email Us</span>
-            </Button>
-          </motion.div>
-        </motion.div>
       </div>
     </section>
   );

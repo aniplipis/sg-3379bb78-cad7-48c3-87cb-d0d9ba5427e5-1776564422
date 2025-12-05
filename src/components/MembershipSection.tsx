@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, Crown, Users, Sparkles, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { motion } from "framer-motion";
 
 export function MembershipSection() {
   const { user, profile } = useAuth();
@@ -276,48 +275,14 @@ export function MembershipSection() {
                 </div>
               </div>
 
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="relative">
-                <Button
-                  onClick={handlePremiumCheckout}
-                  disabled={isLoadingCheckout || !user}
-                  className="w-full bg-gradient-to-r from-neon-blue via-blue-500 to-neon-blue hover:from-blue-500 hover:via-neon-blue hover:to-blue-500 text-black font-bold text-xl py-8 rounded-2xl relative overflow-hidden group shadow-2xl shadow-neon-blue/50"
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-white/30"
-                    initial={{ x: "-100%" }}
-                    whileHover={{ x: "100%" }}
-                    transition={{ duration: 0.6 }} />
-                  {isLoadingCheckout ? (
-                    <div className="flex items-center justify-center relative z-10">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-3 border-black mr-3"></div>
-                      Processing...
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-center relative z-10">
-                      <Crown className="w-6 h-6 mr-3" />
-                      <span className="text-xl">Upgrade to Premium Now</span>
-                      <motion.div
-                        animate={{ x: [0, 5, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}>
-                        →
-                      </motion.div>
-                    </div>
-                  )}
-                  <motion.div
-                    className="absolute inset-0 rounded-2xl"
-                    animate={{
-                      boxShadow: [
-                        "0 0 30px rgba(0, 217, 255, 0.4)",
-                        "0 0 60px rgba(0, 217, 255, 0.8)",
-                        "0 0 30px rgba(0, 217, 255, 0.4)"
-                      ]
-                    }}
-                    transition={{ duration: 2, repeat: Infinity }} />
-                </Button>
-              </motion.div>
+              <Button
+                onClick={handlePremiumCheckout}
+                disabled={isLoadingCheckout || !user}
+                className="w-full bg-gradient-to-r from-gold to-yellow-500 hover:from-gold/90 hover:to-yellow-500/90 text-black font-bold text-lg py-6 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Crown className="w-5 h-5 mr-2" />
+                {isLoadingCheckout ? 'Processing...' : user ? 'Upgrade to Premium' : 'Sign in to Upgrade'}
+              </Button>
 
               <p className="text-xs text-center text-muted-foreground">
                 Secure payment powered by Stripe
