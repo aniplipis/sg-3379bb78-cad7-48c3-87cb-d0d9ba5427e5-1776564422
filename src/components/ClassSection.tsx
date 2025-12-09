@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { GraduationCap, CheckCircle2, Calendar, Users, Video, BookOpen, Image as ImageIcon } from "lucide-react";
+import { GraduationCap, CheckCircle2, Calendar, Users, Video, BookOpen } from "lucide-react";
 import Link from "next/link";
 
 export function ClassSection() {
@@ -93,31 +93,6 @@ export function ClassSection() {
               </Link>
             </Button>
           </div>
-        </div>
-
-        {/* Testimonials Section */}
-        <div className="mb-12">
-          <Card className="border-border/50 bg-card/50 backdrop-blur overflow-hidden">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <Users className="w-6 h-6 text-gold" />
-                <h3 className="text-2xl font-bold">Student Testimonials</h3>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                {[...Array(10)].map((_, index) => (
-                  <div
-                    key={index}
-                    className="aspect-square bg-gradient-to-br from-gold/10 to-blue-500/10 rounded-lg border border-border/50 flex items-center justify-center hover:scale-105 transition-transform"
-                  >
-                    <div className="text-center">
-                      <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
-                      <p className="text-xs text-muted-foreground">Testimonial {index + 1}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         <Card className="border-gold/20 bg-gradient-to-r from-gold/5 to-blue-500/5">
