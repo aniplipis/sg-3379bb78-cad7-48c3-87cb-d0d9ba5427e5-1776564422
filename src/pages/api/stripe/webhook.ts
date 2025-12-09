@@ -63,7 +63,7 @@ export default async function handler(
           console.log(`✅ Premium access granted to user: ${userId}`);
 
           // Get user details for email
-          const { data: profile } = await supabaseAdmin
+          const { data: profile } = await supabase
             .from('profiles')
             .select('full_name, email')
             .eq('id', userId)
@@ -85,7 +85,7 @@ export default async function handler(
                     subject: '✅ Payment Successful - Team Max Saham',
                     type: 'payment',
                     userName: profile.full_name,
-                    membershipType: priceToMembership[priceId] || 'Premium',
+                    membershipType: 'Premium Membership',
                   }),
                 }
               );

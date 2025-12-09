@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { Loader2, User, Mail, Lock, Chrome, Phone, TrendingUp } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { sendWelcomeEmail } from "@/services/authService";
 
 const registerSchema = z.object({
@@ -35,6 +36,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const { register: registerUser, loginWithGoogle } = useAuth();
+  const { toast } = useToast();
 
   const {
     register,
@@ -50,22 +52,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     setSuccess(false);
 
     try {
-      const signUpError = await registerUser(data.name, data.email, data.password, data.phone, data.tradingview_username);
-      if (signUpError?.message?.includes('already registered')) {
-        toast({
-          title: "Account already exists",
-          description: "Please sign in instead or reset your password if you forgot it.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      if (signUpError) {
-        throw signUpError;
-      }
+      await registerUser(data.name, data.email, data.password, data.phone, data.tradingview_username);
 
       // Send welcome email
-      await sendWelcomeEmail(data.email, data.fullName);
+      await sendWelcomeEmail(data.email, data.name);
 
       toast({
         title: "Registration successful!",
@@ -77,7 +67,22 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         onSuccess();
       }, 2000);
     } catch (err: any) {
-      setError(err.message || "Registration failed. Please try again.");
+      // Check for specific Supabase error messages
+      if (err.message?.includes('already registered') || err.message?.includes('User already registered')) {
+        toast({
+          title: "Account already exists",
+          description: "Please sign in instead or reset your password.",
+          variant: "destructive",
+        });
+        setError("Account already exists. Please login instead.");
+      } else {
+        setError(err.message || "Registration failed. Please try again.");
+        toast({
+          title: "Registration failed",
+          description: err.message || "Please try again later.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
