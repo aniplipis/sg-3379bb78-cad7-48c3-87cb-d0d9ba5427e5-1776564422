@@ -4,18 +4,18 @@ import { Calendar, Users, MapPin, Send, Utensils, Building2 } from "lucide-react
 import { motion } from "framer-motion";
 
 export function PhysicalClassSection() {
-  // Placeholder class photos - replace with actual training photos
-  const classPhotos = [
-    { id: 1, image: "/uploads/class-photo-1.png", alt: "Training Session 1" },
-    { id: 2, image: "/uploads/class-photo-2.png", alt: "Training Session 2" },
-    { id: 3, image: "/uploads/class-photo-3.png", alt: "Training Session 3" },
-    { id: 4, image: "/uploads/class-photo-4.png", alt: "Training Session 4" },
-    { id: 5, image: "/uploads/class-photo-5.png", alt: "Training Session 5" },
-    { id: 6, image: "/uploads/class-photo-6.png", alt: "Training Session 6" },
-    { id: 7, image: "/uploads/class-photo-7.png", alt: "Training Session 7" },
-    { id: 8, image: "/uploads/class-photo-8.png", alt: "Training Session 8" },
-    { id: 9, image: "/uploads/class-photo-9.png", alt: "Training Session 9" },
-    { id: 10, image: "/uploads/class-photo-10.png", alt: "Training Session 10" }
+  // Testimonial images - actual student testimonials
+  const testimonialImages = [
+    { id: 1, image: "/uploads/testimonial-1.jpg", alt: "Student Testimonial 1" },
+    { id: 2, image: "/uploads/testimonial-2.jpg", alt: "Student Testimonial 2" },
+    { id: 3, image: "/uploads/testimonial-3.jpg", alt: "Student Testimonial 3" },
+    { id: 4, image: "/uploads/testimonial-4.jpg", alt: "Student Testimonial 4" },
+    { id: 5, image: "/uploads/testimonial-5.jpg", alt: "Student Testimonial 5" },
+    { id: 6, image: "/uploads/testimonial-6.jpg", alt: "Student Testimonial 6" },
+    { id: 7, image: "/uploads/testimonial-7.jpg", alt: "Student Testimonial 7" },
+    { id: 8, image: "/uploads/testimonial-8.jpg", alt: "Student Testimonial 8" },
+    { id: 9, image: "/uploads/testimonial-9.jpg", alt: "Student Testimonial 9" },
+    { id: 10, image: "/uploads/testimonial-10.jpg", alt: "Student Testimonial 10" }
   ];
 
   return (
@@ -136,64 +136,59 @@ export function PhysicalClassSection() {
           </Card>
         </div>
 
-        {/* Scrolling Class Photos */}
-        <div className="relative mb-8">
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-muted/30 to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-muted/30 to-transparent z-10"></div>
+        {/* Student Testimonials Section */}
+        <div className="mb-12">
+          <div className="flex items-center gap-2 mb-6">
+            <Users className="w-6 h-6 text-gold" />
+            <h3 className="text-2xl font-bold">Student Testimonials</h3>
+          </div>
           
-          <motion.div
-            className="flex gap-4"
-            animate={{
-              x: [0, -1800],
-            }}
-            transition={{
-              x: {
-                duration: 30,
-                repeat: Infinity,
-                ease: "linear",
-              },
-            }}
-          >
-            {/* First set */}
-            {classPhotos.map((photo) => (
-              <div
-                key={photo.id}
-                className="min-w-[300px] h-[200px] rounded-lg overflow-hidden bg-muted flex items-center justify-center"
-              >
-                <img
-                  src={photo.image}
-                  alt={photo.alt}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop";
-                  }}
-                />
-              </div>
-            ))}
+          <div className="relative">
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-muted/30 to-transparent z-10"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-muted/30 to-transparent z-10"></div>
             
-            {/* Duplicate set for seamless loop */}
-            {classPhotos.map((photo) => (
-              <div
-                key={`dup-${photo.id}`}
-                className="min-w-[300px] h-[200px] rounded-lg overflow-hidden bg-muted flex items-center justify-center"
-              >
-                <img
-                  src={photo.image}
-                  alt={photo.alt}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop";
-                  }}
-                />
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
-        <div className="text-center text-muted-foreground">
-          <p>
-            📸 <span className="font-semibold">Note to Admin:</span> Upload 10 class photos to /uploads/ folder named class-photo-1.png through class-photo-10.png
-          </p>
+            <motion.div
+              className="flex gap-4"
+              animate={{
+                x: [0, -1800],
+              }}
+              transition={{
+                x: {
+                  duration: 30,
+                  repeat: Infinity,
+                  ease: "linear",
+                },
+              }}
+            >
+              {/* First set */}
+              {testimonialImages.map((testimonial) => (
+                <div
+                  key={testimonial.id}
+                  className="min-w-[300px] h-[400px] rounded-lg overflow-hidden bg-card border border-border/50 shadow-lg"
+                >
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.alt}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+              
+              {/* Duplicate set for seamless loop */}
+              {testimonialImages.map((testimonial) => (
+                <div
+                  key={`dup-${testimonial.id}`}
+                  className="min-w-[300px] h-[400px] rounded-lg overflow-hidden bg-card border border-border/50 shadow-lg"
+                >
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.alt}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
