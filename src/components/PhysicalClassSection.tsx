@@ -2,6 +2,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Users, MapPin, Send, Utensils, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export function PhysicalClassSection() {
   // Testimonial images - actual student testimonials
@@ -168,20 +173,30 @@ export function PhysicalClassSection() {
               }}
             >
               {duplicatedTestimonials.map((testimonial, index) => (
-                <div
-                  key={`${testimonial.id}-${index}`}
-                  className="flex-shrink-0 w-[280px]"
-                >
-                  <Card className="border-gold/30 bg-card/80 backdrop-blur overflow-hidden hover:border-gold transition-all">
-                    <CardContent className="p-0">
+                <Dialog key={`${testimonial.id}-${index}`}>
+                  <DialogTrigger asChild>
+                    <div className="flex-shrink-0 w-[280px] cursor-pointer">
+                      <Card className="border-gold/30 bg-card/80 backdrop-blur overflow-hidden hover:border-gold hover:scale-105 transition-all">
+                        <CardContent className="p-0">
+                          <img
+                            src={testimonial.image}
+                            alt={testimonial.alt}
+                            className="w-full h-[350px] object-cover"
+                          />
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl w-full p-0 bg-black/90">
+                    <div className="relative w-full h-[80vh]">
                       <img
                         src={testimonial.image}
                         alt={testimonial.alt}
-                        className="w-full h-[350px] object-cover"
+                        className="w-full h-full object-contain"
                       />
-                    </CardContent>
-                  </Card>
-                </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               ))}
             </motion.div>
           </div>

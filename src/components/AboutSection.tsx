@@ -1,6 +1,11 @@
 import { TrendingUp, Target, Brain, Trophy, Award } from "lucide-react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export function AboutSection() {
   return (
@@ -110,50 +115,97 @@ export function AboutSection() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* DVTC 2021 */}
-                  <div>
-                    <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden mb-3">
-                      <div className="relative w-full h-full">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="cursor-pointer hover:scale-105 transition-transform">
+                        <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden mb-3">
+                          <div className="relative w-full h-full">
+                            <Image
+                              src="/dvtc2021.jpg"
+                              alt="DVTC 2021 Ranking #1"
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, 33vw"
+                            />
+                          </div>
+                        </div>
+                        <p className="text-center text-lg font-semibold text-gold">2021 Championship</p>
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl w-full p-0 bg-black/90">
+                      <div className="relative w-full aspect-[3/4]">
                         <Image
                           src="/dvtc2021.jpg"
                           alt="DVTC 2021 Ranking #1"
                           fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-contain"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                         />
                       </div>
-                    </div>
-                    <p className="text-center text-lg font-semibold text-gold">2021 Championship</p>
-                  </div>
+                    </DialogContent>
+                  </Dialog>
+
                   {/* DVTC 2022 */}
-                  <div>
-                    <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden mb-3">
-                      <div className="relative w-full h-full">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="cursor-pointer hover:scale-105 transition-transform">
+                        <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden mb-3">
+                          <div className="relative w-full h-full">
+                            <Image
+                              src="/dvtc2022.jpg"
+                              alt="DVTC 2022 Ranking #1"
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, 33vw"
+                            />
+                          </div>
+                        </div>
+                        <p className="text-center text-lg font-semibold text-gold">2022 Championship</p>
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl w-full p-0 bg-black/90">
+                      <div className="relative w-full aspect-[3/4]">
                         <Image
                           src="/dvtc2022.jpg"
                           alt="DVTC 2022 Ranking #1"
                           fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-contain"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                         />
                       </div>
-                    </div>
-                    <p className="text-center text-lg font-semibold text-gold">2022 Championship</p>
-                  </div>
+                    </DialogContent>
+                  </Dialog>
+
                   {/* DVTC 2024 */}
-                  <div>
-                    <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden mb-3">
-                      <div className="relative w-full h-full">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="cursor-pointer hover:scale-105 transition-transform">
+                        <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden mb-3">
+                          <div className="relative w-full h-full">
+                            <Image
+                              src="/dvtc2024.jpg"
+                              alt="DVTC 2024 Ranking #1"
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, 33vw"
+                            />
+                          </div>
+                        </div>
+                        <p className="text-center text-lg font-semibold text-gold">2024 Championship</p>
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl w-full p-0 bg-black/90">
+                      <div className="relative w-full aspect-[3/4]">
                         <Image
                           src="/dvtc2024.jpg"
                           alt="DVTC 2024 Ranking #1"
                           fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-contain"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                         />
                       </div>
-                    </div>
-                    <p className="text-center text-lg font-semibold text-gold">2024 Championship</p>
-                  </div>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </CardContent>
             </Card>
@@ -169,25 +221,40 @@ export function AboutSection() {
                 </h3>
               </div>
               
-              <div className="bg-card/30 rounded-lg overflow-hidden border border-neon-blue/20">
-                <div className="relative w-full aspect-[16/10]">
-                  <Image
-                    src="/Tradingview.jpg"
-                    alt="TradingView Championship Leaderboard - MaxSaham Top 6 Position"
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-                  />
-                </div>
-                <div className="p-6 text-center bg-gradient-to-b from-transparent to-neon-blue/5">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Trophy className="w-6 h-6 text-neon-blue" />
-                    <h4 className="text-xl font-bold text-neon-blue">Position #6 - MaxSaham</h4>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div className="bg-card/30 rounded-lg overflow-hidden border border-neon-blue/20 cursor-pointer hover:scale-[1.02] transition-transform">
+                    <div className="relative w-full aspect-[16/10]">
+                      <Image
+                        src="/Tradingview.jpg"
+                        alt="TradingView Championship Leaderboard - MaxSaham Top 6 Position"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                      />
+                    </div>
+                    <div className="p-6 text-center bg-gradient-to-b from-transparent to-neon-blue/5">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <Trophy className="w-6 h-6 text-neon-blue" />
+                        <h4 className="text-xl font-bold text-neon-blue">Position #6 - MaxSaham</h4>
+                      </div>
+                      <p className="text-lg text-muted-foreground">+4.08% Profit | +$10,209.57 USD</p>
+                      <p className="text-sm text-muted-foreground mt-2">Out of 52,946 registered traders worldwide</p>
+                    </div>
                   </div>
-                  <p className="text-lg text-muted-foreground">+4.08% Profit | +$10,209.57 USD</p>
-                  <p className="text-sm text-muted-foreground mt-2">Out of 52,946 registered traders worldwide</p>
-                </div>
-              </div>
+                </DialogTrigger>
+                <DialogContent className="max-w-6xl w-full p-0 bg-black/90">
+                  <div className="relative w-full aspect-[16/10]">
+                    <Image
+                      src="/Tradingview.jpg"
+                      alt="TradingView Championship Leaderboard - MaxSaham Top 6 Position"
+                      fill
+                      className="object-contain"
+                      sizes="100vw"
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
             </CardContent>
           </Card>
 
@@ -201,25 +268,40 @@ export function AboutSection() {
                 </h3>
               </div>
               
-              <div className="bg-card/30 rounded-lg overflow-hidden border border-gold/20">
-                <div className="relative w-full aspect-[16/10]">
-                  <Image
-                    src="/affin.jpg"
-                    alt="Affin Hwang Simulation Challenge 2024 - 1st Place Winner"
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-                  />
-                </div>
-                <div className="p-6 text-center bg-gradient-to-b from-transparent to-gold/5">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Trophy className="w-6 h-6 text-gold" />
-                    <h4 className="text-xl font-bold text-gold">Champion - 1st Place</h4>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div className="bg-card/30 rounded-lg overflow-hidden border border-gold/20 cursor-pointer hover:scale-[1.02] transition-transform">
+                    <div className="relative w-full aspect-[16/10]">
+                      <Image
+                        src="/affin.jpg"
+                        alt="Affin Hwang Simulation Challenge 2024 - 1st Place Winner"
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                      />
+                    </div>
+                    <div className="p-6 text-center bg-gradient-to-b from-transparent to-gold/5">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <Trophy className="w-6 h-6 text-gold" />
+                        <h4 className="text-xl font-bold text-gold">Champion - 1st Place</h4>
+                      </div>
+                      <p className="text-lg text-muted-foreground">Affin Hwang Investment Bank Trading Simulation</p>
+                      <p className="text-sm text-muted-foreground mt-2">Proven excellence in simulated trading environment</p>
+                    </div>
                   </div>
-                  <p className="text-lg text-muted-foreground">Affin Hwang Investment Bank Trading Simulation</p>
-                  <p className="text-sm text-muted-foreground mt-2">Proven excellence in simulated trading environment</p>
-                </div>
-              </div>
+                </DialogTrigger>
+                <DialogContent className="max-w-6xl w-full p-0 bg-black/90">
+                  <div className="relative w-full aspect-[16/10]">
+                    <Image
+                      src="/affin.jpg"
+                      alt="Affin Hwang Simulation Challenge 2024 - 1st Place Winner"
+                      fill
+                      className="object-contain"
+                      sizes="100vw"
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
             </CardContent>
           </Card>
         </div>
