@@ -146,12 +146,23 @@ export function AboutSection() {
                 </h3>
               </div>
               
-              <div className="bg-card/30 rounded-lg p-8 border border-neon-blue/20">
-                <div className="flex flex-col items-center justify-center space-y-4">
-                  <Trophy className="w-16 h-16 text-neon-blue animate-pulse" />
-                  <h4 className="text-2xl font-bold text-neon-blue">Top 6 Finalist</h4>
-                  <p className="text-lg text-muted-foreground">Out of 50,000+ Traders Worldwide</p>
-                  <p className="text-sm text-muted-foreground italic">TradingView Championship Image Placeholder</p>
+              <div className="bg-card/30 rounded-lg overflow-hidden border border-neon-blue/20">
+                <div className="relative w-full aspect-[16/10]">
+                  <Image
+                    src="/Tradingview.jpg"
+                    alt="TradingView Championship Leaderboard - MaxSaham Top 6 Position"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                  />
+                </div>
+                <div className="p-6 text-center bg-gradient-to-b from-transparent to-neon-blue/5">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Trophy className="w-6 h-6 text-neon-blue" />
+                    <h4 className="text-xl font-bold text-neon-blue">Position #6 - MaxSaham</h4>
+                  </div>
+                  <p className="text-lg text-muted-foreground">+4.08% Profit | +$10,209.57 USD</p>
+                  <p className="text-sm text-muted-foreground mt-2">Out of 52,946 registered traders worldwide</p>
                 </div>
               </div>
             </CardContent>
