@@ -1,7 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Youtube, Music2, Facebook, Send, MessageCircle } from "lucide-react";
-import Script from "next/script";
 
 export function MediaSection() {
   const socialLinks = [
@@ -47,28 +46,24 @@ export function MediaSection() {
             </CardContent>
           </Card>
 
-          {/* TikTok Embed */}
-          <Card className="border-border/50 overflow-hidden">
+          {/* TikTok Link Card (replaced embed with link) */}
+          <Card className="border-border/50 overflow-hidden hover:border-gold/50 transition-all">
             <CardContent className="p-0">
-              <div className="aspect-video flex items-center justify-center bg-black">
-                <blockquote 
-                  className="tiktok-embed" 
-                  cite="https://www.tiktok.com/@maxsaham/video/7262882963258461447" 
-                  data-video-id="7262882963258461447" 
-                  style={{ maxWidth: '100%', minWidth: '325px', width: '100%', height: '100%' }}
-                >
-                  <section style={{ width: '100%', height: '100%' }}>
-                    <a 
-                      target="_blank" 
-                      title="@maxsaham" 
-                      href="https://www.tiktok.com/@maxsaham?refer=embed"
-                      rel="noopener noreferrer"
-                    >
-                      @maxsaham
-                    </a>
-                  </section>
-                </blockquote>
-              </div>
+              <a 
+                href="https://www.tiktok.com/@maxsaham/video/7262882963258461447" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <div className="aspect-video flex flex-col items-center justify-center bg-gradient-to-br from-cyan-500/10 to-pink-500/10 hover:from-cyan-500/20 hover:to-pink-500/20 transition-all">
+                  <Music2 className="w-16 h-16 text-cyan-400 mb-4" />
+                  <p className="text-lg font-semibold mb-2">Watch on TikTok</p>
+                  <p className="text-sm text-muted-foreground">@maxsaham</p>
+                  <Button className="mt-4 bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600 text-white">
+                    View Video
+                  </Button>
+                </div>
+              </a>
             </CardContent>
           </Card>
         </div>
@@ -102,9 +97,6 @@ export function MediaSection() {
           </div>
         </div>
       </div>
-      
-      {/* TikTok Embed Script */}
-      <Script src="https://www.tiktok.com/embed.js" strategy="lazyOnload" />
     </section>
   );
 }
