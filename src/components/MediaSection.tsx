@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Youtube, Music2, Facebook, Send, MessageCircle } from "lucide-react";
+import Script from "next/script";
 
 export function MediaSection() {
   const socialLinks = [
@@ -103,7 +104,7 @@ export function MediaSection() {
       </div>
       
       {/* TikTok Embed Script */}
-      <script async src="https://www.tiktok.com/embed.js"></script>
+      <Script src="https://www.tiktok.com/embed.js" strategy="lazyOnload" />
     </section>
   );
 }

@@ -8,8 +8,10 @@ import Link from "next/link";
 
 export function HeroSection() {
   const [counters, setCounters] = useState({ years: 0, students: 0, success: 0 });
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const timer1 = setInterval(() => {
       setCounters(prev => ({
         years: prev.years < 20 ? prev.years + 1 : 20,
@@ -121,7 +123,7 @@ export function HeroSection() {
       />
 
       {/* Floating Particles */}
-      {[...Array(15)].map((_, i) => (
+      {mounted && [...Array(15)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute w-1 h-1 bg-gold/40 rounded-full"

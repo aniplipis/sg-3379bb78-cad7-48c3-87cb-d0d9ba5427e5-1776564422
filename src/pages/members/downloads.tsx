@@ -147,12 +147,16 @@ export default function Downloads() {
 
   const categories = ["All", "Options Trading", "Personal Development", "Trading Psychology", "Trading Systems", "Futures Trading", "Swing Trading", "Trading Biography", "Portfolio Management", "Technical Analysis", "Trading Strategy", "Risk Management", "Order Flow", "FCPO & Commodities", "Psychology", "Advanced Concepts"];
 
+  // Free eBooks IDs that are accessible to all users
+  const freeEbookIds = [3, 5, 4];
+
   // Filter eBooks
   const filteredEbooks = allEbooks.filter(ebook => {
     const matchesSearch = ebook.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          ebook.id.toString().includes(searchQuery);
     const matchesCategory = selectedCategory === "All" || ebook.category.includes(selectedCategory);
-    return matchesSearch && matchesCategory;
+    const hasAccess = isPremium || freeEbookIds.includes(ebook.id);
+    return matchesSearch && matchesCategory && hasAccess;
   });
 
   // Generate gradient colors for book covers
@@ -179,16 +183,18 @@ export default function Downloads() {
       <div className="pt-24 pb-20 px-4">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="mb-12">
-            <Link href="/members" className="inline-flex items-center gap-2 text-gold hover:text-gold/80 mb-4">
+          <div className="mb-8">
+            <Link href={isPremium ? "/members" : "/members/free-dashboard"} className="inline-flex items-center gap-2 text-gold hover:text-gold/80 mb-4">
               <ChevronRight className="w-4 h-4 rotate-180" />
               <span>Back to Dashboard</span>
             </Link>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="text-gold">Premium eBook Library</span>
+              <span className="text-gold">{isPremium ? "Premium eBook Library" : "Free eBook Access"}</span>
             </h1>
             <p className="text-xl text-muted-foreground">
-              103 comprehensive trading eBooks for FCPO mastery
+              {isPremium 
+                ? "103 comprehensive trading eBooks for FCPO mastery" 
+                : "Access to 3 essential trading eBooks • Upgrade for 100 more"}
             </p>
           </div>
 
@@ -196,9 +202,9 @@ export default function Downloads() {
             <Card className="mb-12 border-gold/50 bg-gradient-to-r from-gold/5 to-blue-500/5">
               <CardContent className="p-8 text-center">
                 <Lock className="w-16 h-16 text-gold mx-auto mb-4" />
-                <h3 className="text-2xl font-bold mb-3">Premium Content Locked</h3>
+                <h3 className="text-2xl font-bold mb-3">Unlock 100 More eBooks</h3>
                 <p className="text-muted-foreground mb-6">
-                  Upgrade to premium membership to download all 103 eBooks
+                  Upgrade to premium membership to access the complete library of 103 trading eBooks
                 </p>
                 <Button className="bg-gold hover:bg-gold/90 text-black font-semibold" asChild>
                   <Link href="/#membership">Upgrade to Premium</Link>
@@ -247,52 +253,75 @@ export default function Downloads() {
 
               {/* eBooks Grid */}
               <div className="grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                {filteredEbooks.map((ebook) => (
-                  <Card 
-                    key={ebook.id} 
-                    className="border-border/50 hover:border-gold/50 transition-all group"
-                  >
-                    <CardContent className="p-4">
-                      {/* Book Cover */}
-                      {ebook.id === 1 || (ebook.id >= 2 && ebook.id <= 10) ? (
-                        <div className="w-full aspect-[3/4] rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform shadow-lg">
-                          <img 
-                            src={ebook.id === 1 ? "/3-simple-options-strategies.PNG" : `/${ebook.id}.PNG`}
-                            alt={ebook.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      ) : (
-                        <div className={`w-full aspect-[3/4] bg-gradient-to-br ${getBookCoverColor(ebook.id)} rounded-lg mb-4 flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg`}>
-                          <BookOpen className="w-16 h-16 text-white/90" />
-                        </div>
-                      )}
+                {filteredEbooks.map((ebook) => {
+                  const isLocked = !isPremium && !freeEbookIds.includes(ebook.id);
+                  return (
+                    <Card 
+                      key={ebook.id} 
+                      className={`border-border/50 hover:border-gold/50 transition-all group ${isLocked ? 'opacity-60' : ''}`}
+                    >
+                      <CardContent className="p-4">
+                        {/* Book Cover */}
+                        {ebook.id === 1 || (ebook.id >= 2 && ebook.id <= 10) ? (
+                          <div className="w-full aspect-[3/4] rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform shadow-lg relative">
+                            <img 
+                              src={ebook.id === 1 ? "/3-simple-options-strategies.PNG" : `/${ebook.id}.PNG`}
+                              alt={ebook.title}
+                              className="w-full h-full object-cover"
+                            />
+                            {isLocked && (
+                              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                                <Lock className="w-12 h-12 text-gold" />
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div className={`w-full aspect-[3/4] bg-gradient-to-br ${getBookCoverColor(ebook.id)} rounded-lg mb-4 flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg relative`}>
+                            <BookOpen className="w-16 h-16 text-white/90" />
+                            {isLocked && (
+                              <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                                <Lock className="w-12 h-12 text-gold" />
+                              </div>
+                            )}
+                          </div>
+                        )}
 
-                      {/* Title */}
-                      <h3 className="font-bold text-lg mb-1">{ebook.title}</h3>
-                      
-                      {/* Category Badge */}
-                      <div className="mb-4 flex flex-wrap gap-1">
-                        {ebook.category.map((cat, index) => (
-                          <span key={index} className="text-xs bg-muted/50 rounded-full px-2 py-1">
-                            {cat}
-                          </span>
-                        ))}
-                      </div>
+                        {/* Title */}
+                        <h3 className="font-bold text-lg mb-1">{ebook.title}</h3>
+                        
+                        {/* Category Badge */}
+                        <div className="mb-4 flex flex-wrap gap-1">
+                          {ebook.category.map((cat, index) => (
+                            <span key={index} className="text-xs bg-muted/50 rounded-full px-2 py-1">
+                              {cat}
+                            </span>
+                          ))}
+                        </div>
 
-                      {/* Download Button */}
-                      <Button 
-                        className="w-full bg-gold hover:bg-gold/90 text-black font-semibold"
-                        asChild
-                      >
-                        <a href={ebook.link} target="_blank" rel="noopener noreferrer">
-                          <Download className="w-4 h-4 mr-2" />
-                          Download
-                        </a>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
+                        {/* Download Button */}
+                        {isLocked ? (
+                          <Button 
+                            className="w-full bg-muted text-muted-foreground font-semibold cursor-not-allowed"
+                            disabled
+                          >
+                            <Lock className="w-4 h-4 mr-2" />
+                            Premium Only
+                          </Button>
+                        ) : (
+                          <Button 
+                            className="w-full bg-gold hover:bg-gold/90 text-black font-semibold"
+                            asChild
+                          >
+                            <a href={ebook.link} target="_blank" rel="noopener noreferrer">
+                              <Download className="w-4 h-4 mr-2" />
+                              Download
+                            </a>
+                          </Button>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
 
               {filteredEbooks.length === 0 && (
