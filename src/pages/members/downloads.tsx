@@ -263,6 +263,14 @@ export default function Downloads() {
                             className="w-full h-full object-cover"
                           />
                         </div>
+                      ) : ebook.id >= 4 && ebook.id <= 8 ? (
+                        <div className="w-full aspect-[3/4] rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform shadow-lg">
+                          <img 
+                            src={`/${ebook.id}.PNG`}
+                            alt={ebook.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
                       ) : (
                         <div className={`w-full aspect-[3/4] bg-gradient-to-br ${getBookCoverColor(ebook.id)} rounded-lg mb-4 flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg`}>
                           <BookOpen className="w-16 h-16 text-white/90" />
