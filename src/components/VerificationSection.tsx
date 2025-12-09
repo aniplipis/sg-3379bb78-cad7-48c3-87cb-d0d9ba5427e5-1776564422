@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ShieldCheck, ExternalLink } from "lucide-react";
+import { ShieldCheck, ExternalLink, Trophy } from "lucide-react";
+import Image from "next/image";
 
 export function VerificationSection() {
   return (
@@ -80,7 +81,7 @@ export function VerificationSection() {
           </Card>
         </div>
 
-        <Card className="border-gold/30 bg-gradient-to-r from-gold/5 to-neon-blue/5">
+        <Card className="border-gold/30 bg-gradient-to-r from-gold/5 to-neon-blue/5 mb-12">
           <CardContent className="p-8">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold mb-3">Why This Matters</h3>
@@ -109,6 +110,86 @@ export function VerificationSection() {
             </div>
           </CardContent>
         </Card>
+
+        {/* DVTC Rankings Section */}
+        <div className="mb-12">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Trophy className="w-8 h-8 text-gold" />
+              <h3 className="text-3xl md:text-4xl font-bold">
+                Bursa Malaysia DVTC Rankings - <span className="text-gold">All First Place</span>
+              </h3>
+              <Trophy className="w-8 h-8 text-gold" />
+            </div>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card className="border-gold/20 bg-gradient-to-br from-gold/5 to-gold/10 overflow-hidden">
+              <CardContent className="p-0">
+                <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 flex flex-col items-center justify-center">
+                  <Trophy className="w-24 h-24 text-gold mb-4" />
+                  <h4 className="text-xl font-bold text-gold mb-2">DVTC Ranking #1</h4>
+                  <p className="text-muted-foreground">Image Placeholder 1</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-gold/20 bg-gradient-to-br from-gold/5 to-gold/10 overflow-hidden">
+              <CardContent className="p-0">
+                <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 flex flex-col items-center justify-center">
+                  <Trophy className="w-24 h-24 text-gold mb-4" />
+                  <h4 className="text-xl font-bold text-gold mb-2">DVTC Ranking #1</h4>
+                  <p className="text-muted-foreground">Image Placeholder 2</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-gold/20 bg-gradient-to-br from-gold/5 to-gold/10 overflow-hidden">
+              <CardContent className="p-0">
+                <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 flex flex-col items-center justify-center">
+                  <Trophy className="w-24 h-24 text-gold mb-4" />
+                  <h4 className="text-xl font-bold text-gold mb-2">DVTC Ranking #1</h4>
+                  <p className="text-muted-foreground">Image Placeholder 3</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* TradingView Championship Section */}
+        <div>
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Trophy className="w-8 h-8 text-neon-blue" />
+              <h3 className="text-3xl md:text-4xl font-bold">
+                TradingView The Leap Trading Championship - <span className="text-neon-blue">Top 6 of 52,946 Traders</span> ⭐
+              </h3>
+              <Trophy className="w-8 h-8 text-neon-blue" />
+            </div>
+          </div>
+
+          <Card className="border-neon-blue/20 bg-gradient-to-br from-neon-blue/5 to-neon-blue/10 overflow-hidden max-w-4xl mx-auto">
+            <CardContent className="p-0">
+              <div className="relative w-full aspect-[16/10]">
+                <Image
+                  src="/10.PNG"
+                  alt="TradingView Leaderboard - MaxSaham ranked #6 out of 52,946 traders"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+              <div className="p-6 text-center bg-gradient-to-r from-neon-blue/10 to-neon-blue/5">
+                <p className="text-lg font-semibold mb-2">
+                  Position #6 | +4.08% Profit | +$10,209.57 USD
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Out of 52,946 registered traders in the competition
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </section>
   );
