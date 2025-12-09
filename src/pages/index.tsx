@@ -1,4 +1,3 @@
-
 import { Navigation } from "@/components/Navigation";
 import { HeroSection } from "@/components/HeroSection";
 import { AboutSection } from "@/components/AboutSection";
@@ -7,8 +6,10 @@ import { FCPOSection } from "@/components/FCPOSection";
 import { TradingApproachSection } from "@/components/TradingApproachSection";
 import { BrokerSection } from "@/components/BrokerSection";
 import { ClassSection } from "@/components/ClassSection";
+import { PhysicalClassSection } from "@/components/PhysicalClassSection";
 import { PublicGoldSection } from "@/components/PublicGoldSection";
 import { MediaSection } from "@/components/MediaSection";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { VerificationSection } from "@/components/VerificationSection";
 import { MembershipSection } from "@/components/MembershipSection";
 import { ContactSection } from "@/components/ContactSection";
@@ -25,8 +26,10 @@ export default function HomePage() {
       <TradingApproachSection />
       <BrokerSection />
       <ClassSection />
+      <PhysicalClassSection />
       <PublicGoldSection />
       <MediaSection />
+      <TestimonialsSection />
       <VerificationSection />
       <MembershipSection />
       <ContactSection />
