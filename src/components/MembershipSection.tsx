@@ -128,22 +128,30 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
                 <Users className="w-8 h-8 text-foreground" />
               </div>
               <CardTitle className="text-3xl mb-2">Free Access</CardTitle>
-              <p className="text-muted-foreground">Join public Telegram community</p>
+              <p className="text-muted-foreground">Essential FCPO trading resources</p>
               <div className="text-4xl font-bold mt-4">Free</div>
             </CardHeader>
             <CardContent>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Public Telegram access</span>
+                  <span className="text-muted-foreground">Access to basic SMC training videos (SMC Basics)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Market notes</span>
+                  <span className="text-muted-foreground">Free TradingView indicators</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">Sample videos</span>
+                  <span className="text-muted-foreground">How to use indicator videos</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Access to eBooks</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-foreground flex-shrink-0 mt-0.5" />
+                  <span className="text-muted-foreground">Public Telegram community</span>
                 </li>
               </ul>
               <Button 
@@ -151,7 +159,7 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
                 variant="outline"
                 onClick={onOpenAuthModal}
               >
-                Register Free Account
+                Join Free Community
               </Button>
             </CardContent>
           </Card>
