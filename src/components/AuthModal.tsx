@@ -1,5 +1,5 @@
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LoginForm } from "@/components/LoginForm";
 import { RegisterForm } from "@/components/RegisterForm";
@@ -33,10 +33,10 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
                 </motion.div>
                 <span className="text-2xl font-bold text-gold">Max Saham</span>
               </div>
-              <p className="text-muted-foreground text-sm font-normal">
-                Join the elite community of professional FCPO traders
-              </p>
             </DialogTitle>
+            <DialogDescription className="text-center text-muted-foreground text-sm">
+              Join the elite community of professional FCPO traders
+            </DialogDescription>
           </DialogHeader>
 
           <Tabs defaultValue={defaultTab} className="mt-6">
