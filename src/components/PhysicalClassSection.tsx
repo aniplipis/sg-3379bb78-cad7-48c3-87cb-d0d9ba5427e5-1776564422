@@ -135,61 +135,6 @@ export function PhysicalClassSection() {
             </CardContent>
           </Card>
         </div>
-
-        {/* Student Testimonials Section */}
-        <div className="mb-12">
-          <div className="flex items-center gap-2 mb-6">
-            <Users className="w-6 h-6 text-gold" />
-            <h3 className="text-2xl font-bold">Student Testimonials</h3>
-          </div>
-          
-          <div className="relative">
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-muted/30 to-transparent z-10"></div>
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-muted/30 to-transparent z-10"></div>
-            
-            <motion.div
-              className="flex gap-4"
-              animate={{
-                x: [0, -1800],
-              }}
-              transition={{
-                x: {
-                  duration: 30,
-                  repeat: Infinity,
-                  ease: "linear",
-                },
-              }}
-            >
-              {/* First set */}
-              {testimonialImages.map((testimonial) => (
-                <div
-                  key={testimonial.id}
-                  className="min-w-[300px] h-[400px] rounded-lg overflow-hidden bg-card border border-border/50 shadow-lg"
-                >
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.alt}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-              
-              {/* Duplicate set for seamless loop */}
-              {testimonialImages.map((testimonial) => (
-                <div
-                  key={`dup-${testimonial.id}`}
-                  className="min-w-[300px] h-[400px] rounded-lg overflow-hidden bg-card border border-border/50 shadow-lg"
-                >
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.alt}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
       </div>
     </section>
   );
