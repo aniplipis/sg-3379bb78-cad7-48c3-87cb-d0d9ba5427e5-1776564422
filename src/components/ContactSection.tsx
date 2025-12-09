@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MessageCircle, Send, Youtube, Music2, Facebook, Mail } from "lucide-react";
@@ -10,7 +9,7 @@ export function ContactSection() {
       title: "WhatsApp Direct",
       description: "Chat with me directly",
       action: "Start Chat",
-      url: "https://wa.me/60123456789",
+      url: "https://api.whatsapp.com/send/?phone=601154110086&text&type=phone_number&app_absent=0",
       color: "text-green-500",
       bgColor: "bg-green-500/10"
     },
@@ -55,7 +54,7 @@ export function ContactSection() {
       title: "Email",
       description: "Business inquiries",
       action: "Send Email",
-      url: "mailto:contact@maxsaham.com",
+      url: "mailto:maxsahamofficial@gmail.com",
       color: "text-gold",
       bgColor: "bg-gold/10"
     }

@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Youtube, Music2, Facebook, Send, MessageCircle } from "lucide-react";
@@ -9,7 +8,7 @@ export function MediaSection() {
     { icon: Music2, label: "TikTok", url: "https://tiktok.com/@maxsaham", color: "text-cyan-400" },
     { icon: Facebook, label: "Facebook", url: "https://facebook.com/maxsaham", color: "text-blue-500" },
     { icon: Send, label: "Telegram", url: "https://t.me/maxsaham", color: "text-blue-400" },
-    { icon: MessageCircle, label: "WhatsApp", url: "https://wa.me/60123456789", color: "text-green-500" }
+    { icon: MessageCircle, label: "WhatsApp", url: "https://api.whatsapp.com/send/?phone=601154110086&text&type=phone_number&app_absent=0", color: "text-green-500" }
   ];
 
   return (
@@ -21,7 +20,7 @@ export function MediaSection() {
             <span className="text-blue-400 font-semibold">Media & Community</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Featured Video — <span className="text-gold">Intro to FCPO</span>
+            Featured Content — <span className="text-gold">Intro to FCPO</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Daily market analysis, trading insights, and educational content across all platforms
@@ -50,12 +49,24 @@ export function MediaSection() {
           {/* TikTok Embed */}
           <Card className="border-border/50 overflow-hidden">
             <CardContent className="p-0">
-              <div className="aspect-video bg-gradient-to-br from-cyan-400/20 to-black flex items-center justify-center">
-                <div className="text-center">
-                  <Music2 className="w-16 h-16 text-cyan-400 mx-auto mb-4" />
-                  <p className="text-muted-foreground">TikTok Embed</p>
-                  <p className="text-sm text-muted-foreground/60">Video URL to be added</p>
-                </div>
+              <div className="aspect-video flex items-center justify-center bg-black">
+                <blockquote 
+                  className="tiktok-embed" 
+                  cite="https://www.tiktok.com/@maxsaham/video/7262882963258461447" 
+                  data-video-id="7262882963258461447" 
+                  style={{ maxWidth: '100%', minWidth: '325px', width: '100%', height: '100%' }}
+                >
+                  <section style={{ width: '100%', height: '100%' }}>
+                    <a 
+                      target="_blank" 
+                      title="@maxsaham" 
+                      href="https://www.tiktok.com/@maxsaham?refer=embed"
+                      rel="noopener noreferrer"
+                    >
+                      @maxsaham
+                    </a>
+                  </section>
+                </blockquote>
               </div>
             </CardContent>
           </Card>
@@ -90,6 +101,9 @@ export function MediaSection() {
           </div>
         </div>
       </div>
+      
+      {/* TikTok Embed Script */}
+      <script async src="https://www.tiktok.com/embed.js"></script>
     </section>
   );
 }
