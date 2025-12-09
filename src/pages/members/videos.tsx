@@ -71,7 +71,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144396134",
       thumbnail: "https://vumbnail.com/1144396134.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144396134?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144396134?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "First session of the Hybrid SMC methodology training"
     },
     {
@@ -82,7 +82,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144395840",
       thumbnail: "https://vumbnail.com/1144395840.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395840?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395840?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Second session covering advanced Hybrid SMC concepts"
     },
     {
@@ -93,7 +93,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144395923",
       thumbnail: "https://vumbnail.com/1144395923.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395923?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395923?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Final session with practical application and examples"
     },
     // Class Recordings - CHATGPT
@@ -105,7 +105,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144412616",
       thumbnail: "https://vumbnail.com/1144412616.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144412616?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HARNESS THE POWER OF CHATGPT"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144412616?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HARNESS THE POWER OF CHATGPT"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Learn how to leverage ChatGPT for trading analysis and research"
     },
     // Class Recordings - HYBRID SMC AUGUST 2025
@@ -117,7 +117,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144395701",
       thumbnail: "https://vumbnail.com/1144395701.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395701?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395701?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "August 2025 session - Introduction to Hybrid SMC methodology"
     },
     {
@@ -128,7 +128,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144395300",
       thumbnail: "https://vumbnail.com/1144395300.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395300?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395300?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "August 2025 session - Advanced Hybrid SMC concepts"
     },
     {
@@ -139,7 +139,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144395489",
       thumbnail: "https://vumbnail.com/1144395489.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395489?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395489?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "August 2025 session - Practical applications and examples"
     },
     // Class Recordings - HYBRID SMC JULY 2025
@@ -151,7 +151,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1142017799",
       thumbnail: "https://vumbnail.com/1142017799.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1142017799?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1142017799?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "July 2025 session - Introduction to Hybrid SMC methodology"
     },
     {
@@ -162,7 +162,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1142017987",
       thumbnail: "https://vumbnail.com/1142017987.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1142017987?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1142017987?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "July 2025 session - Advanced Hybrid SMC concepts"
     },
     {
@@ -173,7 +173,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1142018335",
       thumbnail: "https://vumbnail.com/1142018335.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1142018335?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1142018335?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "July 2025 session - Practical applications and examples"
     },
     // Class Recordings - HYBRID SMC JUNE 2025
@@ -185,7 +185,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144426249",
       thumbnail: "https://vumbnail.com/1144426249.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426249?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 1) 16_06_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426249?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 1) 16_06_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 16/06/2025"
     },
     {
@@ -196,7 +196,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       youtubeId: "iFudDnPoh24",
       thumbnail: "https://img.youtube.com/vi/iFudDnPoh24/maxresdefault.jpg",
-      youtubeEmbed: `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/iFudDnPoh24?si=IakXyM988xoyWB0D" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`,
+      youtubeEmbed: `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/iFudDnPoh24?si=IakXyM988xoyWB0D" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe>`,
       description: "Kelas Rancangan Khas Futures Trading - Part 2 (YouTube)"
     },
     {
@@ -207,7 +207,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144426029",
       thumbnail: "https://vumbnail.com/1144426029.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426029?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 18_06_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426029?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 18_06_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 18/06/2025"
     },
     {
@@ -218,7 +218,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144426135",
       thumbnail: "https://vumbnail.com/1144426135.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426135?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 20_06_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426135?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 20_06_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 20/06/2025"
     },
     // Class Recordings - HYBRID SMC APRIL 2025
@@ -230,7 +230,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144425810",
       thumbnail: "https://vumbnail.com/1144425810.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425810?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 1) 21_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425810?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 1) 21_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 21/04/2025"
     },
     {
@@ -241,7 +241,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144413998",
       thumbnail: "https://vumbnail.com/1144413998.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413998?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="FCPO SPREAD TRADING 101 - KRK FUTURES TRADING (PART 2)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413998?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="FCPO SPREAD TRADING 101 - KRK FUTURES TRADING (PART 2)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "FCPO Spread Trading 101 - KRK Futures Trading"
     },
     {
@@ -252,7 +252,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144425423",
       thumbnail: "https://vumbnail.com/1144425423.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425423?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 23_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425423?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 23_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 23/04/2025"
     },
     {
@@ -263,7 +263,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144425527",
       thumbnail: "https://vumbnail.com/1144425527.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425527?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 25_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425527?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 25_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 25/04/2025"
     },
     // Class Recordings - HYBRID SMC JANUARY 2025 (OLDEST)
@@ -275,7 +275,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144413911",
       thumbnail: "https://vumbnail.com/1144413911.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413911?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="MAX SAHAM FUNDAMENTALS OF HYBRID SMC - KRK FUTURES TRADING (PART 1)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413911?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="MAX SAHAM FUNDAMENTALS OF HYBRID SMC - KRK FUTURES TRADING (PART 1)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "MAX SAHAM Fundamentals of Hybrid SMC - KRK Futures Trading"
     },
     {
@@ -286,7 +286,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144413528",
       thumbnail: "https://vumbnail.com/1144413528.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413528?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 2) 03_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413528?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 2) 03_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 03/01/2025"
     },
     {
@@ -297,7 +297,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144413615",
       thumbnail: "https://vumbnail.com/1144413615.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413615?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 06_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413615?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 06_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 06/01/2025"
     },
     {
@@ -308,7 +308,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144413749",
       thumbnail: "https://vumbnail.com/1144413749.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413749?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen mozallowfullscreen webkitallowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 07_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413749?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 07_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 07/01/2025"
     }
   ];
