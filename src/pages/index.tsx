@@ -9,7 +9,6 @@ import { ClassSection } from "@/components/ClassSection";
 import { PhysicalClassSection } from "@/components/PhysicalClassSection";
 import { PublicGoldSection } from "@/components/PublicGoldSection";
 import { MediaSection } from "@/components/MediaSection";
-import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { VerificationSection } from "@/components/VerificationSection";
 import { MembershipSection } from "@/components/MembershipSection";
 import { ContactSection } from "@/components/ContactSection";
@@ -33,7 +32,6 @@ export default function HomePage() {
       <PhysicalClassSection />
       <PublicGoldSection />
       <MediaSection />
-      <TestimonialsSection />
       <VerificationSection />
       <MembershipSection onOpenAuthModal={() => setIsAuthModalOpen(true)} />
       <ContactSection />

@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Users, MapPin, Send, Utensils, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export function PhysicalClassSection() {
   // Testimonial images - actual student testimonials
@@ -17,6 +18,9 @@ export function PhysicalClassSection() {
     { id: 9, image: "/uploads/testimonial-9.jpg", alt: "Student Testimonial 9" },
     { id: 10, image: "/uploads/testimonial-10.jpg", alt: "Student Testimonial 10" }
   ];
+
+  // Duplicate the array for infinite scroll effect
+  const duplicatedTestimonials = [...testimonialImages, ...testimonialImages];
 
   return (
     <section className="py-20 px-4 bg-muted/30">
@@ -134,6 +138,64 @@ export function PhysicalClassSection() {
               </ul>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Student Testimonials with Scrolling Effect */}
+        <div className="mb-12">
+          <div className="flex items-center gap-3 mb-8">
+            <Users className="w-6 h-6 text-gold" />
+            <h3 className="text-3xl font-bold">Student Testimonials</h3>
+          </div>
+
+          {/* Scrolling Container */}
+          <div className="relative overflow-hidden">
+            {/* Gradient Overlays */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-muted/30 to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-muted/30 to-transparent z-10 pointer-events-none"></div>
+
+            {/* Scrolling Track */}
+            <motion.div
+              className="flex gap-6"
+              animate={{
+                x: [0, -1920] // Move by width of 10 items (each 280px + 24px gap = 304px * 10 / 2 = ~1920px)
+              }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: 30,
+                  ease: "linear",
+                },
+              }}
+            >
+              {duplicatedTestimonials.map((testimonial, index) => (
+                <div
+                  key={`${testimonial.id}-${index}`}
+                  className="flex-shrink-0 w-[280px]"
+                >
+                  <Card className="border-gold/30 bg-card/80 backdrop-blur overflow-hidden h-[350px] hover:border-gold transition-all">
+                    <CardContent className="p-0">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={testimonial.image}
+                          alt={testimonial.alt}
+                          fill
+                          className="object-cover"
+                          sizes="280px"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          <div className="text-center mt-8">
+            <p className="text-muted-foreground text-sm">
+              Join hundreds of successful traders who transformed their FCPO trading with MAX SAHAM
+            </p>
+          </div>
         </div>
       </div>
     </section>
