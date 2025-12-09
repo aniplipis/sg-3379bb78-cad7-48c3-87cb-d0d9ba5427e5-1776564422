@@ -136,19 +136,22 @@ export function AboutSection() {
             </Card>
           </div>
 
-          {/* TradingView Championship */}
-          <Card className="border-neon-blue/30 bg-gradient-to-br from-neon-blue/5 to-transparent">
+          {/* TradingView Championship Section */}
+          <Card className="border-neon-blue/30 bg-gradient-to-r from-neon-blue/5 to-neon-blue/10">
             <CardContent className="p-8">
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center justify-center gap-3 mb-6">
                 <Trophy className="w-8 h-8 text-neon-blue" />
-                <h4 className="text-2xl font-bold">TradingView The Leap Trading Championship - Top 5 of 50,000 Traders 🌟</h4>
+                <h3 className="text-2xl md:text-3xl font-bold text-center">
+                  TradingView The Leap Trading Championship - Top 6 of 50,000+ Traders ⭐
+                </h3>
               </div>
-              <div className="aspect-video bg-gradient-to-br from-neon-blue/20 to-neon-blue/5 rounded-lg border-2 border-neon-blue/30 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <Trophy className="w-20 h-20 text-neon-blue mx-auto mb-4" />
-                  <p className="text-neon-blue font-bold text-2xl mb-2">Top 5 Finalist</p>
-                  <p className="text-xl text-muted-foreground mb-2">Out of 50,000+ Traders Worldwide</p>
-                  <p className="text-sm text-muted-foreground">TradingView Championship Image Placeholder</p>
+              
+              <div className="bg-card/30 rounded-lg p-8 border border-neon-blue/20">
+                <div className="flex flex-col items-center justify-center space-y-4">
+                  <Trophy className="w-16 h-16 text-neon-blue animate-pulse" />
+                  <h4 className="text-2xl font-bold text-neon-blue">Top 6 Finalist</h4>
+                  <p className="text-lg text-muted-foreground">Out of 50,000+ Traders Worldwide</p>
+                  <p className="text-sm text-muted-foreground italic">TradingView Championship Image Placeholder</p>
                 </div>
               </div>
             </CardContent>
