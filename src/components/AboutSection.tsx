@@ -109,26 +109,40 @@ export function AboutSection() {
                   <h4 className="text-2xl font-bold">Bursa Malaysia DVTC Rankings - All First Place 🏆</h4>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Placeholder for 3 DVTC Ranking Images */}
-                  <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 flex items-center justify-center">
-                    <div className="text-center p-6">
-                      <Trophy className="w-16 h-16 text-gold mx-auto mb-3" />
-                      <p className="text-gold font-bold text-lg">DVTC Ranking #1</p>
-                      <p className="text-sm text-muted-foreground mt-2">Image Placeholder 1</p>
+                  {/* DVTC 2021 */}
+                  <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden">
+                    <div className="relative w-full h-full">
+                      <Image
+                        src="/dvtc2021.jpg"
+                        alt="DVTC 2021 Ranking #1"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
                     </div>
                   </div>
-                  <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 flex items-center justify-center">
-                    <div className="text-center p-6">
-                      <Trophy className="w-16 h-16 text-gold mx-auto mb-3" />
-                      <p className="text-gold font-bold text-lg">DVTC Ranking #1</p>
-                      <p className="text-sm text-muted-foreground mt-2">Image Placeholder 2</p>
+                  {/* DVTC 2022 */}
+                  <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden">
+                    <div className="relative w-full h-full">
+                      <Image
+                        src="/dvtc2022.jpg"
+                        alt="DVTC 2022 Ranking #1"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
                     </div>
                   </div>
-                  <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 flex items-center justify-center">
-                    <div className="text-center p-6">
-                      <Trophy className="w-16 h-16 text-gold mx-auto mb-3" />
-                      <p className="text-gold font-bold text-lg">DVTC Ranking #1</p>
-                      <p className="text-sm text-muted-foreground mt-2">Image Placeholder 3</p>
+                  {/* DVTC 2024 */}
+                  <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden">
+                    <div className="relative w-full h-full">
+                      <Image
+                        src="/dvtc2024.jpg"
+                        alt="DVTC 2024 Ranking #1"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
                     </div>
                   </div>
                 </div>
@@ -137,7 +151,7 @@ export function AboutSection() {
           </div>
 
           {/* TradingView Championship Section */}
-          <Card className="border-neon-blue/30 bg-gradient-to-r from-neon-blue/5 to-neon-blue/10">
+          <Card className="border-neon-blue/30 bg-gradient-to-r from-neon-blue/5 to-neon-blue/10 mb-16">
             <CardContent className="p-8">
               <div className="flex items-center justify-center gap-3 mb-6">
                 <Trophy className="w-8 h-8 text-neon-blue" />
@@ -163,6 +177,38 @@ export function AboutSection() {
                   </div>
                   <p className="text-lg text-muted-foreground">+4.08% Profit | +$10,209.57 USD</p>
                   <p className="text-sm text-muted-foreground mt-2">Out of 52,946 registered traders worldwide</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Affin Hwang Simulation Challenge 2024 */}
+          <Card className="border-gold/30 bg-gradient-to-r from-gold/5 to-gold/10">
+            <CardContent className="p-8">
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <Trophy className="w-8 h-8 text-gold" />
+                <h3 className="text-2xl md:text-3xl font-bold text-center">
+                  Affin Hwang Simulation Challenge 2024 - 1st Place 🥇
+                </h3>
+              </div>
+              
+              <div className="bg-card/30 rounded-lg overflow-hidden border border-gold/20">
+                <div className="relative w-full aspect-[16/10]">
+                  <Image
+                    src="/affin.jpg"
+                    alt="Affin Hwang Simulation Challenge 2024 - 1st Place Winner"
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                  />
+                </div>
+                <div className="p-6 text-center bg-gradient-to-b from-transparent to-gold/5">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Trophy className="w-6 h-6 text-gold" />
+                    <h4 className="text-xl font-bold text-gold">Champion - 1st Place</h4>
+                  </div>
+                  <p className="text-lg text-muted-foreground">Affin Hwang Investment Bank Trading Simulation</p>
+                  <p className="text-sm text-muted-foreground mt-2">Proven excellence in simulated trading environment</p>
                 </div>
               </div>
             </CardContent>
