@@ -59,6 +59,7 @@ export default function VideoLibrary() {
       subcategory: "HYBRID SMC OCTOBER 2025",
       duration: "Video Length",
       vimeoId: "1144396134",
+      thumbnail: "https://vumbnail.com/1144396134.jpg",
       vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144396134?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "First session of the Hybrid SMC methodology training"
     },
@@ -69,6 +70,7 @@ export default function VideoLibrary() {
       subcategory: "HYBRID SMC OCTOBER 2025",
       duration: "Video Length",
       vimeoId: "1144395840",
+      thumbnail: "https://vumbnail.com/1144395840.jpg",
       vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395840?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Second session covering advanced Hybrid SMC concepts"
     },
@@ -79,6 +81,7 @@ export default function VideoLibrary() {
       subcategory: "HYBRID SMC OCTOBER 2025",
       duration: "Video Length",
       vimeoId: "1144395923",
+      thumbnail: "https://vumbnail.com/1144395923.jpg",
       vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395923?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Final session with practical application and examples"
     },
@@ -231,7 +234,23 @@ export default function VideoLibrary() {
                 onClick={() => handleVideoClick(video)}
               >
                 <CardHeader className="p-0">
-                  <div className="relative aspect-video bg-gradient-to-br from-gold/20 to-blue-500/20 rounded-t-xl overflow-hidden">
+                  <div className="relative aspect-video bg-muted rounded-t-xl overflow-hidden">
+                    {video.thumbnail && video.thumbnail !== "/placeholder-video.jpg" ? (
+                      <>
+                        <img 
+                          src={video.thumbnail} 
+                          alt={video.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.parentElement?.classList.add('bg-gradient-to-br', 'from-gold/20', 'to-blue-500/20');
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
+                      </>
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-gold/20 to-blue-500/20" />
+                    )}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-16 h-16 bg-black/50 backdrop-blur rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                         {isPremium ? (
