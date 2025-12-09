@@ -19,7 +19,11 @@ export default function VideoLibrary() {
     if (!isLoading && !user) {
       router.push("/?login=true");
     }
-  }, [user, isLoading, router]);
+    // Redirect free users to free dashboard
+    if (!isLoading && user && !profile?.is_premium) {
+      router.push("/members/free-dashboard");
+    }
+  }, [user, profile, isLoading, router]);
 
   if (isLoading) {
     return (
@@ -32,7 +36,7 @@ export default function VideoLibrary() {
     );
   }
 
-  if (!user) {
+  if (!user || !profile?.is_premium) {
     return null;
   }
 
