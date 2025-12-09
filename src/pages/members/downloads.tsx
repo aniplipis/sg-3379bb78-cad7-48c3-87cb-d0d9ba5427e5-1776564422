@@ -40,17 +40,16 @@ export default function Downloads() {
 
   // All 103 eBooks with Google Drive links
   const allEbooks = [
-    { id: 1, title: "3 Simple Options Strategies - Andy Crowder", category: "Trading Strategy", link: "https://drive.google.com/file/d/13ER99RSUAlNBCztIpqVyMWHV3UI4S-pQ/view?usp=drive_link" },
-      { id: 2, title: "7 Strategies for Wealth & Happiness - Jim E Rohn", category: "Trading Strategy", link: "https://drive.google.com/file/d/1rcNVTQnr6qQrmpHYb3RjcaftW_tYrkkZ/view?usp=drive_link" },
-      { id: 3, title: "212°: The Complete Trader - God & Rohan Mehta", category: "Technical Analysis", link: "https://drive.google.com/file/d/1NQQ80TeeCm_Dg56UMvdAbBMR8DwbBG17/view?usp=drive_link" },
-      { id: 4, title: "SUPER TRADER,MAKE CONSISTENT PROFITS IN GOOD AND BAD MARKETS Van K. Tharp, Ph.D", category: "Technical Analysis", link: "https://drive.google.com/file/d/1kZS5Ew8Jn4-0GrMF9CKLv_gDFLd-k2Gi/view?usp=drive_link" },
-      {
-          id: 5, title: "A Complete Guide to the Futures Market, Second Edition - Jack D.Schwager and Mark Etzkorn.", category: "Risk Management", link: "https://drive.google.com/file/d/1LSVUv-YFlN2x42XOE6nwWEi1LQ6k-tGG/view?usp=drive_link" },
-      { id: 6, title: " Practical Guide to Swing Trading by Larry Swing", category: "Risk Management", link: "https://drive.google.com/file/d/1rv3uGV8oeLgEAcUpZrs-hKdvQkI30Ou2/view?usp=drive_link" },
-      { id: 7, title: "A Man for All Markets: From Las Vegas to Wall Street, How I Beat the Dealer and the Market - Edward O. Thorp", category: "Order Flow", link: "https://drive.google.com/file/d/1xRgaHcHm2-NRyny_NzSa0_Bs1zTtG39_/view?usp=drive_link" },
-      { id: 8, title: "Advanced Stochastic Models, Risk Assessment, and Portfolio Optimization: The Ideal Risk, Uncertainty, and Performance Measures - Svetlozar T. Rachev, Stoyan V. Stoyanov, and Frank J. Fabozzi", category: "Order Flow", link: "https://drive.google.com/file/d/10Uwj6ektGUz_zVpkhdl1HNjRM-fnJKK9/view?usp=drive_link" },
-      { id: 9, title: "Advanced Swing Trading Strategies to Predict, Identify, and Trade Future Market Swings - John Crane", category: "FCPO & Commodities", link: "https://drive.google.com/file/d/1HpkvnNXs73mdk4UiRFo0eJ-KPN28SCM7/view?usp=drive_link" },
-      { id: 10, title: "Aerodynamic Trading - Constance M. Brown", category: "FCPO & Commodities", link: "https://drive.google.com/file/d/1oGLyZJHGk6YUnMqgidYMiIKvxOW8Bxyk/view?usp=drive_link" },
+    { id: 1, title: "3 Simple Options Strategies - Andy Crowder", category: "Options Trading", link: "https://drive.google.com/file/d/13ER99RSUAlNBCztIpqVyMWHV3UI4S-pQ/view?usp=drive_link" },
+    { id: 2, title: "7 Strategies for Wealth & Happiness - Jim E Rohn", category: "Personal Development", link: "https://drive.google.com/file/d/1rcNVTQnr6qQrmpHYb3RjcaftW_tYrkkZ/view?usp=drive_link" },
+    { id: 3, title: "212°: The Complete Trader - God & Rohan Mehta", category: "Trading Psychology", link: "https://drive.google.com/file/d/1NQQ80TeeCm_Dg56UMvdAbBMR8DwbBG17/view?usp=drive_link" },
+    { id: 4, title: "SUPER TRADER,MAKE CONSISTENT PROFITS IN GOOD AND BAD MARKETS Van K. Tharp, Ph.D", category: "Trading Systems", link: "https://drive.google.com/file/d/1kZS5Ew8Jn4-0GrMF9CKLv_gDFLd-k2Gi/view?usp=drive_link" },
+    { id: 5, title: "A Complete Guide to the Futures Market, Second Edition - Jack D.Schwager and Mark Etzkorn.", category: "Futures Trading", link: "https://drive.google.com/file/d/1LSVUv-YFlN2x42XOE6nwWEi1LQ6k-tGG/view?usp=drive_link" },
+    { id: 6, title: " Practical Guide to Swing Trading by Larry Swing", category: "Swing Trading", link: "https://drive.google.com/file/d/1rv3uGV8oeLgEAcUpZrs-hKdvQkI30Ou2/view?usp=drive_link" },
+    { id: 7, title: "A Man for All Markets: From Las Vegas to Wall Street, How I Beat the Dealer and the Market - Edward O. Thorp", category: "Trading Biography", link: "https://drive.google.com/file/d/1xRgaHcHm2-NRyny_NzSa0_Bs1zTtG39_/view?usp=drive_link" },
+    { id: 8, title: "Advanced Stochastic Models, Risk Assessment, and Portfolio Optimization: The Ideal Risk, Uncertainty, and Performance Measures - Svetlozar T. Rachev, Stoyan V. Stoyanov, and Frank J. Fabozzi", category: "Portfolio Management", link: "https://drive.google.com/file/d/10Uwj6ektGUz_zVpkhdl1HNjRM-fnJKK9/view?usp=drive_link" },
+    { id: 9, title: "Advanced Swing Trading Strategies to Predict, Identify, and Trade Future Market Swings - John Crane", category: "Swing Trading", link: "https://drive.google.com/file/d/1HpkvnNXs73mdk4UiRFo0eJ-KPN28SCM7/view?usp=drive_link" },
+    { id: 10, title: "Aerodynamic Trading - Constance M. Brown", category: "Technical Analysis", link: "https://drive.google.com/file/d/1oGLyZJHGk6YUnMqgidYMiIKvxOW8Bxyk/view?usp=drive_link" },
     { id: 11, title: "eBook #11", category: "Trading Strategy", link: "https://drive.google.com/file/d/1OgQqlrBmfI9BYf8qu6OUYeLbp7ZsrK2J/view?usp=drive_link" },
     { id: 12, title: "eBook #12", category: "Trading Strategy", link: "https://drive.google.com/file/d/1gtay08XPGW8dWT13jsbr2l3MoWAdKn5B/view?usp=drive_link" },
     { id: 13, title: "eBook #13", category: "Technical Analysis", link: "https://drive.google.com/file/d/1ZdTwnNF-0Fu8zKu_HeA1RePDXJswZ3UC/view?usp=drive_link" },
@@ -146,7 +145,7 @@ export default function Downloads() {
     { id: 103, title: "eBook #103", category: "Advanced Concepts", link: "https://drive.google.com/file/d/1UDFsr_sbYWQ-mXmmLNJLCdLkiExbaJRe/view?usp=drive_link" }
   ];
 
-  const categories = ["All", "Trading Strategy", "Technical Analysis", "Risk Management", "Order Flow", "FCPO & Commodities", "Psychology", "Advanced Concepts"];
+  const categories = ["All", "Options Trading", "Personal Development", "Trading Psychology", "Trading Systems", "Futures Trading", "Swing Trading", "Trading Biography", "Portfolio Management", "Technical Analysis", "Trading Strategy", "Risk Management", "Order Flow", "FCPO & Commodities", "Psychology", "Advanced Concepts"];
 
   // Filter eBooks
   const filteredEbooks = allEbooks.filter(ebook => {
