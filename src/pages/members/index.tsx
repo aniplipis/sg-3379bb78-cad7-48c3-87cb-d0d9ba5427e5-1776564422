@@ -1,10 +1,9 @@
-
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Video, BookOpen, FileText, Calendar, Crown, Lock } from "lucide-react";
+import { Video, BookOpen, FileText, Calendar, Crown, Lock, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -77,30 +76,28 @@ export default function MembersDashboard() {
       
       <div className="pt-24 pb-20 px-4">
         <div className="max-w-7xl mx-auto">
-          {/* Welcome Header */}
-          <div className="mb-12">
-            <div className="flex items-center gap-3 mb-4">
-              {isPremium ? (
-                <div className="flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-4 py-2">
-                  <Crown className="w-5 h-5 text-gold" />
-                  <span className="text-gold font-semibold">Premium Member</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2 bg-muted/50 border border-border/50 rounded-full px-4 py-2">
-                  <Lock className="w-5 h-5 text-muted-foreground" />
-                  <span className="text-muted-foreground font-semibold">Free Member</span>
-                </div>
-              )}
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Welcome back, <span className="text-gold">{profile?.full_name || "Trader"}</span>
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-gold to-yellow-600 bg-clip-text text-transparent">
+              Premium Dashboard
             </h1>
-            <p className="text-xl text-muted-foreground">
-              {isPremium 
-                ? "Access your complete library of premium FCPO trading resources"
-                : "Upgrade to premium to unlock all exclusive content and resources"
-              }
+            <p className="text-muted-foreground">
+              Welcome back, {profile?.full_name}! Access your exclusive premium content
             </p>
+            {profile?.subscription_end_date && (
+              <div className="mt-4 inline-flex items-center gap-2 bg-gold/10 border border-gold/30 rounded-lg px-4 py-2">
+                <Crown className="w-4 h-4 text-gold" />
+                <span className="text-sm">
+                  Subscription renews: <span className="font-semibold text-gold">
+                    {new Date(profile.subscription_end_date).toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </span>
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Upgrade Banner for Free Members */}
@@ -194,6 +191,68 @@ export default function MembersDashboard() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+
+          {/* Quick Access Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <Link href="/members/videos">
+              <Card className="hover:shadow-lg hover:border-gold transition-all cursor-pointer">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Video className="w-5 h-5 text-gold" />
+                    Video Library
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">93+ training videos</p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/members/downloads">
+              <Card className="hover:shadow-lg hover:border-gold transition-all cursor-pointer">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-gold" />
+                    eBook Library
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">103 comprehensive eBooks</p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Card className="hover:shadow-lg hover:border-gold transition-all">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-gold" />
+                  TradingView Indicators
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-3">Premium indicators access</p>
+                <Button className="w-full bg-gold hover:bg-gold/90 text-black text-sm" asChild>
+                  <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer">
+                    Access Now
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Link href="/members/notes">
+              <Card className="hover:shadow-lg hover:border-gold transition-all cursor-pointer">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-gold" />
+                    Trading Notes
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">Your personal trading journal</p>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
 
           {/* Quick Stats */}
