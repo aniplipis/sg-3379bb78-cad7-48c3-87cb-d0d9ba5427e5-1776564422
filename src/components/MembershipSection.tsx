@@ -4,7 +4,7 @@ import { Check, Crown, Users, Sparkles, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
-export function MembershipSection() {
+export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () => void }) {
   const { user, profile } = useAuth();
   const [promoCode, setPromoCode] = useState("");
   const [isLoadingCheckout, setIsLoadingCheckout] = useState(false);
@@ -146,10 +146,12 @@ export function MembershipSection() {
                   <span className="text-muted-foreground">Sample videos</span>
                 </li>
               </ul>
-              <Button className="w-full" variant="outline" asChild>
-                <a href="https://t.me/maxsaham" target="_blank" rel="noopener noreferrer">
-                  Join Free Community
-                </a>
+              <Button 
+                className="w-full" 
+                variant="outline"
+                onClick={onOpenAuthModal}
+              >
+                Register Free Account
               </Button>
             </CardContent>
           </Card>

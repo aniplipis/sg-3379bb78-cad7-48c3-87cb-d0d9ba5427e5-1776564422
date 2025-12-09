@@ -6,7 +6,7 @@ import { motion, Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-export function HeroSection() {
+export function HeroSection({ onOpenAuthModal }: { onOpenAuthModal?: () => void }) {
   const [counters, setCounters] = useState({ years: 0, students: 0, success: 0 });
   const [mounted, setMounted] = useState(false);
 
@@ -153,21 +153,20 @@ export function HeroSection() {
         >
           {/* Badge */}
           <motion.div variants={itemVariants} className="inline-block mb-4">
-            <Link href="/?login=true">
+            <motion.div
+              onClick={onOpenAuthModal}
+              className="flex items-center gap-2 bg-gold/10 border border-gold/30 rounded-full px-6 py-2 cursor-pointer"
+              whileHover={{ scale: 1.05, borderColor: "rgba(255, 215, 0, 0.6)" }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
               <motion.div
-                className="flex items-center gap-2 bg-gold/10 border border-gold/30 rounded-full px-6 py-2 cursor-pointer"
-                whileHover={{ scale: 1.05, borderColor: "rgba(255, 215, 0, 0.6)" }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               >
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                >
-                  <Sparkles className="w-5 h-5 text-gold" />
-                </motion.div>
-                <span className="text-gold font-mono text-sm">Register Your Free Account Now</span>
+                <Sparkles className="w-5 h-5 text-gold" />
               </motion.div>
-            </Link>
+              <span className="text-gold font-mono text-sm">Register Your Free Account Now</span>
+            </motion.div>
           </motion.div>
 
           {/* Main Headline - Staggered Animation */}
@@ -277,34 +276,32 @@ export function HeroSection() {
             >
               <Button
                 size="lg"
+                onClick={onOpenAuthModal}
                 className="bg-gold hover:bg-gold/90 text-black font-semibold text-lg px-8 py-6 rounded-xl relative overflow-hidden group"
-                asChild
               >
-                <Link href="/?login=true">
-                  <motion.div
-                    className="absolute inset-0"
-                    animate={{
-                      background: [
-                        "linear-gradient(45deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.3) 50%, rgba(255,215,0,0) 100%)",
-                        "linear-gradient(225deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.3) 50%, rgba(255,215,0,0) 100%)",
-                      ],
-                    }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                  <Sparkles className="w-5 h-5 mr-2 relative z-10" />
-                  <span className="relative z-10">Daftar Sekarang / Register Now</span>
-                  <motion.div
-                    className="absolute inset-0 rounded-xl"
-                    animate={{
-                      boxShadow: [
-                        "0 0 20px rgba(255, 215, 0, 0.3)",
-                        "0 0 40px rgba(255, 215, 0, 0.6)",
-                        "0 0 20px rgba(255, 215, 0, 0.3)",
-                      ],
-                    }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                  />
-                </Link>
+                <motion.div
+                  className="absolute inset-0"
+                  animate={{
+                    background: [
+                      "linear-gradient(45deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.3) 50%, rgba(255,215,0,0) 100%)",
+                      "linear-gradient(225deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.3) 50%, rgba(255,215,0,0) 100%)",
+                    ],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                <Sparkles className="w-5 h-5 mr-2 relative z-10" />
+                <span className="relative z-10">Daftar Sekarang / Register Now</span>
+                <motion.div
+                  className="absolute inset-0 rounded-xl"
+                  animate={{
+                    boxShadow: [
+                      "0 0 20px rgba(255, 215, 0, 0.3)",
+                      "0 0 40px rgba(255, 215, 0, 0.6)",
+                      "0 0 20px rgba(255, 215, 0, 0.3)",
+                    ],
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                />
               </Button>
             </motion.div>
           </motion.div>

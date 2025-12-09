@@ -14,12 +14,16 @@ import { VerificationSection } from "@/components/VerificationSection";
 import { MembershipSection } from "@/components/MembershipSection";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
+import { AuthModal } from "@/components/AuthModal";
+import { useState } from "react";
 
 export default function HomePage() {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
-      <HeroSection />
+      <HeroSection onOpenAuthModal={() => setIsAuthModalOpen(true)} />
       <AboutSection />
       <FuturesExplainedSection />
       <FCPOSection />
@@ -31,9 +35,14 @@ export default function HomePage() {
       <MediaSection />
       <TestimonialsSection />
       <VerificationSection />
-      <MembershipSection />
+      <MembershipSection onOpenAuthModal={() => setIsAuthModalOpen(true)} />
       <ContactSection />
       <Footer />
+      
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
     </div>
   );
 }
