@@ -28,9 +28,14 @@ export function ClassSection() {
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
             Hybrid SMC Masterclass - Master FCPO trading with structured, repeatable Hybrid Smart Money Concepts
           </p>
-          <p className="text-lg text-gold font-semibold">
+          <a 
+            href="https://t.me/maxsaham" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-block text-lg text-gold font-semibold hover:text-gold/80 transition-colors underline decoration-gold/50 hover:decoration-gold"
+          >
             Join MAX CLAN Telegram for latest training dates
-          </p>
+          </a>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
