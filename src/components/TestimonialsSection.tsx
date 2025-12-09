@@ -8,70 +8,70 @@ export function TestimonialsSection() {
     {
       id: 1,
       name: "Client Testimonial 1",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop",
+      image: "/uploads/testimonial-1.jpg",
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 2,
       name: "Client Testimonial 2",
-      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop",
+      image: "/uploads/testimonial-2.jpg",
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 3,
       name: "Client Testimonial 3",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      image: "/uploads/testimonial-3.jpg",
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 4,
       name: "Client Testimonial 4",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
+      image: "/uploads/testimonial-4.jpg",
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 5,
       name: "Client Testimonial 5",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop",
+      image: "/uploads/testimonial-5.jpg",
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 6,
       name: "Client Testimonial 6",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
+      image: "/uploads/testimonial-6.jpg",
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 7,
       name: "Client Testimonial 7",
-      image: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400&h=400&fit=crop",
+      image: "/uploads/testimonial-7.jpg",
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 8,
       name: "Client Testimonial 8",
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop",
+      image: "/uploads/testimonial-8.jpg",
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 9,
       name: "Client Testimonial 9",
-      image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=400&h=400&fit=crop",
+      image: "/uploads/testimonial-9.jpg",
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 10,
       name: "Client Testimonial 10",
-      image: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=400&h=400&fit=crop",
+      image: "/uploads/testimonial-10.jpg",
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     }
