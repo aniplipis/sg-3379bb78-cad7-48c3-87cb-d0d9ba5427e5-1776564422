@@ -1,10 +1,10 @@
-
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { TrendingUp, Users, Award, Sparkles } from "lucide-react";
+import { TrendingUp, Users, Sparkles } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export function HeroSection() {
   const [counters, setCounters] = useState({ years: 0, students: 0, success: 0 });
@@ -40,17 +40,6 @@ export function HeroSection() {
       transition: {
         duration: 0.6,
         ease: "easeOut",
-      },
-    },
-  };
-
-  const floatingVariants = {
-    animate: {
-      y: [0, -20, 0],
-      transition: {
-        duration: 6,
-        repeat: Infinity,
-        ease: "easeInOut",
       },
     },
   };
@@ -162,19 +151,21 @@ export function HeroSection() {
         >
           {/* Badge */}
           <motion.div variants={itemVariants} className="inline-block mb-4">
-            <motion.div
-              className="flex items-center gap-2 bg-gold/10 border border-gold/30 rounded-full px-6 py-2"
-              whileHover={{ scale: 1.05, borderColor: "rgba(255, 215, 0, 0.6)" }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
+            <Link href="/?login=true">
               <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="flex items-center gap-2 bg-gold/10 border border-gold/30 rounded-full px-6 py-2 cursor-pointer"
+                whileHover={{ scale: 1.05, borderColor: "rgba(255, 215, 0, 0.6)" }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <Award className="w-5 h-5 text-gold" />
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                >
+                  <Sparkles className="w-5 h-5 text-gold" />
+                </motion.div>
+                <span className="text-gold font-mono text-sm">Register Your Free Account Now</span>
               </motion.div>
-              <span className="text-gold font-mono text-sm">SC Registered Marketing Representative</span>
-            </motion.div>
+            </Link>
           </motion.div>
 
           {/* Main Headline - Staggered Animation */}
@@ -227,26 +218,29 @@ export function HeroSection() {
               <Button
                 size="lg"
                 className="bg-neon-blue hover:bg-neon-blue/90 text-black font-semibold text-lg px-8 py-6 rounded-xl relative overflow-hidden group"
+                asChild
               >
-                <motion.div
-                  className="absolute inset-0 bg-white/20"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.5 }}
-                />
-                <Users className="w-5 h-5 mr-2 relative z-10" />
-                <span className="relative z-10">Join Free Telegram Channel</span>
-                <motion.div
-                  className="absolute inset-0 rounded-xl"
-                  animate={{
-                    boxShadow: [
-                      "0 0 20px rgba(0, 217, 255, 0.3)",
-                      "0 0 40px rgba(0, 217, 255, 0.6)",
-                      "0 0 20px rgba(0, 217, 255, 0.3)",
-                    ],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
+                <a href="https://t.me/maxsaham" target="_blank" rel="noopener noreferrer">
+                  <motion.div
+                    className="absolute inset-0 bg-white/20"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.5 }}
+                  />
+                  <Users className="w-5 h-5 mr-2 relative z-10" />
+                  <span className="relative z-10">Join Free Telegram Channel</span>
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    animate={{
+                      boxShadow: [
+                        "0 0 20px rgba(0, 217, 255, 0.3)",
+                        "0 0 40px rgba(0, 217, 255, 0.6)",
+                        "0 0 20px rgba(0, 217, 255, 0.3)",
+                      ],
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                </a>
               </Button>
             </motion.div>
 
@@ -259,15 +253,18 @@ export function HeroSection() {
                 size="lg"
                 variant="outline"
                 className="border-2 border-gold text-gold hover:bg-gold hover:text-black font-semibold text-lg px-8 py-6 rounded-xl relative overflow-hidden group"
+                asChild
               >
-                <motion.div
-                  className="absolute inset-0 bg-gold/10"
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileHover={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
-                <TrendingUp className="w-5 h-5 mr-2 relative z-10" />
-                <span className="relative z-10">Open FCPO Trading Account</span>
+                <Link href="#broker">
+                  <motion.div
+                    className="absolute inset-0 bg-gold/10"
+                    initial={{ scale: 0, opacity: 0 }}
+                    whileHover={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                  <TrendingUp className="w-5 h-5 mr-2 relative z-10" />
+                  <span className="relative z-10">Open FCPO Trading Account</span>
+                </Link>
               </Button>
             </motion.div>
 
@@ -279,30 +276,33 @@ export function HeroSection() {
               <Button
                 size="lg"
                 className="bg-gold hover:bg-gold/90 text-black font-semibold text-lg px-8 py-6 rounded-xl relative overflow-hidden group"
+                asChild
               >
-                <motion.div
-                  className="absolute inset-0"
-                  animate={{
-                    background: [
-                      "linear-gradient(45deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.3) 50%, rgba(255,215,0,0) 100%)",
-                      "linear-gradient(225deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.3) 50%, rgba(255,215,0,0) 100%)",
-                    ],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                <Sparkles className="w-5 h-5 mr-2 relative z-10" />
-                <span className="relative z-10">Daftar Sekarang / Register Now</span>
-                <motion.div
-                  className="absolute inset-0 rounded-xl"
-                  animate={{
-                    boxShadow: [
-                      "0 0 20px rgba(255, 215, 0, 0.3)",
-                      "0 0 40px rgba(255, 215, 0, 0.6)",
-                      "0 0 20px rgba(255, 215, 0, 0.3)",
-                    ],
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                />
+                <Link href="/?login=true">
+                  <motion.div
+                    className="absolute inset-0"
+                    animate={{
+                      background: [
+                        "linear-gradient(45deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.3) 50%, rgba(255,215,0,0) 100%)",
+                        "linear-gradient(225deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.3) 50%, rgba(255,215,0,0) 100%)",
+                      ],
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                  <Sparkles className="w-5 h-5 mr-2 relative z-10" />
+                  <span className="relative z-10">Daftar Sekarang / Register Now</span>
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    animate={{
+                      boxShadow: [
+                        "0 0 20px rgba(255, 215, 0, 0.3)",
+                        "0 0 40px rgba(255, 215, 0, 0.6)",
+                        "0 0 20px rgba(255, 215, 0, 0.3)",
+                      ],
+                    }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                  />
+                </Link>
               </Button>
             </motion.div>
           </motion.div>

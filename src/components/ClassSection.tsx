@@ -1,14 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { GraduationCap, CheckCircle2, Calendar, Users, Video, BookOpen } from "lucide-react";
+import { GraduationCap, CheckCircle2, Calendar, Users, Video, BookOpen, Image as ImageIcon } from "lucide-react";
+import Link from "next/link";
 
 export function ClassSection() {
   const syllabus = [
     "3 Sesi Kelas Intensif + Rakaman Lengkap",
-    "Access segera: Indicators + Rakaman Lama",
-    "FCPO Alert Channel (Percuma)",
-    "Koleksi Video Training Lama",
+    "Access segera: Indicators + access to MAX CLAN portal",
+    "Koleksi Video Training",
     "Technical Library (Ebook TA & FA)",
+    "Free class revision",
+    "FCPO Alert Channel (Percuma)",
     "Support Komuniti MAX CLAN"
   ];
 
@@ -18,14 +20,42 @@ export function ClassSection() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-6 py-2 mb-6">
             <GraduationCap className="w-5 h-5 text-gold" />
-            <span className="text-gold font-semibold">Education</span>
+            <span className="text-gold font-semibold">Physical Class</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Hybrid SMC <span className="text-gold">Masterclass — RM1,350</span>
+            Join <span className="text-gold">MAX CLAN</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Join MAX CLAN and master FCPO trading with structured, repeatable Hybrid Smart Money Concepts
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
+            Hybrid SMC Masterclass - Master FCPO trading with structured, repeatable Hybrid Smart Money Concepts
           </p>
+          <p className="text-lg text-gold font-semibold">
+            Join MAX CLAN Telegram for latest training dates
+          </p>
+        </div>
+
+        {/* Class Photos Carousel */}
+        <div className="mb-12">
+          <Card className="border-border/50 bg-card/50 backdrop-blur overflow-hidden">
+            <CardContent className="p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <ImageIcon className="w-6 h-6 text-gold" />
+                <h3 className="text-2xl font-bold">Previous Class Sessions</h3>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                {[...Array(10)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="aspect-square bg-gradient-to-br from-gold/10 to-blue-500/10 rounded-lg border border-border/50 flex items-center justify-center hover:scale-105 transition-transform"
+                  >
+                    <div className="text-center">
+                      <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
+                      <p className="text-xs text-muted-foreground">Class Photo {index + 1}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
@@ -82,10 +112,37 @@ export function ClassSection() {
               </Card>
             </div>
 
-            <Button className="w-full bg-gold hover:bg-gold/90 text-black font-semibold h-14 text-lg">
-              Daftar Sekarang / Register Now
+            <Button className="w-full bg-gold hover:bg-gold/90 text-black font-semibold h-14 text-lg" asChild>
+              <Link href="/#membership">
+                Daftar Sekarang / Register Now - Become Premium Member
+              </Link>
             </Button>
           </div>
+        </div>
+
+        {/* Testimonials Section */}
+        <div className="mb-12">
+          <Card className="border-border/50 bg-card/50 backdrop-blur overflow-hidden">
+            <CardContent className="p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <Users className="w-6 h-6 text-gold" />
+                <h3 className="text-2xl font-bold">Student Testimonials</h3>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                {[...Array(10)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="aspect-square bg-gradient-to-br from-gold/10 to-blue-500/10 rounded-lg border border-border/50 flex items-center justify-center hover:scale-105 transition-transform"
+                  >
+                    <div className="text-center">
+                      <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
+                      <p className="text-xs text-muted-foreground">Testimonial {index + 1}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <Card className="border-gold/20 bg-gradient-to-r from-gold/5 to-blue-500/5">
@@ -99,7 +156,8 @@ export function ClassSection() {
               <span className="bg-gold/10 border border-gold/20 rounded-full px-4 py-2">Trading Indicators</span>
               <span className="bg-gold/10 border border-gold/20 rounded-full px-4 py-2">Strategy Templates</span>
               <span className="bg-gold/10 border border-gold/20 rounded-full px-4 py-2">Course Recordings</span>
-              <span className="bg-gold/10 border border-gold/20 rounded-full px-4 py-2">MAX CLAN Access</span>
+              <span className="bg-gold/10 border border-gold/20 rounded-full px-4 py-2">MAX CLAN Portal Access</span>
+              <span className="bg-gold/10 border border-gold/20 rounded-full px-4 py-2">Free Class Revision</span>
             </div>
           </CardContent>
         </Card>

@@ -108,12 +108,20 @@ export function Navigation() {
                         </Link>
                       </DropdownMenuItem>
                     ) : (
-                      <DropdownMenuItem asChild>
-                        <Link href="#membership" className="text-gold">
-                          <Crown className="w-4 h-4 mr-2" />
-                          Upgrade to Premium
-                        </Link>
-                      </DropdownMenuItem>
+                      <>
+                        <DropdownMenuItem asChild>
+                          <Link href="/members/free-dashboard" className="text-blue-500">
+                            <User className="w-4 h-4 mr-2" />
+                            Free Dashboard
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link href="/#membership" className="text-gold">
+                            <Crown className="w-4 h-4 mr-2" />
+                            Upgrade to Premium
+                          </Link>
+                        </DropdownMenuItem>
+                      </>
                     )}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout}>
@@ -203,12 +211,20 @@ export function Navigation() {
                               </Button>
                             </Link>
                           ) : (
-                            <Link href="#membership" onClick={() => setIsMenuOpen(false)}>
-                              <Button className="w-full justify-start bg-gold hover:bg-gold/90 text-black">
-                                <Crown className="w-4 h-4 mr-2" />
-                                Upgrade to Premium
-                              </Button>
-                            </Link>
+                            <>
+                              <Link href="/members/free-dashboard" onClick={() => setIsMenuOpen(false)}>
+                                <Button variant="outline" className="w-full justify-start border-blue-500/30 hover:bg-blue-500/10 text-blue-500">
+                                  <User className="w-4 h-4 mr-2" />
+                                  Free Dashboard
+                                </Button>
+                              </Link>
+                              <Link href="/#membership" onClick={() => setIsMenuOpen(false)}>
+                                <Button className="w-full justify-start bg-gold hover:bg-gold/90 text-black">
+                                  <Crown className="w-4 h-4 mr-2" />
+                                  Upgrade to Premium
+                                </Button>
+                              </Link>
+                            </>
                           )}
                         </div>
                       </div>
