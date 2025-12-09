@@ -255,18 +255,10 @@ export default function Downloads() {
                   >
                     <CardContent className="p-4">
                       {/* Book Cover */}
-                      {ebook.id === 1 ? (
+                      {ebook.id === 1 || (ebook.id >= 2 && ebook.id <= 10) ? (
                         <div className="w-full aspect-[3/4] rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform shadow-lg">
                           <img 
-                            src="/3-simple-options-strategies.PNG" 
-                            alt={ebook.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      ) : ebook.id >= 4 && ebook.id <= 8 ? (
-                        <div className="w-full aspect-[3/4] rounded-lg mb-4 overflow-hidden group-hover:scale-105 transition-transform shadow-lg">
-                          <img 
-                            src={`/${ebook.id}.PNG`}
+                            src={ebook.id === 1 ? "/3-simple-options-strategies.PNG" : `/${ebook.id}.PNG`}
                             alt={ebook.title}
                             className="w-full h-full object-cover"
                           />
