@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ShieldCheck, ExternalLink, Trophy } from "lucide-react";
-import Image from "next/image";
 
 export function VerificationSection() {
   return (
@@ -154,41 +153,6 @@ export function VerificationSection() {
               </CardContent>
             </Card>
           </div>
-        </div>
-
-        {/* TradingView Championship Section */}
-        <div>
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Trophy className="w-8 h-8 text-neon-blue" />
-              <h3 className="text-3xl md:text-4xl font-bold">
-                TradingView The Leap Trading Championship - <span className="text-neon-blue">Top 6 of 52,946 Traders</span> ⭐
-              </h3>
-              <Trophy className="w-8 h-8 text-neon-blue" />
-            </div>
-          </div>
-
-          <Card className="border-neon-blue/20 bg-gradient-to-br from-neon-blue/5 to-neon-blue/10 overflow-hidden max-w-4xl mx-auto">
-            <CardContent className="p-0">
-              <div className="relative w-full aspect-[16/10]">
-                <Image
-                  src="/10.PNG"
-                  alt="TradingView Leaderboard - MaxSaham ranked #6 out of 52,946 traders"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-              <div className="p-6 text-center bg-gradient-to-r from-neon-blue/10 to-neon-blue/5">
-                <p className="text-lg font-semibold mb-2">
-                  Position #6 | +4.08% Profit | +$10,209.57 USD
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Out of 52,946 registered traders in the competition
-                </p>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </section>
