@@ -42,9 +42,10 @@ export default function Downloads() {
   const allEbooks = [
     { id: 1, title: "3 Simple Options Strategies - Andy Crowder", category: "Trading Strategy", link: "https://drive.google.com/file/d/13ER99RSUAlNBCztIpqVyMWHV3UI4S-pQ/view?usp=drive_link" },
       { id: 2, title: "7 Strategies for Wealth & Happiness - Jim E Rohn", category: "Trading Strategy", link: "https://drive.google.com/file/d/1rcNVTQnr6qQrmpHYb3RjcaftW_tYrkkZ/view?usp=drive_link" },
-    { id: 3, title: "eBook #3", category: "Technical Analysis", link: "https://drive.google.com/file/d/1NQQ80TeeCm_Dg56UMvdAbBMR8DwbBG17/view?usp=drive_link" },
-    { id: 4, title: "eBook #4", category: "Technical Analysis", link: "https://drive.google.com/file/d/1kZS5Ew8Jn4-0GrMF9CKLv_gDFLd-k2Gi/view?usp=drive_link" },
-    { id: 5, title: "eBook #5", category: "Risk Management", link: "https://drive.google.com/file/d/1LSVUv-YFlN2x42XOE6nwWEi1LQ6k-tGG/view?usp=drive_link" },
+      { id: 3, title: "212°: The Complete Trader by God & Rohan Mehta", category: "Technical Analysis", link: "https://drive.google.com/file/d/1NQQ80TeeCm_Dg56UMvdAbBMR8DwbBG17/view?usp=drive_link" },
+      { id: 4, title: "SUPER TRADER,MAKE CONSISTENT PROFITS IN GOOD AND BAD MARKETS Van K. Tharp, Ph.D", category: "Technical Analysis", link: "https://drive.google.com/file/d/1kZS5Ew8Jn4-0GrMF9CKLv_gDFLd-k2Gi/view?usp=drive_link" },
+      {
+          id: 5, title: "A Complete Guide to the Futures Market, Second Edition, Jack D.Schwager and Mark Etzkorn.", category: "Risk Management", link: "https://drive.google.com/file/d/1LSVUv-YFlN2x42XOE6nwWEi1LQ6k-tGG/view?usp=drive_link" },
     { id: 6, title: "eBook #6", category: "Risk Management", link: "https://drive.google.com/file/d/1rv3uGV8oeLgEAcUpZrs-hKdvQkI30Ou2/view?usp=drive_link" },
     { id: 7, title: "eBook #7", category: "Order Flow", link: "https://drive.google.com/file/d/1xRgaHcHm2-NRyny_NzSa0_Bs1zTtG39_/view?usp=drive_link" },
     { id: 8, title: "eBook #8", category: "Order Flow", link: "https://drive.google.com/file/d/10Uwj6ektGUz_zVpkhdl1HNjRM-fnJKK9/view?usp=drive_link" },
