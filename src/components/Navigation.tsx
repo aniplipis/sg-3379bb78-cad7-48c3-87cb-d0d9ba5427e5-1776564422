@@ -179,6 +179,38 @@ export function Navigation() {
                             <div className="text-xs text-muted-foreground">{user?.email}</div>
                           </div>
                         </div>
+                        
+                        <div className="space-y-2">
+                          <Link href="/profile" onClick={() => setIsMenuOpen(false)}>
+                            <Button variant="outline" className="w-full justify-start border-gold/30 hover:bg-gold/10">
+                              <User className="w-4 h-4 mr-2" />
+                              Profile
+                            </Button>
+                          </Link>
+                          
+                          <Link href="/account" onClick={() => setIsMenuOpen(false)}>
+                            <Button variant="outline" className="w-full justify-start border-gold/30 hover:bg-gold/10">
+                              <User className="w-4 h-4 mr-2" />
+                              Account Settings
+                            </Button>
+                          </Link>
+                          
+                          {profile?.is_premium ? (
+                            <Link href="/members" onClick={() => setIsMenuOpen(false)}>
+                              <Button className="w-full justify-start bg-neon-blue hover:bg-neon-blue/90 text-black">
+                                <Crown className="w-4 h-4 mr-2" />
+                                Premium Dashboard
+                              </Button>
+                            </Link>
+                          ) : (
+                            <Link href="#membership" onClick={() => setIsMenuOpen(false)}>
+                              <Button className="w-full justify-start bg-gold hover:bg-gold/90 text-black">
+                                <Crown className="w-4 h-4 mr-2" />
+                                Upgrade to Premium
+                              </Button>
+                            </Link>
+                          )}
+                        </div>
                       </div>
                       <Button
                         onClick={handleLogout}
