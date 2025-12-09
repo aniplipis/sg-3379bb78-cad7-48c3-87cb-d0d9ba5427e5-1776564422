@@ -39,7 +39,7 @@ export default function VideoLibrary() {
 
   const categories = [
     { id: "all", label: "All Videos", count: 55 },
-    { id: "class-recordings", label: "Class Recordings", count: 3, icon: Folder },
+    { id: "class-recordings", label: "Class Recordings", count: 7, icon: Folder },
     { id: "wyckoff", label: "Wyckoff Lessons", count: 12 },
     { id: "smc", label: "Smart Money Concepts", count: 15 },
     { id: "fcpo", label: "FCPO Strategy", count: 10 },
@@ -84,6 +84,51 @@ export default function VideoLibrary() {
       thumbnail: "https://vumbnail.com/1144395923.jpg",
       vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395923?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Final session with practical application and examples"
+    },
+    // Class Recordings - HYBRID SMC JANUARY 2025
+    {
+      id: "hybrid-jan-1",
+      title: "FUNDAMENTALS OF HYBRID SMC (PART 1)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JANUARY 2025",
+      duration: "Video Length",
+      vimeoId: "1144413911",
+      thumbnail: "https://vumbnail.com/1144413911.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413911?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="MAX SAHAM FUNDAMENTALS OF HYBRID SMC - KRK FUTURES TRADING (PART 1)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "MAX SAHAM Fundamentals of Hybrid SMC - KRK Futures Trading"
+    },
+    {
+      id: "hybrid-jan-2",
+      title: "KRK FUTURES TRADING (PART 2)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JANUARY 2025",
+      duration: "Video Length",
+      vimeoId: "1144413528",
+      thumbnail: "https://vumbnail.com/1144413528.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413528?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 2) 03_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 03/01/2025"
+    },
+    {
+      id: "hybrid-jan-3",
+      title: "KRK FUTURES TRADING (PART 3)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JANUARY 2025",
+      duration: "Video Length",
+      vimeoId: "1144413615",
+      thumbnail: "https://vumbnail.com/1144413615.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413615?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 06_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 06/01/2025"
+    },
+    {
+      id: "hybrid-jan-4",
+      title: "KRK FUTURES TRADING (PART 4)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JANUARY 2025",
+      duration: "Video Length",
+      vimeoId: "1144413749",
+      thumbnail: "https://vumbnail.com/1144413749.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413749?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 07_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 07/01/2025"
     },
     // Existing videos
     {
@@ -215,11 +260,18 @@ export default function VideoLibrary() {
             <div className="mb-6">
               <div className="flex items-center gap-3 mb-4">
                 <Folder className="w-6 h-6 text-gold" />
-                <h2 className="text-2xl font-bold">HYBRID SMC OCTOBER 2025</h2>
+                <h2 className="text-2xl font-bold">Class Recording Series</h2>
               </div>
-              <p className="text-muted-foreground">
-                Complete recording series from the Hybrid Smart Money Concepts course held in October 2025
-              </p>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gold rounded-full"></div>
+                  <p className="text-muted-foreground">HYBRID SMC OCTOBER 2025 - 3 videos</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gold rounded-full"></div>
+                  <p className="text-muted-foreground">HYBRID SMC JANUARY 2025 - 4 videos</p>
+                </div>
+              </div>
             </div>
           )}
 
