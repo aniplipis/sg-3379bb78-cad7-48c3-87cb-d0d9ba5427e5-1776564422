@@ -31,10 +31,10 @@ export default function HomePage() {
       <BrokerSection />
       <ClassSection />
       <PhysicalClassSection />
+      <ClassPicturesSection />
       <PublicGoldSection />
       <MediaSection />
       <VerificationSection />
-      <ClassPicturesSection />
       <MembershipSection onOpenAuthModal={() => setIsAuthModalOpen(true)} />
       <ContactSection />
       <Footer />
