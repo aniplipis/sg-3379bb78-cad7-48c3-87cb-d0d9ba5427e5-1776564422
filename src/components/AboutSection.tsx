@@ -110,40 +110,49 @@ export function AboutSection() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* DVTC 2021 */}
-                  <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden">
-                    <div className="relative w-full h-full">
-                      <Image
-                        src="/dvtc2021.jpg"
-                        alt="DVTC 2021 Ranking #1"
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
+                  <div>
+                    <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden mb-3">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="/dvtc2021.jpg"
+                          alt="DVTC 2021 Ranking #1"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
                     </div>
+                    <p className="text-center text-lg font-semibold text-gold">2021 Championship</p>
                   </div>
                   {/* DVTC 2022 */}
-                  <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden">
-                    <div className="relative w-full h-full">
-                      <Image
-                        src="/dvtc2022.jpg"
-                        alt="DVTC 2022 Ranking #1"
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
+                  <div>
+                    <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden mb-3">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="/dvtc2022.jpg"
+                          alt="DVTC 2022 Ranking #1"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
                     </div>
+                    <p className="text-center text-lg font-semibold text-gold">2022 Championship</p>
                   </div>
                   {/* DVTC 2024 */}
-                  <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden">
-                    <div className="relative w-full h-full">
-                      <Image
-                        src="/dvtc2024.jpg"
-                        alt="DVTC 2024 Ranking #1"
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
+                  <div>
+                    <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-gold/5 rounded-lg border-2 border-gold/30 overflow-hidden mb-3">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="/dvtc2024.jpg"
+                          alt="DVTC 2024 Ranking #1"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
                     </div>
+                    <p className="text-center text-lg font-semibold text-gold">2024 Championship</p>
                   </div>
                 </div>
               </CardContent>

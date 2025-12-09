@@ -14,6 +14,7 @@ import { MembershipSection } from "@/components/MembershipSection";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
 import { AuthModal } from "@/components/AuthModal";
+import { ClassPicturesSection } from "@/components/ClassPicturesSection";
 import { useState } from "react";
 
 export default function HomePage() {
@@ -33,6 +34,7 @@ export default function HomePage() {
       <PublicGoldSection />
       <MediaSection />
       <VerificationSection />
+      <ClassPicturesSection />
       <MembershipSection onOpenAuthModal={() => setIsAuthModalOpen(true)} />
       <ContactSection />
       <Footer />
