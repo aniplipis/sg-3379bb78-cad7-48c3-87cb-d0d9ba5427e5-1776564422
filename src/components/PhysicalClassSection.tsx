@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Users, MapPin, Send } from "lucide-react";
+import { Calendar, Users, MapPin, Send, Utensils, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function PhysicalClassSection() {
@@ -30,7 +30,7 @@ export function PhysicalClassSection() {
             Live <span className="text-gold">Physical Classes</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Join our intensive hands-on training sessions and learn directly from Abg Max
+            Everything from Online Class + 2 face-to-face sessions with Abg Max
           </p>
         </div>
 
@@ -56,11 +56,19 @@ export function PhysicalClassSection() {
                 </div>
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <MapPin className="w-5 h-5 text-gold" />
-                  <span>Premium training facilities in Kuala Lumpur</span>
+                  <span>2 face-to-face sessions with Abg Max in Kuala Lumpur</span>
+                </div>
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <Utensils className="w-5 h-5 text-gold" />
+                  <span>Meals included during physical sessions</span>
+                </div>
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <Building2 className="w-5 h-5 text-gold" />
+                  <span>Premium training facilities provided</span>
                 </div>
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <Calendar className="w-5 h-5 text-gold" />
-                  <span>3 intensive sessions + full recordings</span>
+                  <span>3-day online sessions + full recordings</span>
                 </div>
               </div>
 
@@ -79,10 +87,25 @@ export function PhysicalClassSection() {
           <Card className="border-border/50 bg-card/50 backdrop-blur">
             <CardContent className="p-8">
               <h3 className="text-2xl font-bold mb-4">What's Included</h3>
+              <div className="mb-4 bg-neon-blue/10 border border-neon-blue/20 rounded-lg p-3">
+                <p className="text-sm font-semibold text-neon-blue">✨ Everything from Online Class (3 Days) PLUS:</p>
+              </div>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <span className="text-gold text-xl">✓</span>
-                  <span>3 Sesi Kelas Intensif + Rakaman Lengkap</span>
+                  <span className="font-semibold">2 Sesi Face-to-Face dengan Abg Max</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-gold text-xl">✓</span>
+                  <span>Makanan disediakan semasa sesi fizikal</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-gold text-xl">✓</span>
+                  <span>Kemudahan latihan premium</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-gold text-xl">✓</span>
+                  <span>3 Sesi Kelas Online Intensif + Rakaman Lengkap</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-gold text-xl">✓</span>
