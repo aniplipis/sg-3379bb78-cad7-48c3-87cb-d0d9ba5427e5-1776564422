@@ -39,8 +39,8 @@ export default function VideoLibrary() {
   const isPremium = profile?.is_premium || false;
 
   const categories = [
-    { id: "all", label: "All Videos", count: 77 },
-    { id: "class-recordings", label: "Class Recordings", count: 22, icon: Folder },
+    { id: "all", label: "All Videos", count: 93 },
+    { id: "class-recordings", label: "Class Recordings", count: 38, icon: Folder },
     { id: "wyckoff", label: "Wyckoff Lessons", count: 12 },
     { id: "smc", label: "Smart Money Concepts", count: 15 },
     { id: "fcpo", label: "FCPO Strategy", count: 10 },
@@ -58,7 +58,11 @@ export default function VideoLibrary() {
     { id: "HYBRID SMC JULY 2025", label: "HYBRID SMC JULY 2025", count: 3 },
     { id: "HYBRID SMC JUNE 2025", label: "HYBRID SMC JUNE 2025", count: 4 },
     { id: "HYBRID SMC APRIL 2025", label: "HYBRID SMC APRIL 2025", count: 4 },
-    { id: "HYBRID SMC JANUARY 2025", label: "HYBRID SMC JANUARY 2025", count: 4 }
+    { id: "HYBRID SMC JANUARY 2025", label: "HYBRID SMC JANUARY 2025", count: 4 },
+    { id: "HYBRID SMC NOVEMBER 2024", label: "HYBRID SMC NOVEMBER 2024", count: 4 },
+    { id: "HYBRID SMC OCTOBER 2024", label: "HYBRID SMC OCTOBER 2024", count: 4 },
+    { id: "HYBRID SMC AUGUST 2024", label: "HYBRID SMC AUGUST 2024", count: 4 },
+    { id: "HYBRID SMC MAY 2024", label: "HYBRID SMC MAY 2024", count: 4 }
   ];
 
   const videos = [
@@ -310,6 +314,186 @@ export default function VideoLibrary() {
       thumbnail: "https://vumbnail.com/1144413749.jpg",
       vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413749?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 07_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 07/01/2025"
+    },
+    // Class Recordings - HYBRID SMC NOVEMBER 2024
+    {
+      id: "hybrid-nov24-1",
+      title: "FUNDAMENTALS OF HYBRID SMC (PART 1)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC NOVEMBER 2024",
+      duration: "Video Length",
+      vimeoId: "1144428516",
+      thumbnail: "https://vumbnail.com/1144428516.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144428516?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="MAX SAHAM FUNDAMENTALS OF HYBRID SMC - KRK FUTURES TRADING (PART 1)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "MAX SAHAM Fundamentals of Hybrid SMC - KRK Futures Trading - November 2024"
+    },
+    {
+      id: "hybrid-nov24-2",
+      title: "KRK FUTURES TRADING (PART 2)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC NOVEMBER 2024",
+      duration: "Video Length",
+      vimeoId: "1144428652",
+      thumbnail: "https://vumbnail.com/1144428652.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144428652?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 2) 19_11_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 19/11/2024"
+    },
+    {
+      id: "hybrid-nov24-3",
+      title: "KRK FUTURES TRADING (PART 3)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC NOVEMBER 2024",
+      duration: "Video Length",
+      vimeoId: "1144428835",
+      thumbnail: "https://vumbnail.com/1144428835.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144428835?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 20_11_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 20/11/2024"
+    },
+    {
+      id: "hybrid-nov24-4",
+      title: "KRK FUTURES TRADING (PART 4)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC NOVEMBER 2024",
+      duration: "Video Length",
+      vimeoId: "1144428993",
+      thumbnail: "https://vumbnail.com/1144428993.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144428993?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 26_11_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 26/11/2024"
+    },
+    // Class Recordings - HYBRID SMC OCTOBER 2024
+    {
+      id: "hybrid-oct24-1",
+      title: "SCALPING SECRETS FOUNDATIONS (PART 1)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC OCTOBER 2024",
+      duration: "Video Length",
+      vimeoId: "1144427938",
+      thumbnail: "https://vumbnail.com/1144427938.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427938?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="MAX SAHAM X FINLEARN - SCALPING SECRETS FOUNDATIONS OF HYBRID SMC - KRK FUTURES TRADING (PART 1)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "MAX SAHAM X FINLEARN - Scalping Secrets Foundations of Hybrid SMC"
+    },
+    {
+      id: "hybrid-oct24-2",
+      title: "KRK FUTURES TRADING (PART 2)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC OCTOBER 2024",
+      duration: "Video Length",
+      vimeoId: "1144428070",
+      thumbnail: "https://vumbnail.com/1144428070.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144428070?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 2) 01_10_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 01/10/2024"
+    },
+    {
+      id: "hybrid-oct24-3",
+      title: "KRK FUTURES TRADING (PART 3)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC OCTOBER 2024",
+      duration: "Video Length",
+      vimeoId: "1144428209",
+      thumbnail: "https://vumbnail.com/1144428209.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144428209?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 04_10_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 04/10/2024"
+    },
+    {
+      id: "hybrid-oct24-4",
+      title: "KRK FUTURES TRADING (PART 4)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC OCTOBER 2024",
+      duration: "Video Length",
+      vimeoId: "1144428356",
+      thumbnail: "https://vumbnail.com/1144428356.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144428356?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 07_10_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 07/10/2024"
+    },
+    // Class Recordings - HYBRID SMC AUGUST 2024
+    {
+      id: "hybrid-aug24-1",
+      title: "FOUNDATIONS OF HYBRID SMC (PART 1)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC AUGUST 2024",
+      duration: "Video Length",
+      vimeoId: "1144427601",
+      thumbnail: "https://vumbnail.com/1144427601.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427601?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="MAX SAHAM X FINLEARN SPOTLIGHT SESSION - FOUNDATIONS OF HYBRID SMC - KRK FUTURES TRADING (PART 1)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "MAX SAHAM X FINLEARN SPOTLIGHT SESSION - Foundations of Hybrid SMC"
+    },
+    {
+      id: "hybrid-aug24-2",
+      title: "KRK FUTURES TRADING (PART 2)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC AUGUST 2024",
+      duration: "Video Length",
+      vimeoId: "1144427707",
+      thumbnail: "https://vumbnail.com/1144427707.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427707?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 2) 13_08_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 13/08/2024"
+    },
+    {
+      id: "hybrid-aug24-3",
+      title: "KRK FUTURES TRADING (PART 3)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC AUGUST 2024",
+      duration: "Video Length",
+      vimeoId: "1144427817",
+      thumbnail: "https://vumbnail.com/1144427817.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427817?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 14_08_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 14/08/2024"
+    },
+    {
+      id: "hybrid-aug24-4",
+      title: "KRK FUTURES TRADING (PART 4)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC AUGUST 2024",
+      duration: "Video Length",
+      vimeoId: "1144427430",
+      thumbnail: "https://vumbnail.com/1144427430.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427430?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 16_08_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 16/08/2024"
+    },
+    // Class Recordings - HYBRID SMC MAY 2024
+    {
+      id: "hybrid-may24-1",
+      title: "HIGH WIN RATE UNTUK FCPO, ZL & CL (PART 1)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC MAY 2024",
+      duration: "Video Length",
+      vimeoId: "1144427159",
+      thumbnail: "https://vumbnail.com/1144427159.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427159?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS UNTUK FUTURES TRADING (PART 1) KAEDAH HIGH WIN RATE UNTUK MARKET FCPO, ZL & CL"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas - Kaedah High Win Rate untuk Market FCPO, ZL & CL"
+    },
+    {
+      id: "hybrid-may24-2",
+      title: "KRK FUTURES TRADING (PART 2)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC MAY 2024",
+      duration: "Video Length",
+      vimeoId: "1144427293",
+      thumbnail: "https://vumbnail.com/1144427293.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427293?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 2) 21_05_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 21/05/2024"
+    },
+    {
+      id: "hybrid-may24-3",
+      title: "KRK FUTURES TRADING (PART 3)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC MAY 2024",
+      duration: "Video Length",
+      vimeoId: "1144426503",
+      thumbnail: "https://vumbnail.com/1144426503.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426503?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 22_05_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 22/05/2024"
+    },
+    {
+      id: "hybrid-may24-4",
+      title: "KRK FUTURES TRADING (PART 4)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC MAY 2024",
+      duration: "Video Length",
+      vimeoId: "1144426917",
+      thumbnail: "https://vumbnail.com/1144426917.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426917?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 24_05_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 24/05/2024"
     }
   ];
 
