@@ -38,8 +38,8 @@ export default function VideoLibrary() {
   const isPremium = profile?.is_premium || false;
 
   const categories = [
-    { id: "all", label: "All Videos", count: 55 },
-    { id: "class-recordings", label: "Class Recordings", count: 7, icon: Folder },
+    { id: "all", label: "All Videos", count: 77 },
+    { id: "class-recordings", label: "Class Recordings", count: 22, icon: Folder },
     { id: "wyckoff", label: "Wyckoff Lessons", count: 12 },
     { id: "smc", label: "Smart Money Concepts", count: 15 },
     { id: "fcpo", label: "FCPO Strategy", count: 10 },
@@ -130,6 +130,176 @@ export default function VideoLibrary() {
       vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413749?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 07_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 07/01/2025"
     },
+    // Class Recordings - CHATGPT
+    {
+      id: "chatgpt-1",
+      title: "HARNESS THE POWER OF CHATGPT",
+      category: "class-recordings",
+      subcategory: "CHATGPT",
+      duration: "Video Length",
+      vimeoId: "1144412616",
+      thumbnail: "https://vumbnail.com/1144412616.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144412616?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HARNESS THE POWER OF CHATGPT"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Learn how to leverage ChatGPT for trading analysis and research"
+    },
+    // Class Recordings - HYBRID SMC AUGUST 2025
+    {
+      id: "hybrid-aug-1",
+      title: "HYBRID SMC PART 1",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC AUGUST 2025",
+      duration: "Video Length",
+      vimeoId: "1144395701",
+      thumbnail: "https://vumbnail.com/1144395701.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395701?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "August 2025 session - Introduction to Hybrid SMC methodology"
+    },
+    {
+      id: "hybrid-aug-2",
+      title: "HYBRID SMC PART 2",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC AUGUST 2025",
+      duration: "Video Length",
+      vimeoId: "1144395300",
+      thumbnail: "https://vumbnail.com/1144395300.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395300?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "August 2025 session - Advanced Hybrid SMC concepts"
+    },
+    {
+      id: "hybrid-aug-3",
+      title: "HYBRID SMC PART 3",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC AUGUST 2025",
+      duration: "Video Length",
+      vimeoId: "1144395489",
+      thumbnail: "https://vumbnail.com/1144395489.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395489?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "August 2025 session - Practical applications and examples"
+    },
+    // Class Recordings - HYBRID SMC JUNE 2025
+    {
+      id: "hybrid-jun-1",
+      title: "KRK FUTURES TRADING (PART 1)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JUNE 2025",
+      duration: "Video Length",
+      vimeoId: "1144426249",
+      thumbnail: "https://vumbnail.com/1144426249.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426249?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 1) 16_06_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 16/06/2025"
+    },
+    {
+      id: "hybrid-jun-2",
+      title: "KRK FUTURES TRADING (PART 2)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JUNE 2025",
+      duration: "Video Length",
+      youtubeId: "iFudDnPoh24",
+      thumbnail: "https://img.youtube.com/vi/iFudDnPoh24/maxresdefault.jpg",
+      youtubeEmbed: `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/iFudDnPoh24?si=IakXyM988xoyWB0D" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`,
+      description: "Kelas Rancangan Khas Futures Trading - Part 2 (YouTube)"
+    },
+    {
+      id: "hybrid-jun-3",
+      title: "KRK FUTURES TRADING (PART 3)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JUNE 2025",
+      duration: "Video Length",
+      vimeoId: "1144426029",
+      thumbnail: "https://vumbnail.com/1144426029.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426029?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 18_06_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 18/06/2025"
+    },
+    {
+      id: "hybrid-jun-4",
+      title: "KRK FUTURES TRADING (PART 4)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JUNE 2025",
+      duration: "Video Length",
+      vimeoId: "1144426135",
+      thumbnail: "https://vumbnail.com/1144426135.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426135?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 20_06_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 20/06/2025"
+    },
+    // Class Recordings - HYBRID SMC APRIL 2025
+    {
+      id: "hybrid-apr-1",
+      title: "KRK FUTURES TRADING (PART 1)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC APRIL 2025",
+      duration: "Video Length",
+      vimeoId: "1144425810",
+      thumbnail: "https://vumbnail.com/1144425810.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425810?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 1) 21_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 21/04/2025"
+    },
+    {
+      id: "hybrid-apr-2",
+      title: "FCPO SPREAD TRADING 101 (PART 2)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC APRIL 2025",
+      duration: "Video Length",
+      vimeoId: "1144413998",
+      thumbnail: "https://vumbnail.com/1144413998.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413998?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="FCPO SPREAD TRADING 101 - KRK FUTURES TRADING (PART 2)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "FCPO Spread Trading 101 - KRK Futures Trading"
+    },
+    {
+      id: "hybrid-apr-3",
+      title: "KRK FUTURES TRADING (PART 3)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC APRIL 2025",
+      duration: "Video Length",
+      vimeoId: "1144425423",
+      thumbnail: "https://vumbnail.com/1144425423.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425423?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 23_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 23/04/2025"
+    },
+    {
+      id: "hybrid-apr-4",
+      title: "KRK FUTURES TRADING (PART 4)",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC APRIL 2025",
+      duration: "Video Length",
+      vimeoId: "1144425527",
+      thumbnail: "https://vumbnail.com/1144425527.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425527?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 25_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Kelas Rancangan Khas Futures Trading - 25/04/2025"
+    },
+    // Class Recordings - HYBRID SMC JULY 2025
+    {
+      id: "hybrid-jul-1",
+      title: "HYBRID SMC PART 1",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JULY 2025",
+      duration: "Video Length",
+      vimeoId: "1142017799",
+      thumbnail: "https://vumbnail.com/1142017799.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1142017799?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "July 2025 session - Introduction to Hybrid SMC methodology"
+    },
+    {
+      id: "hybrid-jul-2",
+      title: "HYBRID SMC PART 2",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JULY 2025",
+      duration: "Video Length",
+      vimeoId: "1142017987",
+      thumbnail: "https://vumbnail.com/1142017987.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1142017987?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "July 2025 session - Advanced Hybrid SMC concepts"
+    },
+    {
+      id: "hybrid-jul-3",
+      title: "HYBRID SMC PART 3",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JULY 2025",
+      duration: "Video Length",
+      vimeoId: "1142018335",
+      thumbnail: "https://vumbnail.com/1142018335.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1142018335?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "July 2025 session - Practical applications and examples"
+    },
     // Existing videos
     {
       id: 1,
@@ -192,7 +362,7 @@ export default function VideoLibrary() {
     : videos.filter(v => v.category === selectedCategory);
 
   const handleVideoClick = (video: any) => {
-    if (isPremium && video.vimeoEmbed) {
+    if (isPremium && (video.vimeoEmbed || video.youtubeEmbed)) {
       setSelectedVideo(video);
     }
   };
@@ -262,14 +432,34 @@ export default function VideoLibrary() {
                 <Folder className="w-6 h-6 text-gold" />
                 <h2 className="text-2xl font-bold">Class Recording Series</h2>
               </div>
-              <div className="space-y-2">
+              <div className="grid md:grid-cols-2 gap-2">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-gold rounded-full"></div>
-                  <p className="text-muted-foreground">HYBRID SMC OCTOBER 2025 - 3 videos</p>
+                  <p className="text-muted-foreground">CHATGPT - 1 video</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-gold rounded-full"></div>
                   <p className="text-muted-foreground">HYBRID SMC JANUARY 2025 - 4 videos</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gold rounded-full"></div>
+                  <p className="text-muted-foreground">HYBRID SMC APRIL 2025 - 4 videos</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gold rounded-full"></div>
+                  <p className="text-muted-foreground">HYBRID SMC JUNE 2025 - 4 videos</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gold rounded-full"></div>
+                  <p className="text-muted-foreground">HYBRID SMC JULY 2025 - 3 videos</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gold rounded-full"></div>
+                  <p className="text-muted-foreground">HYBRID SMC AUGUST 2025 - 3 videos</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gold rounded-full"></div>
+                  <p className="text-muted-foreground">HYBRID SMC OCTOBER 2025 - 3 videos</p>
                 </div>
               </div>
             </div>
@@ -369,7 +559,12 @@ export default function VideoLibrary() {
               <span>Close</span>
             </button>
             <div className="bg-background rounded-xl overflow-hidden">
-              <div className="aspect-video" dangerouslySetInnerHTML={{ __html: selectedVideo.vimeoEmbed }} />
+              <div 
+                className="aspect-video" 
+                dangerouslySetInnerHTML={{ 
+                  __html: selectedVideo.youtubeEmbed || selectedVideo.vimeoEmbed 
+                }} 
+              />
               <div className="p-6">
                 <div className="text-xs text-gold uppercase tracking-wide mb-2">
                   {selectedVideo.subcategory || categories.find(c => c.id === selectedVideo.category)?.label}
