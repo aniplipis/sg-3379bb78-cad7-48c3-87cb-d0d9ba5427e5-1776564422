@@ -2,7 +2,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Users, MapPin, Send, Utensils, Building2 } from "lucide-react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 export function PhysicalClassSection() {
   // Testimonial images - actual student testimonials
@@ -157,7 +156,7 @@ export function PhysicalClassSection() {
             <motion.div
               className="flex gap-6"
               animate={{
-                x: [0, -1920] // Move by width of 10 items (each 280px + 24px gap = 304px * 10 / 2 = ~1920px)
+                x: [0, -3040] // Move by width of 10 items (280px + 24px gap = 304px * 10 = 3040px)
               }}
               transition={{
                 x: {
@@ -173,17 +172,13 @@ export function PhysicalClassSection() {
                   key={`${testimonial.id}-${index}`}
                   className="flex-shrink-0 w-[280px]"
                 >
-                  <Card className="border-gold/30 bg-card/80 backdrop-blur overflow-hidden h-[350px] hover:border-gold transition-all">
+                  <Card className="border-gold/30 bg-card/80 backdrop-blur overflow-hidden hover:border-gold transition-all">
                     <CardContent className="p-0">
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={testimonial.image}
-                          alt={testimonial.alt}
-                          fill
-                          className="object-cover"
-                          sizes="280px"
-                        />
-                      </div>
+                      <img
+                        src={testimonial.image}
+                        alt={testimonial.alt}
+                        className="w-full h-[350px] object-cover"
+                      />
                     </CardContent>
                   </Card>
                 </div>
