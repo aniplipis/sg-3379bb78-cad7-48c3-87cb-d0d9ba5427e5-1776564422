@@ -11,7 +11,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string, phone: string, tradingview_username?: string) => Promise<void>;
   logout: () => Promise<void>;
   isLoading: boolean;
 }
@@ -60,6 +60,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             email: supabaseUser.email || "",
             full_name: fullName,
             avatar_url: supabaseUser.user_metadata?.avatar_url || supabaseUser.user_metadata?.picture || null,
+            phone: supabaseUser.user_metadata?.phone || null,
+            tradingview_username: supabaseUser.user_metadata?.tradingview_username || null,
           },
         ])
         .select()
@@ -134,13 +136,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) throw error;
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (name: string, email: string, password: string, phone: string, tradingview_username?: string) => {
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
           full_name: name,
+          phone: phone,
+          tradingview_username: tradingview_username || null,
         },
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },

@@ -24,11 +24,13 @@ export type Database = {
           id: string
           is_admin: boolean
           is_premium: boolean | null
+          phone: string | null
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
           stripe_subscription_status: string | null
           subscription_end_date: string | null
           subscription_status: string | null
+          tradingview_username: string | null
           updated_at: string | null
         }
         Insert: {
@@ -39,11 +41,13 @@ export type Database = {
           id: string
           is_admin?: boolean
           is_premium?: boolean | null
+          phone?: string | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           stripe_subscription_status?: string | null
           subscription_end_date?: string | null
           subscription_status?: string | null
+          tradingview_username?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -54,11 +58,13 @@ export type Database = {
           id?: string
           is_admin?: boolean
           is_premium?: boolean | null
+          phone?: string | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           stripe_subscription_status?: string | null
           subscription_end_date?: string | null
           subscription_status?: string | null
+          tradingview_username?: string | null
           updated_at?: string | null
         }
         Relationships: []

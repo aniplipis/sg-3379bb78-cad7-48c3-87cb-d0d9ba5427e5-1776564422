@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { Loader2, User, Mail, Lock, Chrome } from "lucide-react";
+import { Loader2, User, Mail, Lock, Chrome, Phone, TrendingUp } from "lucide-react";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
+  phone: z.string().min(10, "Please enter a valid phone number"),
+  tradingview_username: z.string().optional(),
   password: z.string().min(6, "Password must be at least 6 characters"),
   confirmPassword: z.string(),
   terms: z.boolean().refine((val) => val === true, {
@@ -48,7 +49,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     setSuccess(false);
 
     try {
-      await registerUser(data.name, data.email, data.password);
+      await registerUser(data.name, data.email, data.password, data.phone, data.tradingview_username);
       setSuccess(true);
       setTimeout(() => {
         onSuccess();
@@ -151,6 +152,42 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         </div>
 
         <div>
+          <Label htmlFor="phone" className="text-foreground/90">Phone Number</Label>
+          <div className="relative mt-1.5">
+            <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              id="phone"
+              type="tel"
+              placeholder="+60123456789"
+              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              {...register("phone")}
+            />
+          </div>
+          {errors.phone && (
+            <p className="text-destructive text-sm mt-1">{errors.phone.message}</p>
+          )}
+        </div>
+
+        <div>
+          <Label htmlFor="tradingview_username" className="text-foreground/90">
+            TradingView Username <span className="text-muted-foreground text-xs">(Optional)</span>
+          </Label>
+          <div className="relative mt-1.5">
+            <TrendingUp className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Input
+              id="tradingview_username"
+              type="text"
+              placeholder="your_tradingview_username"
+              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              {...register("tradingview_username")}
+            />
+          </div>
+          {errors.tradingview_username && (
+            <p className="text-destructive text-sm mt-1">{errors.tradingview_username.message}</p>
+          )}
+        </div>
+
+        <div>
           <Label htmlFor="password" className="text-foreground/90">Password</Label>
           <div className="relative mt-1.5">
             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -216,12 +253,12 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           ) : success ? (
             "Redirecting..."
           ) : (
-            "Create Account"
+            "Create Free Account"
           )}
         </Button>
 
         <div className="text-center text-sm text-muted-foreground">
-          By creating an account, you'll get access to free FCPO trading resources and community features.
+          By creating a free account, you'll get access to exclusive FCPO training videos, eBooks, and community features.
         </div>
       </form>
     </div>
