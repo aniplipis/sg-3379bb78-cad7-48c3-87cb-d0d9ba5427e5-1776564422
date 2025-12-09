@@ -8,70 +8,70 @@ export function TestimonialsSection() {
     {
       id: 1,
       name: "Client Testimonial 1",
-      image: "/uploads/testimonial-1.png", // Replace with actual image
+      image: "/uploads/testimonial-1.jpg", // Changed from .png to .jpg
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 2,
       name: "Client Testimonial 2",
-      image: "/uploads/testimonial-2.png",
+      image: "/uploads/testimonial-2.jpg", // Changed from .png to .jpg
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 3,
       name: "Client Testimonial 3",
-      image: "/uploads/testimonial-3.png",
+      image: "/uploads/testimonial-3.jpg", // Changed from .png to .jpg
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 4,
       name: "Client Testimonial 4",
-      image: "/uploads/testimonial-4.png",
+      image: "/uploads/testimonial-4.jpg", // Changed from .png to .jpg
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 5,
       name: "Client Testimonial 5",
-      image: "/uploads/testimonial-5.png",
+      image: "/uploads/testimonial-5.jpg", // Changed from .png to .jpg
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 6,
       name: "Client Testimonial 6",
-      image: "/uploads/testimonial-6.png",
+      image: "/uploads/testimonial-6.jpg", // Changed from .png to .jpg
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 7,
       name: "Client Testimonial 7",
-      image: "/uploads/testimonial-7.png",
+      image: "/uploads/testimonial-7.jpg", // Changed from .png to .jpg
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 8,
       name: "Client Testimonial 8",
-      image: "/uploads/testimonial-8.png",
+      image: "/uploads/testimonial-8.jpg", // Changed from .png to .jpg
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 9,
       name: "Client Testimonial 9",
-      image: "/uploads/testimonial-9.png",
+      image: "/uploads/testimonial-9.jpg", // Changed from .png to .jpg
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     },
     {
       id: 10,
       name: "Client Testimonial 10",
-      image: "/uploads/testimonial-10.png",
+      image: "/uploads/testimonial-10.jpg", // Changed from .png to .jpg
       rating: 5,
       text: "Placeholder for client testimonial text. Replace with actual testimonial content."
     }
