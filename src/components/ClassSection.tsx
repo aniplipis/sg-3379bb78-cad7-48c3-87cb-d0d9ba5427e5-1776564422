@@ -20,7 +20,7 @@ export function ClassSection() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-6 py-2 mb-6">
             <GraduationCap className="w-5 h-5 text-gold" />
-            <span className="text-gold font-semibold">Physical Class</span>
+            <span className="text-gold font-semibold">Online Class</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Join <span className="text-gold">MAX CLAN</span>
@@ -31,31 +31,6 @@ export function ClassSection() {
           <p className="text-lg text-gold font-semibold">
             Join MAX CLAN Telegram for latest training dates
           </p>
-        </div>
-
-        {/* Class Photos Carousel */}
-        <div className="mb-12">
-          <Card className="border-border/50 bg-card/50 backdrop-blur overflow-hidden">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <ImageIcon className="w-6 h-6 text-gold" />
-                <h3 className="text-2xl font-bold">Previous Class Sessions</h3>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                {[...Array(10)].map((_, index) => (
-                  <div
-                    key={index}
-                    className="aspect-square bg-gradient-to-br from-gold/10 to-blue-500/10 rounded-lg border border-border/50 flex items-center justify-center hover:scale-105 transition-transform"
-                  >
-                    <div className="text-center">
-                      <ImageIcon className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
-                      <p className="text-xs text-muted-foreground">Class Photo {index + 1}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
@@ -93,7 +68,7 @@ export function ClassSection() {
                 <CardContent className="p-4 text-center">
                   <Calendar className="w-8 h-8 text-gold mx-auto mb-2" />
                   <p className="text-sm text-muted-foreground">Duration</p>
-                  <p className="font-semibold">Full Day</p>
+                  <p className="font-semibold">3 Days</p>
                 </CardContent>
               </Card>
               <Card className="border-border/50 bg-card/50">
