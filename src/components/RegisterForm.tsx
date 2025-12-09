@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { Loader2, User, Mail, Lock, Chrome, Phone, TrendingUp } from "lucide-react";
+import { sendWelcomeEmail } from "@/services/authService";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -49,7 +50,28 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     setSuccess(false);
 
     try {
-      await registerUser(data.name, data.email, data.password, data.phone, data.tradingview_username);
+      const signUpError = await registerUser(data.name, data.email, data.password, data.phone, data.tradingview_username);
+      if (signUpError?.message?.includes('already registered')) {
+        toast({
+          title: "Account already exists",
+          description: "Please sign in instead or reset your password if you forgot it.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (signUpError) {
+        throw signUpError;
+      }
+
+      // Send welcome email
+      await sendWelcomeEmail(data.email, data.fullName);
+
+      toast({
+        title: "Registration successful!",
+        description: "Please check your email to verify your account. We've also sent you a welcome email!",
+      });
+
       setSuccess(true);
       setTimeout(() => {
         onSuccess();

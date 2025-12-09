@@ -61,6 +61,43 @@ export default async function handler(
             .eq('id', userId);
 
           console.log(`✅ Premium access granted to user: ${userId}`);
+
+          // Get user details for email
+          const { data: profile } = await supabaseAdmin
+            .from('profiles')
+            .select('full_name, email')
+            .eq('id', userId)
+            .single();
+
+          if (profile) {
+            // Send payment confirmation email via Edge Function
+            try {
+              const response = await fetch(
+                `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send-email`,
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+                  },
+                  body: JSON.stringify({
+                    to: profile.email || session.customer_email,
+                    subject: '✅ Payment Successful - Team Max Saham',
+                    type: 'payment',
+                    userName: profile.full_name,
+                    membershipType: priceToMembership[priceId] || 'Premium',
+                  }),
+                }
+              );
+
+              if (!response.ok) {
+                console.error('Failed to send payment confirmation email');
+              }
+            } catch (emailError) {
+              console.error('Error sending payment email:', emailError);
+              // Don't fail the webhook if email fails
+            }
+          }
         }
         break;
       }

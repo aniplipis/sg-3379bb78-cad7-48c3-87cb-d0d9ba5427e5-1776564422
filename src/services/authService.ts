@@ -13,6 +13,59 @@ export interface AuthError {
   code?: string;
 }
 
+// Send welcome email after registration
+export async function sendWelcomeEmail(email: string, userName: string) {
+  try {
+    const { data, error } = await supabase.functions.invoke('send-email', {
+      body: {
+        to: email,
+        subject: 'Welcome to Team Max Saham! 🎉',
+        type: 'registration',
+        userName: userName,
+      },
+    });
+
+    if (error) {
+      console.error('Error sending welcome email:', error);
+      return { success: false, error };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Failed to send welcome email:', error);
+    return { success: false, error };
+  }
+}
+
+// Send payment confirmation email
+export async function sendPaymentConfirmationEmail(
+  email: string,
+  userName: string,
+  membershipType: string
+) {
+  try {
+    const { data, error } = await supabase.functions.invoke('send-email', {
+      body: {
+        to: email,
+        subject: '✅ Payment Successful - Team Max Saham',
+        type: 'payment',
+        userName: userName,
+        membershipType: membershipType,
+      },
+    });
+
+    if (error) {
+      console.error('Error sending payment confirmation:', error);
+      return { success: false, error };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Failed to send payment confirmation:', error);
+    return { success: false, error };
+  }
+}
+
 // Dynamic URL Helper
 const getURL = () => {
   let url = process?.env?.NEXT_PUBLIC_VERCEL_URL ?? 
