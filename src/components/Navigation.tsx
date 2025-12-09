@@ -68,7 +68,7 @@ export function Navigation() {
                   <DropdownMenuTrigger asChild>
                     <Button className="bg-gold hover:bg-gold/90 text-black font-semibold px-6 py-2 h-auto relative">
                       <User className="w-4 h-4 mr-2" />
-                      <span className="text-base">{profile?.full_name || "User"}</span>
+                      <span className="text-base">{profile?.full_name || user?.email?.split('@')[0] || "User"}</span>
                       {profile?.is_premium && (
                         <motion.div
                           className="absolute -top-1 -right-1 w-5 h-5 bg-neon-blue rounded-full flex items-center justify-center"
@@ -183,7 +183,7 @@ export function Navigation() {
                             <User className="w-5 h-5 text-gold" />
                           </div>
                           <div>
-                            <div className="font-semibold">{profile?.full_name}</div>
+                            <div className="font-semibold">{profile?.full_name || user?.email?.split('@')[0] || "User"}</div>
                             <div className="text-xs text-muted-foreground">{user?.email}</div>
                           </div>
                         </div>
