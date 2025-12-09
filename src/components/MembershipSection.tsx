@@ -146,8 +146,10 @@ export function MembershipSection() {
                   <span className="text-muted-foreground">Sample videos</span>
                 </li>
               </ul>
-              <Button className="w-full" variant="outline">
-                Join Free Community
+              <Button className="w-full" variant="outline" asChild>
+                <a href="https://t.me/maxsaham" target="_blank" rel="noopener noreferrer">
+                  Join Free Community
+                </a>
               </Button>
             </CardContent>
           </Card>
