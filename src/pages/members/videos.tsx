@@ -1,10 +1,9 @@
-
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Video, Play, Lock, Clock, ChevronRight } from "lucide-react";
+import { Video, Play, Lock, Clock, ChevronRight, Folder, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -13,6 +12,7 @@ export default function VideoLibrary() {
   const { user, profile, isLoading } = useAuth();
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedVideo, setSelectedVideo] = useState<any>(null);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -38,7 +38,8 @@ export default function VideoLibrary() {
   const isPremium = profile?.is_premium || false;
 
   const categories = [
-    { id: "all", label: "All Videos", count: 52 },
+    { id: "all", label: "All Videos", count: 55 },
+    { id: "class-recordings", label: "Class Recordings", count: 3, icon: Folder },
     { id: "wyckoff", label: "Wyckoff Lessons", count: 12 },
     { id: "smc", label: "Smart Money Concepts", count: 15 },
     { id: "fcpo", label: "FCPO Strategy", count: 10 },
@@ -50,6 +51,38 @@ export default function VideoLibrary() {
   ];
 
   const videos = [
+    // Class Recordings - HYBRID SMC OCTOBER 2025
+    {
+      id: "hybrid-1",
+      title: "HYBRID SMC PART 1",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC OCTOBER 2025",
+      duration: "Video Length",
+      vimeoId: "1144396134",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144396134?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "First session of the Hybrid SMC methodology training"
+    },
+    {
+      id: "hybrid-2",
+      title: "HYBRID SMC PART 2",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC OCTOBER 2025",
+      duration: "Video Length",
+      vimeoId: "1144395840",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395840?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Second session covering advanced Hybrid SMC concepts"
+    },
+    {
+      id: "hybrid-3",
+      title: "HYBRID SMC PART 3",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC OCTOBER 2025",
+      duration: "Video Length",
+      vimeoId: "1144395923",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395923?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Final session with practical application and examples"
+    },
+    // Existing videos
     {
       id: 1,
       title: "Introduction to Wyckoff Methodology",
@@ -110,6 +143,16 @@ export default function VideoLibrary() {
     ? videos 
     : videos.filter(v => v.category === selectedCategory);
 
+  const handleVideoClick = (video: any) => {
+    if (isPremium && video.vimeoEmbed) {
+      setSelectedVideo(video);
+    }
+  };
+
+  const closeVideoModal = () => {
+    setSelectedVideo(null);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -147,18 +190,35 @@ export default function VideoLibrary() {
 
           {/* Category Filter */}
           <div className="mb-8 flex flex-wrap gap-3">
-            {categories.map((category) => (
-              <Button
-                key={category.id}
-                variant={selectedCategory === category.id ? "default" : "outline"}
-                className={selectedCategory === category.id ? "bg-gold hover:bg-gold/90 text-black" : ""}
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                {category.label}
-                <span className="ml-2 text-xs opacity-70">({category.count})</span>
-              </Button>
-            ))}
+            {categories.map((category) => {
+              const Icon = category.icon || Video;
+              return (
+                <Button
+                  key={category.id}
+                  variant={selectedCategory === category.id ? "default" : "outline"}
+                  className={selectedCategory === category.id ? "bg-gold hover:bg-gold/90 text-black" : ""}
+                  onClick={() => setSelectedCategory(category.id)}
+                >
+                  <Icon className="w-4 h-4 mr-2" />
+                  {category.label}
+                  <span className="ml-2 text-xs opacity-70">({category.count})</span>
+                </Button>
+              );
+            })}
           </div>
+
+          {/* Subcategory Header for Class Recordings */}
+          {selectedCategory === "class-recordings" && (
+            <div className="mb-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Folder className="w-6 h-6 text-gold" />
+                <h2 className="text-2xl font-bold">HYBRID SMC OCTOBER 2025</h2>
+              </div>
+              <p className="text-muted-foreground">
+                Complete recording series from the Hybrid Smart Money Concepts course held in October 2025
+              </p>
+            </div>
+          )}
 
           {/* Videos Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -166,8 +226,9 @@ export default function VideoLibrary() {
               <Card 
                 key={video.id} 
                 className={`border-border/50 hover:border-gold/50 transition-all group ${
-                  !isPremium ? "opacity-60" : ""
+                  !isPremium ? "opacity-60" : "cursor-pointer"
                 }`}
+                onClick={() => handleVideoClick(video)}
               >
                 <CardHeader className="p-0">
                   <div className="relative aspect-video bg-gradient-to-br from-gold/20 to-blue-500/20 rounded-t-xl overflow-hidden">
@@ -180,15 +241,17 @@ export default function VideoLibrary() {
                         )}
                       </div>
                     </div>
-                    <div className="absolute top-3 right-3 bg-black/70 backdrop-blur rounded-full px-3 py-1 flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-gold" />
-                      <span className="text-sm text-white">{video.duration}</span>
-                    </div>
+                    {video.duration && (
+                      <div className="absolute top-3 right-3 bg-black/70 backdrop-blur rounded-full px-3 py-1 flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-gold" />
+                        <span className="text-sm text-white">{video.duration}</span>
+                      </div>
+                    )}
                   </div>
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="text-xs text-gold uppercase tracking-wide mb-2">
-                    {categories.find(c => c.id === video.category)?.label}
+                    {video.subcategory || categories.find(c => c.id === video.category)?.label}
                   </div>
                   <h3 className="text-lg font-bold mb-2">{video.title}</h3>
                   <p className="text-sm text-muted-foreground mb-4">{video.description}</p>
@@ -222,6 +285,31 @@ export default function VideoLibrary() {
           )}
         </div>
       </div>
+
+      {/* Video Player Modal */}
+      {selectedVideo && isPremium && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-6xl relative">
+            <button
+              onClick={closeVideoModal}
+              className="absolute -top-12 right-0 text-white hover:text-gold transition-colors flex items-center gap-2"
+            >
+              <X className="w-6 h-6" />
+              <span>Close</span>
+            </button>
+            <div className="bg-background rounded-xl overflow-hidden">
+              <div className="aspect-video" dangerouslySetInnerHTML={{ __html: selectedVideo.vimeoEmbed }} />
+              <div className="p-6">
+                <div className="text-xs text-gold uppercase tracking-wide mb-2">
+                  {selectedVideo.subcategory || categories.find(c => c.id === selectedVideo.category)?.label}
+                </div>
+                <h2 className="text-2xl font-bold mb-2">{selectedVideo.title}</h2>
+                <p className="text-muted-foreground">{selectedVideo.description}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
