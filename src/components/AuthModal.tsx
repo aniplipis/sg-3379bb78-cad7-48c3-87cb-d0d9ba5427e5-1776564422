@@ -13,7 +13,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) {
-  const [activeTab, setActiveTab] = useState(defaultTab);
+  const [activeTab, setActiveTab] = useState<"login" | "register">(defaultTab);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -41,7 +41,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
             </DialogDescription>
           </DialogHeader>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-3 sm:mt-6">
+          <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as "login" | "register")} className="mt-3 sm:mt-6">
             <TabsList className="grid w-full grid-cols-2 bg-muted/50 h-9 sm:h-10">
               <TabsTrigger 
                 value="login"
