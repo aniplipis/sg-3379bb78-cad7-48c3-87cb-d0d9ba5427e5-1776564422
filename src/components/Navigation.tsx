@@ -83,13 +83,15 @@ export function Navigation() {
                   <DropdownMenuContent align="end" className="w-56 bg-card border-gold/30">
                     <DropdownMenuLabel>
                       <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium">{profile?.full_name}</p>
-                        <p className="text-xs text-muted-foreground">{user?.email}</p>
-                        {profile?.is_premium ? (
-                          <p className="text-xs text-gold font-semibold">⭐ Premium Member</p>
-                        ) : (
-                          <p className="text-xs text-blue-500 font-semibold">Free Member</p>
-                        )}
+                        <p className="text-sm font-medium leading-none">{profile?.full_name || user?.email?.split('@')[0] || "User"}</p>
+                        <p className="text-xs text-muted-foreground leading-none mt-1">{user?.email}</p>
+                        <div className="mt-2 pt-2 border-t border-border">
+                          {profile?.is_premium ? (
+                            <p className="text-xs text-gold font-semibold">⭐ Premium Member</p>
+                          ) : (
+                            <p className="text-xs text-blue-500 font-semibold">Free Member</p>
+                          )}
+                        </div>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
