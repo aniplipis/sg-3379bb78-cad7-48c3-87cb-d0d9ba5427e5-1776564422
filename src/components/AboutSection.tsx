@@ -1,4 +1,4 @@
-import { TrendingUp, Target, Brain, Trophy, Award } from "lucide-react";
+import { TrendingUp, Target, Brain, Trophy, Award, User } from "lucide-react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -69,12 +69,12 @@ export function AboutSection() {
                 <p className="text-sm text-muted-foreground">Wyckoff + SMC + Order Flow</p>
               </div>
 
-              <div className="bg-muted/30 p-4 rounded-xl border border-neon-blue/20">
-                <div className="flex items-center gap-3 mb-2">
-                  <Award className="w-5 h-5 text-neon-blue" />
-                  <h4 className="font-semibold">Registration</h4>
+              <div className="bg-card/50 backdrop-blur border border-border/50 rounded-xl p-6 text-center hover:border-gold/30 transition-all">
+                <div className="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <User className="w-6 h-6 text-gold" />
                 </div>
-                <p className="text-sm text-muted-foreground">SC Malaysia Approved</p>
+                <h4 className="font-semibold mb-1">Registration</h4>
+                <p className="text-sm text-muted-foreground">SC Registered Individual</p>
               </div>
             </div>
           </div>
