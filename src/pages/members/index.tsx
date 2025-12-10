@@ -13,7 +13,8 @@ import {
   Users,
   Calendar,
   Award,
-  Loader2
+  Loader2,
+  Check
 } from "lucide-react";
 import Link from "next/link";
 import SEO from "@/components/SEO";
@@ -32,12 +33,42 @@ export default function MemberDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [isLoadingStats, setIsLoadingStats] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  // Check for Stripe checkout success
+  useEffect(() => {
+    const sessionId = router.query.session_id;
+    if (sessionId) {
+      console.log('✅ Stripe checkout session detected:', sessionId);
+      setShowSuccessMessage(true);
+      
+      // Clear the session_id from URL after 3 seconds
+      setTimeout(() => {
+        router.replace('/members', undefined, { shallow: true });
+      }, 3000);
+    }
+  }, [router.query.session_id]);
 
   useEffect(() => {
+    // Don't redirect immediately - give time for webhook to update premium status
     if (!authLoading && !user) {
       router.push("/");
     }
   }, [user, authLoading, router]);
+
+  useEffect(() => {
+    // Only redirect to free dashboard if user is confirmed as non-premium AND no checkout session
+    if (!authLoading && user && profile && !profile.is_premium && !router.query.session_id) {
+      // Add a small delay to ensure webhook has processed
+      const timer = setTimeout(() => {
+        if (!profile.is_premium) {
+          router.push("/members/free-dashboard");
+        }
+      }, 2000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [user, profile, authLoading, router, router.query.session_id]);
 
   useEffect(() => {
     if (user && profile) {
@@ -89,6 +120,31 @@ export default function MemberDashboard() {
       <Navigation />
       <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-8 px-4 pt-24">
         <div className="max-w-7xl mx-auto">
+          {/* Success Message from Stripe Checkout */}
+          {showSuccessMessage && (
+            <Card className="mb-8 border-green-500/50 bg-gradient-to-r from-green-500/10 to-green-500/5 animate-in fade-in slide-in-from-top duration-500">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Check className="w-6 h-6 text-green-500" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-green-500 mb-2">🎉 Payment Successful!</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Your premium membership has been activated. Welcome to MAX CLAN! 🚀
+                    </p>
+                    <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 space-y-2">
+                      <p className="text-sm">✅ Full access to all premium videos</p>
+                      <p className="text-sm">✅ Download all 103 eBooks</p>
+                      <p className="text-sm">✅ Exclusive indicators & tools</p>
+                      <p className="text-sm">✅ Join MAX CLAN Telegram group</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Welcome Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold mb-2">
