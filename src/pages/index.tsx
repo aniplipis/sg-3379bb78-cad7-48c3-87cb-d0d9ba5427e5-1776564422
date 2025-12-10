@@ -27,6 +27,7 @@ export default function Home() {
   const router = useRouter();
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authModalTab, setAuthModalTab] = useState<"login" | "register">("register");
 
   useEffect(() => {
     // Check for payment success parameter
@@ -42,7 +43,20 @@ export default function Home() {
 
       return () => clearTimeout(timer);
     }
-  }, [router.query.payment]);
+
+    // Check for auth modal parameters
+    if (router.query.auth === 'register' || router.query.register === 'true') {
+      setAuthModalTab("register");
+      setAuthModalOpen(true);
+      // Clean up URL
+      router.replace('/', undefined, { shallow: true });
+    } else if (router.query.auth === 'login' || router.query.login === 'true') {
+      setAuthModalTab("login");
+      setAuthModalOpen(true);
+      // Clean up URL
+      router.replace('/', undefined, { shallow: true });
+    }
+  }, [router.query.payment, router.query.auth, router.query.register, router.query.login]);
 
   const handleDismissSuccess = () => {
     setShowPaymentSuccess(false);
@@ -58,7 +72,7 @@ export default function Home() {
       <AuthModal 
         isOpen={authModalOpen} 
         onClose={() => setAuthModalOpen(false)}
-        defaultTab="register"
+        defaultTab={authModalTab}
       />
       
       {/* Payment Success Banner */}
