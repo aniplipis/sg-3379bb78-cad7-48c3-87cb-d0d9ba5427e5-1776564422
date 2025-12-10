@@ -155,8 +155,31 @@ export function Navigation() {
         </div>
       </nav>
 
-      {/* Mobile Navigation - Floating Menu Button */}
+      {/* Mobile Navigation */}
       <div className="md:hidden">
+        {/* Floating Logo - Top Left */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed top-4 left-4 z-50"
+        >
+          <Link href="/" onClick={() => setIsMenuOpen(false)}>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Image
+                src="/LOGO-square-for-rounded-crop.jpg"
+                alt="Max Saham Logo"
+                width={50}
+                height={50}
+                className="rounded-lg shadow-lg"
+                priority
+              />
+            </motion.div>
+          </Link>
+        </motion.div>
+
         {/* Floating Menu Button - Bottom Right */}
         <motion.button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -183,26 +206,24 @@ export function Navigation() {
                 onClick={() => setIsMenuOpen(false)}
               />
 
-              {/* Menu Content */}
+              {/* Menu Content - Centered & Optimized */}
               <motion.div
-                initial={{ x: '100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '100%' }}
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-background border-l border-border z-40 overflow-y-auto"
+                className="fixed inset-4 z-40 bg-background/95 backdrop-blur-xl rounded-3xl border border-gold/30 shadow-2xl overflow-y-auto"
               >
-                <div className="p-6 space-y-6">
-                  {/* Logo & Brand */}
-                  <div className="flex items-center justify-between mb-8">
-                    <Link href="/" onClick={() => setIsMenuOpen(false)}>
-                      <Image
-                        src="/LOGO-square-for-rounded-crop.jpg"
-                        alt="Max Saham Logo"
-                        width={120}
-                        height={40}
-                        className="h-10 w-auto rounded-lg"
-                      />
-                    </Link>
+                <div className="p-6 space-y-6 h-full flex flex-col">
+                  {/* Header with Logo */}
+                  <div className="flex items-center justify-center mb-4">
+                    <Image
+                      src="/LOGO-square-for-rounded-crop.jpg"
+                      alt="Max Saham Logo"
+                      width={80}
+                      height={80}
+                      className="rounded-lg"
+                    />
                   </div>
 
                   {/* User Profile Section */}
@@ -212,8 +233,8 @@ export function Navigation() {
                         <div className={`w-12 h-12 ${profile?.is_premium ? 'bg-gold/20' : 'bg-blue-500/20'} rounded-full flex items-center justify-center`}>
                           <User className={`w-6 h-6 ${profile?.is_premium ? 'text-gold' : 'text-blue-500'}`} />
                         </div>
-                        <div className="flex-1">
-                          <div className="font-semibold text-foreground">{displayName}</div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-foreground truncate">{displayName}</div>
                           <div className="text-xs text-muted-foreground truncate">{user?.email}</div>
                           <div className="text-xs mt-1">
                             {profile?.is_premium ? (
@@ -229,7 +250,7 @@ export function Navigation() {
                       </div>
                       
                       {/* Quick Access Buttons */}
-                      <div className="space-y-2">
+                      <div className="grid grid-cols-1 gap-2">
                         {profile?.is_premium ? (
                           <Link href="/members" onClick={() => setIsMenuOpen(false)}>
                             <Button className="w-full justify-start bg-gold hover:bg-gold/90 text-black">
@@ -257,74 +278,81 @@ export function Navigation() {
                     </div>
                   )}
 
-                  {/* Navigation Links */}
-                  <div className="space-y-1">
-                    <Link 
-                      href="/" 
-                      onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gold/10 transition-colors text-foreground"
-                    >
-                      <Home className="w-5 h-5 text-gold" />
-                      <span className="font-medium">Home</span>
-                    </Link>
-                    <Link 
-                      href="#about" 
-                      onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gold/10 transition-colors text-foreground"
-                    >
-                      <span className="font-medium">About Abg Max</span>
-                    </Link>
-                    <Link 
-                      href="#approach" 
-                      onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gold/10 transition-colors text-foreground"
-                    >
-                      <span className="font-medium">Trading Approach</span>
-                    </Link>
-                    <Link 
-                      href="#class" 
-                      onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gold/10 transition-colors text-foreground"
-                    >
-                      <span className="font-medium">Classes</span>
-                    </Link>
-                    <Link 
-                      href="#media" 
-                      onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gold/10 transition-colors text-foreground"
-                    >
-                      <span className="font-medium">Media</span>
-                    </Link>
-                    <Link 
-                      href="#membership" 
-                      onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gold/10 transition-colors text-foreground"
-                    >
-                      <span className="font-medium">Membership</span>
-                    </Link>
+                  {/* Navigation Links - Centered Grid */}
+                  <div className="flex-1 flex items-center">
+                    <div className="w-full grid grid-cols-1 gap-3">
+                      <Link 
+                        href="/" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-gradient-to-r from-gold/10 to-transparent hover:from-gold/20 transition-all text-foreground border border-gold/20"
+                      >
+                        <Home className="w-5 h-5 text-gold" />
+                        <span className="font-semibold text-lg">Home</span>
+                      </Link>
+                      
+                      <Link 
+                        href="#about" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center justify-center gap-3 px-6 py-4 rounded-xl hover:bg-gold/10 transition-all text-foreground border border-border"
+                      >
+                        <span className="font-semibold text-lg">About Abg Max</span>
+                      </Link>
+                      
+                      <Link 
+                        href="#approach" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center justify-center gap-3 px-6 py-4 rounded-xl hover:bg-gold/10 transition-all text-foreground border border-border"
+                      >
+                        <span className="font-semibold text-lg">Trading Approach</span>
+                      </Link>
+                      
+                      <Link 
+                        href="#class" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center justify-center gap-3 px-6 py-4 rounded-xl hover:bg-gold/10 transition-all text-foreground border border-border"
+                      >
+                        <span className="font-semibold text-lg">Classes</span>
+                      </Link>
+                      
+                      <Link 
+                        href="#media" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center justify-center gap-3 px-6 py-4 rounded-xl hover:bg-gold/10 transition-all text-foreground border border-border"
+                      >
+                        <span className="font-semibold text-lg">Media</span>
+                      </Link>
+                      
+                      <Link 
+                        href="#membership" 
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center justify-center gap-3 px-6 py-4 rounded-xl hover:bg-gold/10 transition-all text-foreground border border-border"
+                      >
+                        <span className="font-semibold text-lg">Membership</span>
+                      </Link>
+                    </div>
                   </div>
 
                   {/* Account Actions */}
                   {isAuthenticated ? (
-                    <div className="pt-6 border-t border-border space-y-2">
+                    <div className="pt-4 border-t border-border grid grid-cols-2 gap-2">
                       <Link href="/profile" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant="outline" className="w-full justify-start border-gold/30 hover:bg-gold/10">
-                          <User className="w-4 h-4 mr-2" />
-                          My Profile
+                        <Button variant="outline" className="w-full justify-center border-gold/30 hover:bg-gold/10 text-sm">
+                          <User className="w-4 h-4 mr-1" />
+                          Profile
                         </Button>
                       </Link>
                       
                       <Link href="/account" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant="outline" className="w-full justify-start border-gold/30 hover:bg-gold/10">
-                          <User className="w-4 h-4 mr-2" />
-                          Account Settings
+                        <Button variant="outline" className="w-full justify-center border-gold/30 hover:bg-gold/10 text-sm">
+                          <User className="w-4 h-4 mr-1" />
+                          Settings
                         </Button>
                       </Link>
                       
                       <Button
                         onClick={handleLogout}
                         variant="outline"
-                        className="w-full justify-start border-destructive/30 text-destructive hover:bg-destructive/10"
+                        className="col-span-2 justify-center border-destructive/30 text-destructive hover:bg-destructive/10"
                       >
                         <LogOut className="w-4 h-4 mr-2" />
                         Logout
@@ -336,9 +364,9 @@ export function Navigation() {
                         setIsAuthModalOpen(true);
                         setIsMenuOpen(false);
                       }}
-                      className="w-full bg-gold hover:bg-gold/90 text-black font-semibold"
+                      className="w-full bg-gold hover:bg-gold/90 text-black font-semibold py-6 text-lg"
                     >
-                      <User className="w-4 h-4 mr-2" />
+                      <User className="w-5 h-5 mr-2" />
                       Login / Sign Up
                     </Button>
                   )}

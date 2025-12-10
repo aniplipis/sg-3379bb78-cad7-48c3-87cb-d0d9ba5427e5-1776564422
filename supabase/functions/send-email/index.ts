@@ -259,7 +259,7 @@ async function handler(req: Request): Promise<Response> {
               </div>
               <p style="margin-bottom: 10px; color: #555;">Hubungi kami bila-bila masa!</p>
               <div style="text-align: center;">
-                <a href="https://wa.me/60177815808" class="whatsapp-button">
+                <a href="https://wa.me/60115411008" class="whatsapp-button">
                   👉 Hubungi melalui WhatsApp
                 </a>
               </div>
@@ -309,7 +309,7 @@ async function handler(req: Request): Promise<Response> {
               <p style="margin: 10px 0;">© 2025 Team Max Saham. All rights reserved.</p>
               <p style="margin: 10px 0; font-size: 13px;">
                 <a href="https://maxsaham.com" style="color: #D4AF37; text-decoration: none;">maxsaham.com</a> | 
-                <a href="https://wa.me/60177815808" style="color: #25D366; text-decoration: none;">WhatsApp Support</a>
+                <a href="https://wa.me/60115411008" style="color: #25D366; text-decoration: none;">WhatsApp Support</a>
               </p>
             </div>
           </div>
@@ -362,7 +362,7 @@ async function handler(req: Request): Promise<Response> {
               <a href="${Deno.env.get('NEXT_PUBLIC_APP_URL') || 'https://maxsaham.com'}/members" class="button">Start Learning Now</a>
               
               <p><strong>Questions?</strong> Reach out anytime:</p>
-              <p>WhatsApp: <a href="https://wa.me/60177815808">+60 17-781 5808</a></p>
+              <p>WhatsApp: <a href="https://wa.me/60115411008">+60 11-5411 0086</a></p>
             </div>
             <div class="footer">
               <p>© 2025 Team Max Saham. All rights reserved.</p>
