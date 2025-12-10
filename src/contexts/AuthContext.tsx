@@ -20,6 +20,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Track which users we've already tried to email (in-memory, per session)
+const emailAttemptedUsers = new Set<string>();
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -44,16 +47,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return null;
       }
 
-      // If profile exists, check if it was just created (within last 30 seconds)
-      const isNewProfile = !existingProfile;
+      const isNewUser = !existingProfile;
+      const isGoogleOAuthUser = supabaseUser.app_metadata?.provider === 'google';
       
       if (existingProfile) {
         console.log('✅ Existing profile found');
+        
+        // Check if this is a Google OAuth user who hasn't received welcome email yet
+        if (isGoogleOAuthUser && !emailAttemptedUsers.has(supabaseUser.id)) {
+          console.log('📧 Sending welcome email to existing Google OAuth user (first login this session)...');
+          emailAttemptedUsers.add(supabaseUser.id);
+          
+          const fullName = 
+            supabaseUser.user_metadata?.full_name || 
+            supabaseUser.user_metadata?.name ||
+            existingProfile.full_name ||
+            "User";
+          
+          sendWelcomeEmail(supabaseUser.email || "", fullName).then((result) => {
+            if (result.success) {
+              console.log('✅ Welcome email sent successfully');
+            } else {
+              console.error('❌ Failed to send welcome email:', result.error);
+            }
+          }).catch((err) => {
+            console.error('❌ Welcome email error:', err);
+          });
+        }
+        
         return existingProfile;
       }
 
       // Profile doesn't exist, create it
-      console.log('📝 Creating new profile...');
+      console.log('📝 Creating new profile for new user...');
       
       // Try to get full_name from multiple sources
       const fullName = 
@@ -84,17 +110,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       console.log('✅ New profile created successfully');
 
-      // Send welcome email for new Google OAuth users (async, don't block)
-      if (isNewProfile && supabaseUser.app_metadata?.provider === 'google') {
-        console.log('📧 Sending welcome email to new Google OAuth user...');
+      // Send welcome email for new users (both Google OAuth and email/password)
+      if (isNewUser && !emailAttemptedUsers.has(supabaseUser.id)) {
+        console.log('📧 Sending welcome email to brand new user...');
+        emailAttemptedUsers.add(supabaseUser.id);
+        
+        // Send email asynchronously (don't block authentication)
         sendWelcomeEmail(supabaseUser.email || "", fullName).then((result) => {
           if (result.success) {
-            console.log('✅ Welcome email sent successfully');
+            console.log('✅ Welcome email sent successfully to new user');
           } else {
-            console.error('❌ Failed to send welcome email:', result.error);
+            console.error('❌ Failed to send welcome email to new user:', result.error);
           }
         }).catch((err) => {
-          console.error('❌ Welcome email error:', err);
+          console.error('❌ Welcome email error for new user:', err);
         });
       }
 
