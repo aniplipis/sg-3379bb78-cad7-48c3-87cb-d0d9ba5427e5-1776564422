@@ -524,6 +524,15 @@ export default function VideoLibrary() {
       
       <main className="container mx-auto px-4 py-8 mt-20">
         <div className="max-w-7xl mx-auto">
+          {/* Back to Dashboard Link */}
+          <Link 
+            href={isPremium ? "/members" : "/members/free-dashboard"} 
+            className="inline-flex items-center gap-2 text-gold hover:text-gold/80 mb-4 transition-colors"
+          >
+            <ChevronRight className="w-4 h-4 rotate-180" />
+            <span>Back to Dashboard</span>
+          </Link>
+
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-gold to-yellow-600 bg-clip-text text-transparent">
