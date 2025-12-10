@@ -21,10 +21,12 @@ import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, X } from "lucide-react";
+import { AuthModal } from "@/components/AuthModal";
 
 export default function Home() {
   const router = useRouter();
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   useEffect(() => {
     // Check for payment success parameter
@@ -51,6 +53,13 @@ export default function Home() {
     <>
       <SEO />
       <Navigation />
+      
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={authModalOpen} 
+        onClose={() => setAuthModalOpen(false)}
+        defaultTab="register"
+      />
       
       {/* Payment Success Banner */}
       {showPaymentSuccess && (
@@ -98,7 +107,7 @@ export default function Home() {
         </div>
       )}
 
-      <HeroSection />
+      <HeroSection onOpenAuthModal={() => setAuthModalOpen(true)} />
       <AboutSection />
       <TradingApproachSection />
       <ClassSection />
@@ -106,7 +115,7 @@ export default function Home() {
       <ClassPicturesSection />
       <FCPOSection />
       <FuturesExplainedSection />
-      <MembershipSection />
+      <MembershipSection onOpenAuthModal={() => setAuthModalOpen(true)} />
       <PublicGoldSection />
       <BrokerSection />
       <VerificationSection />

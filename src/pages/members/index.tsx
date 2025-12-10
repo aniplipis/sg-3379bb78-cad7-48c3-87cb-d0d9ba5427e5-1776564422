@@ -57,16 +57,9 @@ export default function MemberDashboard() {
   }, [user, authLoading, router]);
 
   useEffect(() => {
-    // Only redirect to free dashboard if user is confirmed as non-premium AND no checkout session
+    // Redirect non-premium users to free dashboard IMMEDIATELY (no delay)
     if (!authLoading && user && profile && !profile.is_premium && !router.query.session_id) {
-      // Add a small delay to ensure webhook has processed
-      const timer = setTimeout(() => {
-        if (!profile.is_premium) {
-          router.push("/members/free-dashboard");
-        }
-      }, 2000);
-      
-      return () => clearTimeout(timer);
+      router.push("/members/free-dashboard");
     }
   }, [user, profile, authLoading, router, router.query.session_id]);
 
