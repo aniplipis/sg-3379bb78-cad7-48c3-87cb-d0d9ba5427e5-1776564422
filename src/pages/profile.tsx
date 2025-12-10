@@ -60,6 +60,7 @@ export default function ProfilePage() {
 
   // Avatar upload state
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState("");
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -70,6 +71,9 @@ export default function ProfilePage() {
   useEffect(() => {
     if (profile?.full_name) {
       setFullName(profile.full_name);
+    }
+    if (profile?.avatar_url) {
+      setAvatarUrl(profile.avatar_url);
     }
   }, [profile]);
 
@@ -90,9 +94,6 @@ export default function ProfilePage() {
         description: "Your name has been updated successfully.",
       });
       setIsEditingName(false);
-      
-      // Refresh the page to update the navigation
-      window.location.reload();
     } catch (error) {
       console.error("Error updating profile:", error);
       toast({
@@ -208,13 +209,13 @@ export default function ProfilePage() {
 
       if (updateError) throw updateError;
 
+      // Update local state immediately
+      setAvatarUrl(urlData.publicUrl);
+
       toast({
         title: "✅ Avatar Updated",
         description: "Your profile picture has been updated successfully.",
       });
-
-      // Refresh the page to show new avatar
-      window.location.reload();
     } catch (error: any) {
       console.error("Error uploading avatar:", error);
       toast({
@@ -229,7 +230,6 @@ export default function ProfilePage() {
 
   const handleLogout = async () => {
     await logout();
-    router.push("/");
   };
 
   const getInitials = (name: string) => {
@@ -278,7 +278,7 @@ export default function ProfilePage() {
                 {/* Avatar with Upload */}
                 <div className="relative group">
                   <Avatar className="w-24 h-24 border-4 border-gold/20">
-                    <AvatarImage src={profile.avatar_url || ""} alt={profile.full_name || ""} />
+                    <AvatarImage src={avatarUrl || ""} alt={profile.full_name || ""} />
                     <AvatarFallback className="bg-gradient-to-br from-gold to-yellow-600 text-black text-2xl font-bold">
                       {getInitials(profile.full_name || profile.email || "")}
                     </AvatarFallback>

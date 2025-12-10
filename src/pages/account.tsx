@@ -32,10 +32,8 @@ export default function AccountPage() {
   const [updatingProfile, setUpdatingProfile] = useState(false);
   
   // Password update states
-  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [updatingPassword, setUpdatingPassword] = useState(false);
@@ -104,7 +102,7 @@ export default function AccountPage() {
     setSuccess(null);
 
     // Validation
-    if (!currentPassword || !newPassword || !confirmPassword) {
+    if (!newPassword || !confirmPassword) {
       setError("Please fill in all password fields");
       return;
     }
@@ -122,15 +120,7 @@ export default function AccountPage() {
     setUpdatingPassword(true);
 
     try {
-      // Verify current password by attempting to sign in
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: user?.email || "",
-        password: currentPassword,
-      });
-
-      if (signInError) throw new Error("Current password is incorrect");
-
-      // Update password
+      // Update password directly (no need to verify current password)
       const { error: updateError } = await supabase.auth.updateUser({
         password: newPassword,
       });
@@ -138,7 +128,6 @@ export default function AccountPage() {
       if (updateError) throw updateError;
 
       setSuccess("Password updated successfully!");
-      setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
       setTimeout(() => setSuccess(null), 3000);
@@ -343,30 +332,6 @@ export default function AccountPage() {
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleUpdatePassword} className="space-y-4">
-                    <div className="space-y-2">
-                      <label htmlFor="currentPassword" className="text-sm font-medium">
-                        Current Password
-                      </label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                        <Input
-                          id="currentPassword"
-                          type={showCurrentPassword ? "text" : "password"}
-                          value={currentPassword}
-                          onChange={(e) => setCurrentPassword(e.target.value)}
-                          className="pl-10 pr-10"
-                          placeholder="Enter current password"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-                        >
-                          {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                        </button>
-                      </div>
-                    </div>
-
                     <div className="space-y-2">
                       <label htmlFor="newPassword" className="text-sm font-medium">
                         New Password

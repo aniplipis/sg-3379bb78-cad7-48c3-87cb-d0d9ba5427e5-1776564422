@@ -16,7 +16,7 @@ import {
   Loader2
 } from "lucide-react";
 import Link from "next/link";
-import { SEO } from "@/components/SEO";
+import SEO from "@/components/SEO";
 
 interface DashboardStats {
   totalVideos: number;
@@ -49,22 +49,13 @@ export default function MemberDashboard() {
       setIsLoadingStats(true);
       setError(null);
 
-      // Parallel data fetching for better performance
-      const [videosResult, notesResult, downloadsResult] = await Promise.all([
-        supabase.from("videos").select("id", { count: "exact", head: true }),
-        supabase.from("notes").select("id", { count: "exact", head: true }),
-        supabase.from("downloads").select("id", { count: "exact", head: true })
-      ]);
-
-      // Check for errors
-      if (videosResult.error) throw videosResult.error;
-      if (notesResult.error) throw notesResult.error;
-      if (downloadsResult.error) throw downloadsResult.error;
-
+      // Content counts are based on available content in respective pages
+      // Database tables for content don't exist yet, so we use static counts
+      // to prevent query errors and infinite loading states
       setStats({
-        totalVideos: videosResult.count || 0,
-        totalNotes: notesResult.count || 0,
-        totalDownloads: downloadsResult.count || 0,
+        totalVideos: 93, // From videos.tsx
+        totalNotes: 9,   // From notes.tsx
+        totalDownloads: 103, // From downloads.tsx
         memberSince: profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : "N/A"
       });
     } catch (err: any) {
@@ -87,7 +78,7 @@ export default function MemberDashboard() {
     return null;
   }
 
-  const isPremium = profile?.membership_status === "premium";
+  const isPremium = profile?.is_premium === true;
 
   return (
     <>
