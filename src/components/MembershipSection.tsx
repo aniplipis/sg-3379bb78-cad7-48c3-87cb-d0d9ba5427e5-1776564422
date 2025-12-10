@@ -312,10 +312,10 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
           <Card className="border-border/50 bg-muted/30 inline-block">
             <CardContent className="p-6">
               <p className="text-sm text-muted-foreground mb-2">
-                💡 <strong>Special Offer:</strong> Early members get lifetime access at founding member rates
+                💡 <strong>Special Offer:</strong> Existing MAX CLAN members - please contact Abg Max for special discounts
               </p>
               <p className="text-xs text-muted-foreground">
-                Optional referral program available for premium members
+                WhatsApp: <a href="https://wa.me/60115411008" className="text-gold hover:text-gold/80 underline">+60 11-5411 008</a>
               </p>
             </CardContent>
           </Card>
