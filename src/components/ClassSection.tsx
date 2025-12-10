@@ -25,14 +25,14 @@ export function ClassSection() {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
             Join <span className="text-gold">MAX CLAN</span>
           </h2>
-          <p className="text-base md:text-xl text-muted-foreground max-w-3xl mx-auto mb-3 md:mb-4 px-2">
+          <p className="text-base md:text-xl text-muted-foreground max-w-3xl mx-auto mb-3 md:mb-4">
             Hybrid SMC Masterclass - Master FCPO trading with structured, repeatable Hybrid Smart Money Concepts
           </p>
           <a 
             href="https://t.me/maxsaham" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-block text-base md:text-lg text-gold font-semibold hover:text-gold/80 transition-colors underline decoration-gold/50 hover:decoration-gold px-2"
+            className="inline-block text-base md:text-lg text-gold font-semibold hover:text-gold/80 transition-colors underline decoration-gold/50 hover:decoration-gold"
           >
             Join MAX CLAN Telegram for latest training dates
           </a>
@@ -92,9 +92,10 @@ export function ClassSection() {
               </Card>
             </div>
 
-            <Button className="w-full bg-gold hover:bg-gold/90 text-black font-semibold h-12 md:h-14 text-base md:text-lg" asChild>
+            <Button className="w-full bg-gold hover:bg-gold/90 text-black font-semibold h-12 md:h-14 text-sm md:text-base" asChild>
               <Link href="/#membership">
-                <span className="block truncate px-2">Daftar Sekarang / Register Now - Become Premium Member</span>
+                <span className="md:hidden">Daftar Sekarang</span>
+                <span className="hidden md:inline">Daftar Sekarang / Register Now - Become Premium Member</span>
               </Link>
             </Button>
           </div>
