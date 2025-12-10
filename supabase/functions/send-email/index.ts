@@ -141,7 +141,7 @@ async function handler(req: Request): Promise<Response> {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'Team Max Saham <onboarding@resend.dev>',
+        from: 'Team Max Saham <onboarding@abgmax.maxsaham.com>',
         to: [to],
         subject: subject,
         html: emailContent,

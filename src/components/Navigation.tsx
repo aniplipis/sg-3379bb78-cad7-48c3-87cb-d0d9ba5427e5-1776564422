@@ -66,7 +66,7 @@ export function Navigation() {
               {isAuthenticated ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button className="bg-gold hover:bg-gold/90 text-black font-semibold px-6 py-2 h-auto relative">
+                    <Button className={`${profile?.is_premium ? 'bg-gold' : 'bg-blue-500'} hover:opacity-90 text-black font-semibold px-6 py-2 h-auto relative`}>
                       <User className="w-4 h-4 mr-2" />
                       <span className="text-base">{profile?.full_name || user?.email?.split('@')[0] || "User"}</span>
                       {profile?.is_premium && (
@@ -85,6 +85,11 @@ export function Navigation() {
                       <div className="flex flex-col space-y-1">
                         <p className="text-sm font-medium">{profile?.full_name}</p>
                         <p className="text-xs text-muted-foreground">{user?.email}</p>
+                        {profile?.is_premium ? (
+                          <p className="text-xs text-gold font-semibold">⭐ Premium Member</p>
+                        ) : (
+                          <p className="text-xs text-blue-500 font-semibold">Free Member</p>
+                        )}
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
