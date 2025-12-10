@@ -337,6 +337,12 @@ export default function ProfilePage() {
                       <Calendar className="w-4 h-4" />
                       Member since {formatDate(profile.created_at)}
                     </div>
+                    {profile.is_premium && profile.subscription_end_date && (
+                      <div className="flex items-center gap-2 text-gold">
+                        <Calendar className="w-4 h-4" />
+                        Renews {formatDate(profile.subscription_end_date)}
+                      </div>
+                    )}
                   </div>
                 </div>
 

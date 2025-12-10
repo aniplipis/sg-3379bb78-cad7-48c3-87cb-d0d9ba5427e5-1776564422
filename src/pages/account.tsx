@@ -226,6 +226,23 @@ export default function AccountPage() {
                     </div>
                   </div>
 
+                  {profile?.is_premium && profile?.subscription_end_date && (
+                    <>
+                      <Separator />
+                      <div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Next Renewal Date</p>
+                        <div className="flex items-center text-sm">
+                          <Calendar className="w-4 h-4 mr-2 text-amber-500" />
+                          {new Date(profile.subscription_end_date).toLocaleDateString("en-MY", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </div>
+                      </div>
+                    </>
+                  )}
+
                   {profile?.stripe_customer_id && (
                     <>
                       <Separator />
