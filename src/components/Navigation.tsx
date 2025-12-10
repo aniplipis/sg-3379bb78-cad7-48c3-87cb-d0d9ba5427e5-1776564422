@@ -180,10 +180,10 @@ export function Navigation() {
           </Link>
         </motion.div>
 
-        {/* Floating Menu Button - Bottom Right */}
+        {/* Floating Menu Button - Top Left Below Logo */}
         <motion.button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gold shadow-lg flex items-center justify-center text-black"
+          className="fixed top-20 left-4 z-50 w-14 h-14 rounded-full bg-gold shadow-lg flex items-center justify-center text-black"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           animate={{ rotate: isMenuOpen ? 90 : 0 }}
