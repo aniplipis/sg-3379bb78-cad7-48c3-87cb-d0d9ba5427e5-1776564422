@@ -22,7 +22,6 @@ import { Footer } from "@/components/Footer";
 
 interface DashboardStats {
   totalVideos: number;
-  totalNotes: number;
   totalDownloads: number;
   memberSince: string;
 }
@@ -56,7 +55,6 @@ export default function MemberDashboard() {
       // to prevent query errors and infinite loading states
       setStats({
         totalVideos: 93, // From videos.tsx
-        totalNotes: 9,   // From notes.tsx
         totalDownloads: 103, // From downloads.tsx
         memberSince: profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : "N/A"
       });
@@ -119,7 +117,7 @@ export default function MemberDashboard() {
           )}
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             <Card className="border-gold/20">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
@@ -138,21 +136,7 @@ export default function MemberDashboard() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">Study Notes</p>
-                    <p className="text-3xl font-bold text-gold">
-                      {isLoadingStats ? <Loader2 className="w-6 h-6 animate-spin" /> : stats?.totalNotes || 0}
-                    </p>
-                  </div>
-                  <FileText className="w-8 h-8 text-gold/50" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-gold/20">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Downloads</p>
+                    <p className="text-sm text-muted-foreground mb-1">E-Books</p>
                     <p className="text-3xl font-bold text-gold">
                       {isLoadingStats ? <Loader2 className="w-6 h-6 animate-spin" /> : stats?.totalDownloads || 0}
                     </p>
@@ -178,7 +162,7 @@ export default function MemberDashboard() {
           </div>
 
           {/* Quick Access Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <Card className="border-gold/20 hover:border-gold/40 transition-all">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -201,17 +185,17 @@ export default function MemberDashboard() {
             <Card className="border-gold/20 hover:border-gold/40 transition-all">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <FileText className="w-5 h-5 text-gold" />
-                  Study Notes
+                  <Download className="w-5 h-5 text-gold" />
+                  Downloads / E-Books
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Read comprehensive trading notes and strategy guides
+                  Download 103 comprehensive trading eBooks covering technical analysis, psychology, and strategies
                 </p>
                 <Button className="w-full bg-gold hover:bg-gold/90 text-black" asChild>
-                  <Link href="/members/notes">
-                    View Notes
+                  <Link href="/members/downloads">
+                    View E-Books
                   </Link>
                 </Button>
               </CardContent>
@@ -220,22 +204,175 @@ export default function MemberDashboard() {
             <Card className="border-gold/20 hover:border-gold/40 transition-all">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Download className="w-5 h-5 text-gold" />
-                  Downloads
+                  <TrendingUp className="w-5 h-5 text-gold" />
+                  TradingView Indicators
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Download indicators, templates, and trading tools
+                  Access exclusive and public TradingView indicators for your trading setup
                 </p>
                 <Button className="w-full bg-gold hover:bg-gold/90 text-black" asChild>
-                  <Link href="/members/downloads">
-                    View Downloads
+                  <Link href="#indicators">
+                    View Indicators
                   </Link>
                 </Button>
               </CardContent>
             </Card>
           </div>
+
+          {/* TradingView Indicators Section */}
+          <Card id="indicators" className="mb-8 border-gold/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-2xl">
+                <TrendingUp className="w-6 h-6 text-gold" />
+                TradingView Indicators
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Exclusive Indicators */}
+              <div>
+                <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+                  🎯 INDICATOR EKSKLUSIF (INVITE-ONLY)
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {[
+                    "MAX SAHAM DIVERGENCE",
+                    "MAX SAHAM TRIPLE PLATINUM",
+                    "MAX SAHAM SILENT MACD PRO",
+                    "MAX SAHAM DUAL RSI PRO",
+                    "MAX SAHAM SCALPER MASTER",
+                    "MAX SAHAM SMC COMBO V2"
+                  ].map((indicator, index) => (
+                    <div key={index} className="p-4 bg-muted/50 rounded-lg border border-gold/20">
+                      <p className="font-semibold text-gold">{indicator}</p>
+                      <p className="text-xs text-muted-foreground mt-1">Premium Members Only</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Additional Indicators */}
+              <div>
+                <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+                  🪀 INDICATOR TAMBAHAN (Add ke Favorite)
+                </h3>
+                <div className="space-y-3">
+                  <div className="p-4 bg-muted/50 rounded-lg border border-border">
+                    <p className="font-semibold mb-2">🔹 HYBRID SMC</p>
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-gold/30 hover:bg-gold/10"
+                      asChild
+                    >
+                      <a href="https://www.tradingview.com/script/3OyVf6Vo-MAX-SAHAM-HYBRID-SMC/" target="_blank" rel="noopener noreferrer">
+                        Open in TradingView →
+                      </a>
+                    </Button>
+                  </div>
+
+                  <div className="p-4 bg-muted/50 rounded-lg border border-border">
+                    <p className="font-semibold mb-2">🔹 VOLUME BREAKDOWN</p>
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-gold/30 hover:bg-gold/10"
+                      asChild
+                    >
+                      <a href="https://www.tradingview.com/script/0ryTGU3u-Max-Saham-Vol-Breakdown/" target="_blank" rel="noopener noreferrer">
+                        Open in TradingView →
+                      </a>
+                    </Button>
+                  </div>
+
+                  <div className="p-4 bg-muted/50 rounded-lg border border-border">
+                    <p className="font-semibold mb-2">🔹 HEIKIN ASYIK (SND T3 TEMP)</p>
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-gold/30 hover:bg-gold/10"
+                      asChild
+                    >
+                      <a href="https://www.tradingview.com/script/DyWlMNem-MAX-SAHAM-KING-SND-ASYIK-T3-TEMP/" target="_blank" rel="noopener noreferrer">
+                        Open in TradingView →
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Public Indicators */}
+              <div>
+                <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+                  🌐 PUBLIC INDICATOR (Terus boleh guna)
+                </h3>
+                <div className="space-y-3">
+                  <div className="p-4 bg-muted/50 rounded-lg border border-border">
+                    <p className="font-semibold mb-2">🔸 MAX SAHAM PUKAT V2</p>
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-gold/30 hover:bg-gold/10"
+                      asChild
+                    >
+                      <a href="https://www.tradingview.com/script/0KxsvHg7-MAX-SAHAM-PUKAT-V2/" target="_blank" rel="noopener noreferrer">
+                        Open in TradingView →
+                      </a>
+                    </Button>
+                  </div>
+
+                  <div className="p-4 bg-muted/50 rounded-lg border border-border">
+                    <p className="font-semibold mb-2">🔸 MAX SAHAM ADX with DI</p>
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-gold/30 hover:bg-gold/10"
+                      asChild
+                    >
+                      <a href="https://www.tradingview.com/script/XCRNzzjn-MAX-SAHAM-ADX-with-DI/" target="_blank" rel="noopener noreferrer">
+                        Open in TradingView →
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+
+                <p className="text-sm text-muted-foreground mt-4">
+                  📌 Klik "Add to Favorite" untuk akses mudah dalam chart
+                </p>
+                <p className="text-sm text-gold mt-2">
+                  🔥 Gunakan bersama setup kelas untuk hasil trade yang lebih mantap!
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Online Class Invites Section */}
+          <Card className="mb-8 border-gold/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-2xl">
+                <Calendar className="w-6 h-6 text-gold" />
+                Online Class Invites
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4">
+                Join our live Zoom classes to learn directly from Max Saham. Check your email for upcoming class schedules and Zoom links.
+              </p>
+              <div className="p-4 bg-gradient-to-r from-gold/10 to-blue-500/10 rounded-lg border border-gold/20">
+                <p className="font-semibold mb-2">📅 Upcoming Classes</p>
+                <p className="text-sm text-muted-foreground mb-3">
+                  Premium members receive Zoom invitations via email before each live session.
+                </p>
+                <Button 
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  asChild
+                >
+                  <a href="mailto:maxsaham@example.com?subject=Class Schedule Request">
+                    Request Class Schedule
+                  </a>
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-4">
+                💡 Tip: Add class times to your calendar and join 5 minutes early to test your connection.
+              </p>
+            </CardContent>
+          </Card>
 
           {/* Premium Upgrade CTA for Free Members */}
           {!isPremium && (
