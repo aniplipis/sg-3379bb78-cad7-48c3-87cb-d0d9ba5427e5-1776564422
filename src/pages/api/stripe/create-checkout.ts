@@ -252,6 +252,13 @@ export default async function handler(
     console.log('🎫 Creating checkout session...');
     
     try {
+      // Get the correct base URL - prioritize production domain
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL?.startsWith('http') 
+        ? process.env.NEXT_PUBLIC_SITE_URL 
+        : 'https://maxsaham.com';
+      
+      console.log('🌐 Using base URL for redirects:', baseUrl);
+      
       const session = await stripe.checkout.sessions.create({
         mode: 'subscription',
         customer: customerId,
@@ -273,8 +280,8 @@ export default async function handler(
             quantity: 1,
           },
         ],
-        success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://maxsaham.com'}/members?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://maxsaham.com'}/#membership`,
+        success_url: `${baseUrl}/members?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${baseUrl}/#membership`,
         metadata: {
           supabase_user_id: userId,
           discount_code: discountCode || 'none',
