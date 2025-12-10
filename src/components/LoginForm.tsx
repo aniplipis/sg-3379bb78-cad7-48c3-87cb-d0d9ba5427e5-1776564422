@@ -111,19 +111,19 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3 sm:space-y-6">
       {/* Google Sign-In Button */}
       <Button
         type="button"
         onClick={handleGoogleLogin}
         disabled={isLoading}
-        className="w-full h-12 bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 font-semibold relative overflow-hidden group"
+        className="w-full h-10 sm:h-12 bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 font-semibold text-xs sm:text-sm"
       >
         {isLoading ? (
-          <Loader2 className="w-5 h-5 animate-spin" />
+          <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
         ) : (
           <>
-            <Chrome className="w-5 h-5 mr-3 text-blue-600" />
+            <Chrome className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 text-blue-600" />
             <span>Continue with Google</span>
           </>
         )}
@@ -134,68 +134,68 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-border"></div>
         </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="px-4 bg-card text-muted-foreground">Or continue with email</span>
+        <div className="relative flex justify-center text-xs sm:text-sm">
+          <span className="px-3 sm:px-4 bg-card text-muted-foreground">Or continue with email</span>
         </div>
       </div>
 
       {error && (
-        <div className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm flex items-start gap-2">
-          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+        <div className="bg-destructive/10 border border-destructive/30 text-destructive px-3 py-2 sm:px-4 sm:py-3 rounded-lg text-xs sm:text-sm flex items-start gap-2">
+          <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5" />
           <span>{error}</span>
         </div>
       )}
 
       {resetEmailSent && (
-        <div className="bg-green-500/10 border border-green-500/30 text-green-600 px-4 py-3 rounded-lg text-sm flex items-start gap-2">
-          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+        <div className="bg-green-500/10 border border-green-500/30 text-green-600 px-3 py-2 sm:px-4 sm:py-3 rounded-lg text-xs sm:text-sm flex items-start gap-2">
+          <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5" />
           <span>Password reset email sent! Check your inbox.</span>
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4">
         <div>
-          <Label htmlFor="email" className="text-foreground/90">Email Address</Label>
-          <div className="relative mt-1.5">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Label htmlFor="email" className="text-foreground/90 text-xs sm:text-sm">Email Address</Label>
+          <div className="relative mt-1 sm:mt-1.5">
+            <Mail className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
             <Input
               id="email"
               type="email"
               placeholder="you@example.com"
-              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              className="pl-8 sm:pl-10 h-10 sm:h-12 bg-background border-border focus:border-gold text-xs sm:text-sm"
               {...register("email")}
             />
           </div>
           {errors.email && (
-            <p className="text-destructive text-sm mt-1">{errors.email.message}</p>
+            <p className="text-destructive text-xs sm:text-sm mt-1">{errors.email.message}</p>
           )}
         </div>
 
         <div>
-          <Label htmlFor="password" className="text-foreground/90">Password</Label>
-          <div className="relative mt-1.5">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Label htmlFor="password" className="text-foreground/90 text-xs sm:text-sm">Password</Label>
+          <div className="relative mt-1 sm:mt-1.5">
+            <Lock className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
             <Input
               id="password"
               type="password"
               placeholder="••••••••"
-              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              className="pl-8 sm:pl-10 h-10 sm:h-12 bg-background border-border focus:border-gold text-xs sm:text-sm"
               {...register("password")}
             />
           </div>
           {errors.password && (
-            <p className="text-destructive text-sm mt-1">{errors.password.message}</p>
+            <p className="text-destructive text-xs sm:text-sm mt-1">{errors.password.message}</p>
           )}
         </div>
 
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex items-center justify-between text-xs sm:text-sm">
           <div className="flex items-center">
             <input
               type="checkbox"
               id="remember"
-              className="w-4 h-4 rounded border-border text-gold focus:ring-gold"
+              className="w-3 h-3 sm:w-4 sm:h-4 rounded border-border text-gold focus:ring-gold"
             />
-            <label htmlFor="remember" className="ml-2 text-muted-foreground">
+            <label htmlFor="remember" className="ml-1.5 sm:ml-2 text-muted-foreground">
               Remember me
             </label>
           </div>
@@ -209,8 +209,8 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         </div>
 
         {showForgotPassword && (
-          <div className="bg-muted/50 border border-border rounded-lg p-4 space-y-3">
-            <p className="text-sm text-muted-foreground">
+          <div className="bg-muted/50 border border-border rounded-lg p-3 sm:p-4 space-y-2 sm:space-y-3">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Enter your email above and click the button below to receive a password reset link.
             </p>
             <Button
@@ -218,10 +218,10 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
               onClick={handleForgotPassword}
               disabled={isLoading}
               variant="outline"
-              className="w-full"
+              className="w-full h-9 sm:h-10 text-xs sm:text-sm"
             >
               {isLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin" />
               ) : (
                 "Send Reset Email"
               )}
@@ -232,10 +232,10 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full h-12 bg-gold hover:bg-gold/90 text-black font-semibold"
+          className="w-full h-10 sm:h-12 bg-gold hover:bg-gold/90 text-black font-semibold text-xs sm:text-sm"
         >
           {isLoading ? (
-            <Loader2 className="w-5 h-5 animate-spin" />
+            <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
           ) : (
             "Sign In"
           )}

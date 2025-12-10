@@ -112,19 +112,19 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3 sm:space-y-6">
       {/* Google Sign-Up Button */}
       <Button
         type="button"
         onClick={handleGoogleSignUp}
         disabled={isLoading}
-        className="w-full h-12 bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 font-semibold relative overflow-hidden group"
+        className="w-full h-10 sm:h-12 bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 font-semibold text-xs sm:text-sm"
       >
         {isLoading ? (
-          <Loader2 className="w-5 h-5 animate-spin" />
+          <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
         ) : (
           <>
-            <Chrome className="w-5 h-5 mr-3 text-blue-600" />
+            <Chrome className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 text-blue-600" />
             <span>Sign up with Google</span>
           </>
         )}
@@ -135,126 +135,126 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-border"></div>
         </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="px-4 bg-card text-muted-foreground">Or register with email</span>
+        <div className="relative flex justify-center text-xs sm:text-sm">
+          <span className="px-3 sm:px-4 bg-card text-muted-foreground">Or register with email</span>
         </div>
       </div>
 
       {error && (
-        <div className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm">
+        <div className="bg-destructive/10 border border-destructive/30 text-destructive px-3 py-2 sm:px-4 sm:py-3 rounded-lg text-xs sm:text-sm">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="bg-green-500/10 border border-green-500/30 text-green-500 px-4 py-3 rounded-lg text-sm">
+        <div className="bg-green-500/10 border border-green-500/30 text-green-500 px-3 py-2 sm:px-4 sm:py-3 rounded-lg text-xs sm:text-sm">
           <div className="font-semibold mb-1">Account created successfully! 🎉</div>
-          <div className="text-xs">Please check your email to confirm your account. You'll be redirected shortly...</div>
+          <div className="text-[10px] sm:text-xs">Please check your email to confirm your account. You'll be redirected shortly...</div>
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2.5 sm:space-y-4">
         <div>
-          <Label htmlFor="name" className="text-foreground/90">Full Name</Label>
-          <div className="relative mt-1.5">
-            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Label htmlFor="name" className="text-foreground/90 text-xs sm:text-sm">Full Name</Label>
+          <div className="relative mt-1 sm:mt-1.5">
+            <User className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
             <Input
               id="name"
               type="text"
               placeholder="Muhammad Haniff"
-              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              className="pl-8 sm:pl-10 h-10 sm:h-12 bg-background border-border focus:border-gold text-xs sm:text-sm"
               {...register("name")}
             />
           </div>
           {errors.name && (
-            <p className="text-destructive text-sm mt-1">{errors.name.message}</p>
+            <p className="text-destructive text-xs sm:text-sm mt-1">{errors.name.message}</p>
           )}
         </div>
 
         <div>
-          <Label htmlFor="email" className="text-foreground/90">Email Address</Label>
-          <div className="relative mt-1.5">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Label htmlFor="email" className="text-foreground/90 text-xs sm:text-sm">Email Address</Label>
+          <div className="relative mt-1 sm:mt-1.5">
+            <Mail className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
             <Input
               id="email"
               type="email"
               placeholder="you@example.com"
-              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              className="pl-8 sm:pl-10 h-10 sm:h-12 bg-background border-border focus:border-gold text-xs sm:text-sm"
               {...register("email")}
             />
           </div>
           {errors.email && (
-            <p className="text-destructive text-sm mt-1">{errors.email.message}</p>
+            <p className="text-destructive text-xs sm:text-sm mt-1">{errors.email.message}</p>
           )}
         </div>
 
         <div>
-          <Label htmlFor="phone" className="text-foreground/90">Phone Number</Label>
-          <div className="relative mt-1.5">
-            <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Label htmlFor="phone" className="text-foreground/90 text-xs sm:text-sm">Phone Number</Label>
+          <div className="relative mt-1 sm:mt-1.5">
+            <Phone className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
             <Input
               id="phone"
               type="tel"
               placeholder="+60123456789"
-              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              className="pl-8 sm:pl-10 h-10 sm:h-12 bg-background border-border focus:border-gold text-xs sm:text-sm"
               {...register("phone")}
             />
           </div>
           {errors.phone && (
-            <p className="text-destructive text-sm mt-1">{errors.phone.message}</p>
+            <p className="text-destructive text-xs sm:text-sm mt-1">{errors.phone.message}</p>
           )}
         </div>
 
         <div>
-          <Label htmlFor="tradingview_username" className="text-foreground/90">
-            TradingView Username <span className="text-muted-foreground text-xs">(Optional)</span>
+          <Label htmlFor="tradingview_username" className="text-foreground/90 text-xs sm:text-sm">
+            TradingView Username <span className="text-muted-foreground text-[10px] sm:text-xs">(Optional)</span>
           </Label>
-          <div className="relative mt-1.5">
-            <TrendingUp className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <div className="relative mt-1 sm:mt-1.5">
+            <TrendingUp className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
             <Input
               id="tradingview_username"
               type="text"
               placeholder="your_tradingview_username"
-              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              className="pl-8 sm:pl-10 h-10 sm:h-12 bg-background border-border focus:border-gold text-xs sm:text-sm"
               {...register("tradingview_username")}
             />
           </div>
           {errors.tradingview_username && (
-            <p className="text-destructive text-sm mt-1">{errors.tradingview_username.message}</p>
+            <p className="text-destructive text-xs sm:text-sm mt-1">{errors.tradingview_username.message}</p>
           )}
         </div>
 
         <div>
-          <Label htmlFor="password" className="text-foreground/90">Password</Label>
-          <div className="relative mt-1.5">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Label htmlFor="password" className="text-foreground/90 text-xs sm:text-sm">Password</Label>
+          <div className="relative mt-1 sm:mt-1.5">
+            <Lock className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
             <Input
               id="password"
               type="password"
               placeholder="••••••••"
-              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              className="pl-8 sm:pl-10 h-10 sm:h-12 bg-background border-border focus:border-gold text-xs sm:text-sm"
               {...register("password")}
             />
           </div>
           {errors.password && (
-            <p className="text-destructive text-sm mt-1">{errors.password.message}</p>
+            <p className="text-destructive text-xs sm:text-sm mt-1">{errors.password.message}</p>
           )}
         </div>
 
         <div>
-          <Label htmlFor="confirmPassword" className="text-foreground/90">Confirm Password</Label>
-          <div className="relative mt-1.5">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Label htmlFor="confirmPassword" className="text-foreground/90 text-xs sm:text-sm">Confirm Password</Label>
+          <div className="relative mt-1 sm:mt-1.5">
+            <Lock className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
             <Input
               id="confirmPassword"
               type="password"
               placeholder="••••••••"
-              className="pl-10 h-12 bg-background border-border focus:border-gold"
+              className="pl-8 sm:pl-10 h-10 sm:h-12 bg-background border-border focus:border-gold text-xs sm:text-sm"
               {...register("confirmPassword")}
             />
           </div>
           {errors.confirmPassword && (
-            <p className="text-destructive text-sm mt-1">{errors.confirmPassword.message}</p>
+            <p className="text-destructive text-xs sm:text-sm mt-1">{errors.confirmPassword.message}</p>
           )}
         </div>
 
@@ -262,10 +262,10 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           <input
             type="checkbox"
             id="terms"
-            className="w-4 h-4 mt-1 rounded border-border text-gold focus:ring-gold"
+            className="w-3 h-3 sm:w-4 sm:h-4 mt-1 rounded border-border text-gold focus:ring-gold"
             {...register("terms")}
           />
-          <label htmlFor="terms" className="ml-2 text-sm text-muted-foreground">
+          <label htmlFor="terms" className="ml-1.5 sm:ml-2 text-[10px] sm:text-sm text-muted-foreground">
             I agree to the{" "}
             <button type="button" className="text-gold hover:text-gold/80">
               Terms of Service
@@ -277,16 +277,16 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           </label>
         </div>
         {errors.terms && (
-          <p className="text-destructive text-sm">{errors.terms.message}</p>
+          <p className="text-destructive text-xs sm:text-sm">{errors.terms.message}</p>
         )}
 
         <Button
           type="submit"
           disabled={isLoading || success}
-          className="w-full h-12 bg-gold hover:bg-gold/90 text-black font-semibold"
+          className="w-full h-10 sm:h-12 bg-gold hover:bg-gold/90 text-black font-semibold text-xs sm:text-sm"
         >
           {isLoading ? (
-            <Loader2 className="w-5 h-5 animate-spin" />
+            <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
           ) : success ? (
             "Redirecting..."
           ) : (
@@ -294,7 +294,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           )}
         </Button>
 
-        <div className="text-center text-sm text-muted-foreground">
+        <div className="text-center text-[10px] sm:text-sm text-muted-foreground">
           By creating a free account, you'll get access to exclusive FCPO training videos, eBooks, and community features.
         </div>
       </form>
