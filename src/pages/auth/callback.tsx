@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "@/integrations/supabase/client";
-import { sendWelcomeEmail } from "@/services/authService";
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -34,48 +33,9 @@ export default function AuthCallback() {
         }
 
         console.log('✅ Session found:', session.user.email);
-        
-        // Check if profile exists
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('id, created_at')
-          .eq('id', session.user.id)
-          .maybeSingle();
-
-        if (profileError) {
-          console.error('⚠️ Error checking profile:', profileError);
-        }
-
-        // Determine if this is a new user (profile just created in last 10 seconds)
-        const isNewUser = profile && profile.created_at 
-          ? (Date.now() - new Date(profile.created_at).getTime()) < 10000 
-          : false;
-
-        console.log('👤 User status:', { isNewUser, hasProfile: !!profile });
-
-        // Send welcome email for new users
-        if (isNewUser && session.user.email) {
-          try {
-            const userName = session.user.user_metadata?.full_name || 
-                           session.user.user_metadata?.name || 
-                           session.user.email.split('@')[0];
-            
-            console.log('📧 Attempting to send welcome email...');
-            const emailResult = await sendWelcomeEmail(session.user.email, userName);
-            
-            if (emailResult.success) {
-              console.log('✅ Welcome email sent successfully');
-            } else {
-              console.error('❌ Failed to send welcome email:', emailResult.error);
-            }
-          } catch (emailError) {
-            console.error('❌ Error sending welcome email:', emailError);
-            // Don't block login if email fails
-          }
-        }
-        
-        // Successfully authenticated - redirect to home
         console.log('✅ Authentication successful, redirecting to home...');
+        
+        // Just redirect - let AuthContext handle profile creation and welcome email
         router.push("/");
         
       } catch (err) {
