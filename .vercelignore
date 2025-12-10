@@ -1,0 +1,9 @@
+# Ignore Supabase Edge Functions (Deno-based, not for Next.js build)
+supabase/functions
+
+# Ignore other non-essential files
+node_modules
+.git
+.env.local
+logs
+*.log
