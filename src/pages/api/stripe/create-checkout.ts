@@ -64,69 +64,93 @@ export default async function handler(
     if (discountCode && discountCode.trim()) {
       console.log('🎫 Validating discount code:', discountCode);
       
-      const { data: discount, error: discountError } = await supabaseAdmin
-        .from('discount_codes')
-        .select('*')
-        .eq('code', discountCode.trim().toLowerCase())
-        .eq('is_active', true)
-        .maybeSingle();
-
-      if (discountError) {
-        console.error('❌ Discount validation error:', discountError);
-      } else if (!discount) {
-        console.log('⚠️ Invalid discount code');
-        return res.status(400).json({
-          error: 'Invalid discount code',
-          details: 'The discount code you entered is not valid.'
-        });
+      const code = discountCode.trim().toLowerCase();
+      
+      // Handle hardcoded discount codes
+      if (code === 'finalboss2025') {
+        console.log('✅ Special discount code applied: finalboss2025 -> RM 1.00');
+        finalPrice = 100; // RM 1.00 in cents
+        discountInfo = {
+          code: 'finalboss2025',
+          discount_type: 'override',
+          discount_value: 100,
+          description: 'Special Boss Discount - RM 1.00'
+        };
+      } else if (code === 'mymaxclan363') {
+        console.log('✅ Special discount code applied: mymaxclan363 -> RM 363.00');
+        finalPrice = 36300; // RM 363.00 in cents
+        discountInfo = {
+          code: 'mymaxclan363',
+          discount_type: 'override',
+          discount_value: 36300,
+          description: 'MAX CLAN Member Discount - RM 363.00'
+        };
       } else {
-        // Check if code has expired
-        if (discount.valid_until && new Date(discount.valid_until) < new Date()) {
-          console.log('⚠️ Discount code expired');
-          return res.status(400).json({
-            error: 'Discount code expired',
-            details: 'This discount code has expired.'
-          });
-        }
-
-        // Check if code has reached max uses
-        if (discount.max_uses !== null && discount.used_count >= discount.max_uses) {
-          console.log('⚠️ Discount code usage limit reached');
-          return res.status(400).json({
-            error: 'Discount code limit reached',
-            details: 'This discount code has reached its usage limit.'
-          });
-        }
-
-        // Calculate discounted price
-        switch (discount.discount_type) {
-          case 'percentage':
-            finalPrice = Math.round(PREMIUM_MEMBERSHIP.price * (1 - discount.discount_value / 100));
-            break;
-          case 'fixed':
-            finalPrice = Math.max(0, PREMIUM_MEMBERSHIP.price - discount.discount_value);
-            break;
-          case 'override':
-            finalPrice = discount.discount_value;
-            break;
-        }
-
-        discountInfo = discount;
-        console.log('✅ Discount applied:', { 
-          code: discount.code, 
-          type: discount.discount_type,
-          originalPrice: PREMIUM_MEMBERSHIP.price, 
-          finalPrice 
-        });
-
-        // Increment usage count
-        const { error: incrementError } = await supabaseAdmin
+        // Check database for other discount codes
+        const { data: discount, error: discountError } = await supabaseAdmin
           .from('discount_codes')
-          .update({ used_count: discount.used_count + 1 })
-          .eq('id', discount.id);
+          .select('*')
+          .eq('code', discountCode.trim().toLowerCase())
+          .eq('is_active', true)
+          .maybeSingle();
 
-        if (incrementError) {
-          console.error('⚠️ Failed to increment discount usage:', incrementError);
+        if (discountError) {
+          console.error('❌ Discount validation error:', discountError);
+        } else if (!discount) {
+          console.log('⚠️ Invalid discount code');
+          return res.status(400).json({
+            error: 'Invalid discount code',
+            details: 'The discount code you entered is not valid.'
+          });
+        } else {
+          // Check if code has expired
+          if (discount.valid_until && new Date(discount.valid_until) < new Date()) {
+            console.log('⚠️ Discount code expired');
+            return res.status(400).json({
+              error: 'Discount code expired',
+              details: 'This discount code has expired.'
+            });
+          }
+
+          // Check if code has reached max uses
+          if (discount.max_uses !== null && discount.used_count >= discount.max_uses) {
+            console.log('⚠️ Discount code usage limit reached');
+            return res.status(400).json({
+              error: 'Discount code limit reached',
+              details: 'This discount code has reached its usage limit.'
+            });
+          }
+
+          // Calculate discounted price
+          switch (discount.discount_type) {
+            case 'percentage':
+              finalPrice = Math.round(PREMIUM_MEMBERSHIP.price * (1 - discount.discount_value / 100));
+              break;
+            case 'fixed':
+              finalPrice = Math.max(0, PREMIUM_MEMBERSHIP.price - discount.discount_value);
+              break;
+            case 'override':
+              finalPrice = discount.discount_value;
+              break;
+          }
+
+          discountInfo = discount;
+          console.log('✅ Discount applied:', { 
+            code: discount.code, 
+            type: discount.discount_type,
+            originalPrice: PREMIUM_MEMBERSHIP.price, 
+            finalPrice 
+          });
+
+          // Increment usage count
+          const { error: incrementError } = await supabaseAdmin
+            .from('discount_codes')
+            .update({ used_count: discount.used_count + 1 })
+            .eq('id', discount.id);
+
+          if (incrementError) {
+            console.error('⚠️ Failed to increment discount usage:', incrementError);
+          }
         }
       }
     }

@@ -77,13 +77,30 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
     if (code === 'finalboss2025') {
       setDiscountError("");
       setDiscountApplied(true);
+    } else if (code === 'mymaxclan363') {
+      setDiscountError("");
+      setDiscountApplied(true);
     } else if (code !== "") {
       setDiscountError("Invalid discount code");
       setDiscountApplied(false);
     }
   };
 
-  const displayPrice = discountApplied ? 'RM 1.00' : 'RM 1,350';
+  const displayPrice = discountApplied 
+    ? discountCode.trim().toLowerCase() === 'finalboss2025' 
+      ? 'RM 1.00' 
+      : discountCode.trim().toLowerCase() === 'mymaxclan363'
+        ? 'RM 363.00'
+        : 'RM 1,350'
+    : 'RM 1,350';
+
+  const savingsAmount = discountApplied
+    ? discountCode.trim().toLowerCase() === 'finalboss2025'
+      ? 'RM 1,349'
+      : discountCode.trim().toLowerCase() === 'mymaxclan363'
+        ? 'RM 987'
+        : null
+    : null;
 
   return (
     <section id="membership" className="py-24 bg-gradient-to-br from-background to-muted/30">
@@ -196,7 +213,7 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
                 </div>
                 {discountApplied && (
                   <div className="inline-block bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-semibold">
-                    Save RM 1,349! 🎉
+                    Save {savingsAmount}! 🎉
                   </div>
                 )}
               </div>
