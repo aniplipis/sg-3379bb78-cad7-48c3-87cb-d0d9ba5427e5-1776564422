@@ -311,12 +311,18 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
         <div className="mt-12 text-center">
           <Card className="border-border/50 bg-muted/30 inline-block">
             <CardContent className="p-6">
-              <p className="text-sm text-muted-foreground mb-2">
+              <p className="text-sm text-muted-foreground mb-4">
                 💡 <strong>Special Offer:</strong> Existing MAX CLAN members - please contact Abg Max for special discounts
               </p>
-              <p className="text-xs text-muted-foreground">
-                WhatsApp: <a href="https://wa.me/60115411008" className="text-gold hover:text-gold/80 underline">+60 11-5411 008</a>
-              </p>
+              <Button
+                asChild
+                variant="outline"
+                className="border-green-500/30 hover:bg-green-500/10 text-green-400"
+              >
+                <a href="https://wa.me/60115411008" target="_blank" rel="noopener noreferrer">
+                  WhatsApp Abg Max
+                </a>
+              </Button>
             </CardContent>
           </Card>
         </div>
