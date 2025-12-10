@@ -319,7 +319,7 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
                 variant="outline"
                 className="border-green-500/30 hover:bg-green-500/10 text-green-400"
               >
-                <a href="https://wa.me/60115411008" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/601154110086" target="_blank" rel="noopener noreferrer">
                   WhatsApp Abg Max
                 </a>
               </Button>
