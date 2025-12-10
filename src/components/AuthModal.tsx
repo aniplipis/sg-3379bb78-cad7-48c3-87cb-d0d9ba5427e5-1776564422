@@ -1,10 +1,10 @@
-
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LoginForm } from "@/components/LoginForm";
 import { RegisterForm } from "@/components/RegisterForm";
 import { motion } from "framer-motion";
 import { Sparkles, Shield } from "lucide-react";
+import { useState } from "react";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -13,6 +13,8 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) {
+  const [activeTab, setActiveTab] = useState(defaultTab);
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto bg-card/95 backdrop-blur-xl border-gold/30 p-4 sm:p-6">
@@ -39,7 +41,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
             </DialogDescription>
           </DialogHeader>
 
-          <Tabs defaultValue={defaultTab} className="mt-3 sm:mt-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-3 sm:mt-6">
             <TabsList className="grid w-full grid-cols-2 bg-muted/50 h-9 sm:h-10">
               <TabsTrigger 
                 value="login"
@@ -60,7 +62,10 @@ export function AuthModal({ isOpen, onClose, defaultTab = "login" }: AuthModalPr
             </TabsContent>
 
             <TabsContent value="register" className="mt-3 sm:mt-6">
-              <RegisterForm onSuccess={onClose} />
+              <RegisterForm 
+                onSuccess={onClose} 
+                onSwitchToLogin={() => setActiveTab("login")}
+              />
             </TabsContent>
           </Tabs>
 

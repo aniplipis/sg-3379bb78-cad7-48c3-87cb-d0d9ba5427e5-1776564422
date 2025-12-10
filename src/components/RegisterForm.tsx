@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { Loader2, User, Mail, Lock, Chrome, Phone, TrendingUp } from "lucide-react";
+import { Loader2, User, Mail, Lock, Chrome, Phone, TrendingUp, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { sendWelcomeEmail } from "@/services/authService";
 
@@ -29,12 +29,14 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 interface RegisterFormProps {
   onSuccess: () => void;
+  onSwitchToLogin?: () => void;
 }
 
-export function RegisterForm({ onSuccess }: RegisterFormProps) {
+export function RegisterForm({ onSuccess, onSwitchToLogin }: RegisterFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [showAlreadyRegistered, setShowAlreadyRegistered] = useState(false);
   const { register: registerUser, loginWithGoogle } = useAuth();
   const { toast } = useToast();
 
@@ -50,6 +52,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     setIsLoading(true);
     setError(null);
     setSuccess(false);
+    setShowAlreadyRegistered(false);
 
     try {
       await registerUser(data.name, data.email, data.password, data.phone, data.tradingview_username);
@@ -77,14 +80,25 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         onSuccess();
       }, 2000);
     } catch (err: any) {
-      // Check for specific Supabase error messages
-      if (err.message?.includes('already registered') || err.message?.includes('User already registered')) {
+      console.error('Registration error:', err);
+      
+      // Check for specific error messages that indicate user already exists
+      const errorMessage = err.message || '';
+      
+      if (
+        errorMessage.includes('already registered') || 
+        errorMessage.includes('User already registered') ||
+        errorMessage.includes('already exists') ||
+        errorMessage.includes('duplicate') ||
+        errorMessage.toLowerCase().includes('already')
+      ) {
+        setShowAlreadyRegistered(true);
+        setError("This email is already registered. Please sign in instead.");
         toast({
           title: "Account already exists",
-          description: "Please sign in instead or reset your password.",
+          description: "This email is already registered. Please use the Login tab to sign in.",
           variant: "destructive",
         });
-        setError("Account already exists. Please login instead.");
       } else {
         setError(err.message || "Registration failed. Please try again.");
         toast({
@@ -140,7 +154,30 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         </div>
       </div>
 
-      {error && (
+      {/* Already Registered Alert */}
+      {showAlreadyRegistered && (
+        <div className="bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 px-3 py-3 sm:px-4 sm:py-4 rounded-lg text-xs sm:text-sm">
+          <div className="flex items-start gap-2 mb-2">
+            <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <div className="font-semibold mb-1">Account Already Exists</div>
+              <p className="text-xs sm:text-sm">This email is already registered in our system.</p>
+            </div>
+          </div>
+          {onSwitchToLogin && (
+            <Button
+              type="button"
+              onClick={onSwitchToLogin}
+              className="w-full mt-2 bg-amber-600 hover:bg-amber-700 text-white"
+              size="sm"
+            >
+              Go to Login
+            </Button>
+          )}
+        </div>
+      )}
+
+      {error && !showAlreadyRegistered && (
         <div className="bg-destructive/10 border border-destructive/30 text-destructive px-3 py-2 sm:px-4 sm:py-3 rounded-lg text-xs sm:text-sm">
           {error}
         </div>
