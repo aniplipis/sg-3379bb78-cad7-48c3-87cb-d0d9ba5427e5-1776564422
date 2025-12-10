@@ -6,9 +6,10 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () => void }) {
   const { user, profile } = useAuth();
-  const [promoCode, setPromoCode] = useState("");
+  const [discountCode, setDiscountCode] = useState("");
   const [isLoadingCheckout, setIsLoadingCheckout] = useState(false);
-  const [promoError, setPromoError] = useState("");
+  const [discountError, setDiscountError] = useState("");
+  const [discountApplied, setDiscountApplied] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
 
   const handlePremiumCheckout = async () => {
@@ -19,7 +20,7 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
 
     try {
       setIsLoadingCheckout(true);
-      setPromoError("");
+      setDiscountError("");
       setCheckoutError("");
 
       console.log("Starting checkout for user:", user.id);
@@ -31,24 +32,27 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
         },
         body: JSON.stringify({
           userId: user.id,
-          promoCode: promoCode.trim(),
+          discountCode: discountCode.trim(),
         }),
       });
 
       const data = await response.json();
       
-      // Log FULL response details
       console.log("Checkout response:", { 
         status: response.status, 
         ok: response.ok,
         data: data,
-        fullResponse: data 
       });
-      console.log("Full error details:", JSON.stringify(data, null, 2));
 
       if (!response.ok) {
-        // Log the complete error object
-        console.error("Checkout failed with full details:", data);
+        console.error("Checkout failed:", data);
+        
+        // Handle discount-specific errors
+        if (data.error?.includes('discount')) {
+          setDiscountError(data.details || data.error);
+          return;
+        }
+        
         throw new Error(data.error || data.details || 'Failed to create checkout session');
       }
 
@@ -68,19 +72,18 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
     }
   };
 
-  const validatePromoCode = () => {
-    const code = promoCode.trim().toUpperCase();
-    if (code === 'PREMIUM363') {
-      setPromoError("");
-      return true;
+  const handleApplyDiscount = () => {
+    const code = discountCode.trim().toLowerCase();
+    if (code === 'finalboss2025') {
+      setDiscountError("");
+      setDiscountApplied(true);
     } else if (code !== "") {
-      setPromoError("Invalid promo code");
-      return false;
+      setDiscountError("Invalid discount code");
+      setDiscountApplied(false);
     }
-    return true;
   };
 
-  const displayPrice = promoCode.trim().toUpperCase() === 'PREMIUM363' ? 'RM 363' : 'RM 1,350';
+  const displayPrice = discountApplied ? 'RM 1' : 'RM 1,350';
 
   return (
     <section id="membership" className="py-24 bg-gradient-to-br from-background to-muted/30">
@@ -180,7 +183,7 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
                 Premium Member
               </CardTitle>
               <div className="space-y-2">
-                {promoCode.trim().toUpperCase() === 'PREMIUM363' && (
+                {discountApplied && (
                   <div className="text-2xl text-muted-foreground line-through">
                     RM 1,350
                   </div>
@@ -188,46 +191,51 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
                 <div className="text-5xl font-bold text-gold">
                   {displayPrice}
                 </div>
-                <div className="text-muted-foreground">onboarding + RM 363/year renewal</div>
-                {promoCode.trim().toUpperCase() === 'PREMIUM363' && (
+                <div className="text-muted-foreground">
+                  {discountApplied ? "Special offer pricing" : "onboarding + RM 363/year renewal"}
+                </div>
+                {discountApplied && (
                   <div className="inline-block bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-semibold">
-                    Save RM 987!
+                    Save RM 1,349! 🎉
                   </div>
                 )}
               </div>
             </CardHeader>
 
             <CardContent className="space-y-6">
-              {/* Promo Code Input */}
+              {/* Discount Code Input */}
               <div className="space-y-2">
-                <label htmlFor="promoCode" className="text-sm font-medium text-muted-foreground">
-                  Have a promo code?
+                <label htmlFor="discountCode" className="text-sm font-medium text-muted-foreground">
+                  Have a discount code?
                 </label>
                 <div className="flex gap-2">
                   <input
-                    id="promoCode"
+                    id="discountCode"
                     type="text"
                     placeholder="Enter code"
-                    value={promoCode}
-                    onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                    onBlur={validatePromoCode}
+                    value={discountCode}
+                    onChange={(e) => {
+                      setDiscountCode(e.target.value.toLowerCase());
+                      setDiscountApplied(false);
+                      setDiscountError("");
+                    }}
                     className="flex-1 px-4 py-2 bg-background/50 border border-muted rounded-lg focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
                   />
                   <Button
                     variant="outline"
-                    onClick={validatePromoCode}
+                    onClick={handleApplyDiscount}
                     className="border-gold/30 hover:border-gold hover:bg-gold/10"
                   >
                     Apply
                   </Button>
                 </div>
-                {promoError && (
-                  <p className="text-sm text-red-400">{promoError}</p>
+                {discountError && (
+                  <p className="text-sm text-red-400">{discountError}</p>
                 )}
-                {promoCode.trim().toUpperCase() === 'PREMIUM363' && (
+                {discountApplied && (
                   <p className="text-sm text-green-400 flex items-center gap-2">
                     <Check className="w-4 h-4" />
-                    Promo code applied!
+                    Discount code applied successfully!
                   </p>
                 )}
               </div>

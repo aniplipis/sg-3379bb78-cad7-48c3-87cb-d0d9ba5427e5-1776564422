@@ -31,10 +31,10 @@ export default async function handler(
   }
 
   try {
-    const { userId, promoCode } = req.body;
+    const { userId, discountCode } = req.body;
 
     console.log('=== CHECKOUT REQUEST START ===');
-    console.log('📝 Request:', { userId: userId ? 'provided' : 'missing', promoCode: promoCode || 'none' });
+    console.log('📝 Request:', { userId: userId ? 'provided' : 'missing', discountCode: discountCode || 'none' });
 
     // Validate userId
     if (!userId) {
@@ -57,7 +57,81 @@ export default async function handler(
 
     console.log('✅ Valid userId format');
 
-    // Step 1: Try to get existing profile
+    // Step 1: Validate discount code if provided
+    let finalPrice = PREMIUM_MEMBERSHIP.price;
+    let discountInfo = null;
+
+    if (discountCode && discountCode.trim()) {
+      console.log('🎫 Validating discount code:', discountCode);
+      
+      const { data: discount, error: discountError } = await supabaseAdmin
+        .from('discount_codes')
+        .select('*')
+        .eq('code', discountCode.trim().toLowerCase())
+        .eq('is_active', true)
+        .maybeSingle();
+
+      if (discountError) {
+        console.error('❌ Discount validation error:', discountError);
+      } else if (!discount) {
+        console.log('⚠️ Invalid discount code');
+        return res.status(400).json({
+          error: 'Invalid discount code',
+          details: 'The discount code you entered is not valid.'
+        });
+      } else {
+        // Check if code has expired
+        if (discount.valid_until && new Date(discount.valid_until) < new Date()) {
+          console.log('⚠️ Discount code expired');
+          return res.status(400).json({
+            error: 'Discount code expired',
+            details: 'This discount code has expired.'
+          });
+        }
+
+        // Check if code has reached max uses
+        if (discount.max_uses !== null && discount.used_count >= discount.max_uses) {
+          console.log('⚠️ Discount code usage limit reached');
+          return res.status(400).json({
+            error: 'Discount code limit reached',
+            details: 'This discount code has reached its usage limit.'
+          });
+        }
+
+        // Calculate discounted price
+        switch (discount.discount_type) {
+          case 'percentage':
+            finalPrice = Math.round(PREMIUM_MEMBERSHIP.price * (1 - discount.discount_value / 100));
+            break;
+          case 'fixed':
+            finalPrice = Math.max(0, PREMIUM_MEMBERSHIP.price - discount.discount_value);
+            break;
+          case 'override':
+            finalPrice = discount.discount_value;
+            break;
+        }
+
+        discountInfo = discount;
+        console.log('✅ Discount applied:', { 
+          code: discount.code, 
+          type: discount.discount_type,
+          originalPrice: PREMIUM_MEMBERSHIP.price, 
+          finalPrice 
+        });
+
+        // Increment usage count
+        const { error: incrementError } = await supabaseAdmin
+          .from('discount_codes')
+          .update({ used_count: discount.used_count + 1 })
+          .eq('id', discount.id);
+
+        if (incrementError) {
+          console.error('⚠️ Failed to increment discount usage:', incrementError);
+        }
+      }
+    }
+
+    // Step 2: Try to get existing profile
     console.log('🔍 Checking if profile exists...');
     const { data: existingProfile, error: profileFetchError } = await supabaseAdmin
       .from('profiles')
@@ -84,7 +158,7 @@ export default async function handler(
     let userEmail = existingProfile?.email || `anonymous_${Date.now()}@maxsaham.temporary`;
     let userName = existingProfile?.full_name || 'Anonymous User';
 
-    // Step 2: Create profile if it doesn't exist
+    // Step 3: Create profile if it doesn't exist
     if (!profile) {
       console.log('⚠️ Profile not found, creating new profile...');
       
@@ -133,7 +207,7 @@ export default async function handler(
       console.log('✅ Profile found:', { id: profile.id, email: profile.email, is_premium: profile.is_premium });
     }
 
-    // Step 3: Get or create Stripe customer
+    // Step 4: Get or create Stripe customer
     console.log('💳 Managing Stripe customer...');
     let customerId = profile.stripe_customer_id;
 
@@ -172,12 +246,7 @@ export default async function handler(
       console.log('✅ Using existing Stripe customer:', customerId);
     }
 
-    // Step 4: Determine price
-    const price = promoCode?.toLowerCase() === 'premium363' 
-      ? PREMIUM_MEMBERSHIP.discountPrice 
-      : PREMIUM_MEMBERSHIP.price;
-
-    console.log('💰 Price:', { original: PREMIUM_MEMBERSHIP.price, final: price, promoCode: promoCode || 'none' });
+    console.log('💰 Final price:', { original: PREMIUM_MEMBERSHIP.price, final: finalPrice, discount: discountCode || 'none' });
 
     // Step 5: Create checkout session
     console.log('🎫 Creating checkout session...');
@@ -192,9 +261,11 @@ export default async function handler(
               currency: PREMIUM_MEMBERSHIP.currency,
               product_data: {
                 name: PREMIUM_MEMBERSHIP.name,
-                description: PREMIUM_MEMBERSHIP.description,
+                description: discountInfo 
+                  ? `${PREMIUM_MEMBERSHIP.description} (Discount: ${discountInfo.code})`
+                  : PREMIUM_MEMBERSHIP.description,
               },
-              unit_amount: price,
+              unit_amount: finalPrice,
               recurring: {
                 interval: PREMIUM_MEMBERSHIP.interval,
               },
@@ -206,11 +277,14 @@ export default async function handler(
         cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/#membership`,
         metadata: {
           supabase_user_id: userId,
-          promo_code: promoCode || 'none',
+          discount_code: discountCode || 'none',
+          original_price: PREMIUM_MEMBERSHIP.price.toString(),
+          final_price: finalPrice.toString(),
         },
         subscription_data: {
           metadata: {
             supabase_user_id: userId,
+            discount_code: discountCode || 'none',
           },
         },
       });
