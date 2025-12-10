@@ -100,9 +100,15 @@ export default function FreeDashboard() {
 
   const indicators = [
     {
-      name: "MAX SAHAM Premium Indicators",
-      description: "Access our exclusive TradingView indicators for free members",
-      link: "https://www.tradingview.com/",
+      name: "MAX SAHAM PUKAT V2",
+      description: "🔸 Public Indicator - Add to Favorite untuk akses mudah",
+      link: "https://www.tradingview.com/script/0KxsvHg7-MAX-SAHAM-PUKAT-V2/",
+      icon: TrendingUp
+    },
+    {
+      name: "MAX SAHAM ADX with DI",
+      description: "🔸 Public Indicator - Add to Favorite untuk akses mudah",
+      link: "https://www.tradingview.com/script/XCRNzzjn-MAX-SAHAM-ADX-with-DI/",
       icon: TrendingUp
     }
   ];
@@ -193,14 +199,14 @@ export default function FreeDashboard() {
           <div className="mb-12">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-2xl font-bold mb-2">TradingView Indicators</h2>
-                <p className="text-muted-foreground">Free access to essential trading tools</p>
+                <h2 className="text-2xl font-bold mb-2">🌐 Public TradingView Indicators</h2>
+                <p className="text-muted-foreground">Free access to public indicators (Terus boleh guna)</p>
               </div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {indicators.map((indicator, index) => (
-                <Card key={index} className="border-gold/30">
+                <Card key={index} className="border-gold/30 hover:border-gold/50 transition-all">
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div>
@@ -211,30 +217,25 @@ export default function FreeDashboard() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <Button className="w-full bg-gold hover:bg-gold/90 text-black" asChild>
+                    <Button className="w-full bg-gold hover:bg-gold/90 text-black font-semibold" asChild>
                       <a href={indicator.link} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="w-4 h-4 mr-2" />
-                        Access Indicators
+                        Open in TradingView
                       </a>
                     </Button>
                   </CardContent>
                 </Card>
               ))}
-              
-              {/* How to Use Videos Placeholder */}
-              <Card className="border-gold/30">
-                <CardHeader>
-                  <CardTitle className="text-xl mb-2">How to Use Indicators</CardTitle>
-                  <p className="text-sm text-muted-foreground">Video tutorials coming soon</p>
-                </CardHeader>
-                <CardContent>
-                  <Button className="w-full" variant="outline" disabled>
-                    <Video className="w-4 h-4 mr-2" />
-                    Tutorial Videos (Coming Soon)
-                  </Button>
-                </CardContent>
-              </Card>
             </div>
+
+            {/* Usage Note */}
+            <Card className="mt-6 border-gold/20 bg-gradient-to-r from-gold/5 to-transparent">
+              <CardContent className="p-6">
+                <p className="text-center text-muted-foreground">
+                  📌 <strong>Tip:</strong> Klik "Add to Favorite" dalam TradingView untuk akses mudah dalam chart
+                </p>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Free eBooks */}
