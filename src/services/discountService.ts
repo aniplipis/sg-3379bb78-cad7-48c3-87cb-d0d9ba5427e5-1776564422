@@ -42,7 +42,7 @@ export const discountService = {
         return { valid: false, error: "This discount code has reached its usage limit" };
       }
 
-      return { valid: true, discount: data };
+      return { valid: true, discount: data as unknown as DiscountCode };
     } catch (error) {
       console.error("Error in validateCode:", error);
       return { valid: false, error: "An error occurred while validating the code" };
