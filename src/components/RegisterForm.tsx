@@ -54,13 +54,23 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
     try {
       await registerUser(data.name, data.email, data.password, data.phone, data.tradingview_username);
 
-      // Send welcome email
-      await sendWelcomeEmail(data.email, data.name);
-
-      toast({
-        title: "Registration successful!",
-        description: "Please check your email to verify your account. We've also sent you a welcome email!",
-      });
+      // Send welcome email with better error handling
+      console.log('📧 Sending welcome email to:', data.email);
+      const emailResult = await sendWelcomeEmail(data.email, data.name);
+      
+      if (emailResult.success) {
+        console.log('✅ Welcome email sent successfully');
+        toast({
+          title: "Registration successful!",
+          description: "Please check your email to verify your account. We've also sent you a welcome email!",
+        });
+      } else {
+        console.error('❌ Welcome email failed:', emailResult.error);
+        toast({
+          title: "Registration successful!",
+          description: "Please check your email to verify your account. (Note: Welcome email may be delayed)",
+        });
+      }
 
       setSuccess(true);
       setTimeout(() => {

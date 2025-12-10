@@ -16,6 +16,8 @@ export interface AuthError {
 // Send welcome email after registration
 export async function sendWelcomeEmail(email: string, userName: string) {
   try {
+    console.log('📧 Attempting to send welcome email to:', email, 'userName:', userName);
+    
     const { data, error } = await supabase.functions.invoke('send-email', {
       body: {
         to: email,
@@ -26,13 +28,16 @@ export async function sendWelcomeEmail(email: string, userName: string) {
     });
 
     if (error) {
-      console.error('Error sending welcome email:', error);
+      console.error('❌ Error sending welcome email:', error);
+      console.error('Error details:', JSON.stringify(error, null, 2));
       return { success: false, error };
     }
 
+    console.log('✅ Welcome email sent successfully:', data);
     return { success: true, data };
   } catch (error) {
-    console.error('Failed to send welcome email:', error);
+    console.error('❌ Failed to send welcome email (catch block):', error);
+    console.error('Error details:', JSON.stringify(error, null, 2));
     return { success: false, error };
   }
 }
