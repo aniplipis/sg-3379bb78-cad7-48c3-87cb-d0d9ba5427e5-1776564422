@@ -34,7 +34,7 @@ export function ClassSection() {
             rel="noopener noreferrer"
             className="inline-block text-base md:text-lg text-gold font-semibold hover:text-gold/80 transition-colors underline decoration-gold/50 hover:decoration-gold"
           >
-            Join MAX CLAN Telegram for latest training dates
+            Join Max Saham Telegram Channel
           </a>
         </div>
 
