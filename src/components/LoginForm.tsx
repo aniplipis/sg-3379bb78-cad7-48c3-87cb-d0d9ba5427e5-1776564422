@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { Loader2, Mail, Lock, Chrome, AlertCircle } from "lucide-react";
 import { authService } from "@/services/authService";
+import { useToast } from "@/hooks/use-toast";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -26,6 +27,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmailSent, setResetEmailSent] = useState(false);
   const { login, loginWithGoogle } = useAuth();
+  const { toast } = useToast();
 
   const {
     register,
@@ -37,6 +39,22 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   });
 
   const emailValue = watch("email");
+
+  // Listen for existing user welcome back event
+  useEffect(() => {
+    const handleExistingUser = (event: CustomEvent) => {
+      const userName = event.detail?.userName || 'User';
+      toast({
+        title: "Welcome back! 👋",
+        description: `Hi ${userName}, logging you in now...`,
+      });
+    };
+
+    window.addEventListener('auth-existing-user', handleExistingUser as EventListener);
+    return () => {
+      window.removeEventListener('auth-existing-user', handleExistingUser as EventListener);
+    };
+  }, [toast]);
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);

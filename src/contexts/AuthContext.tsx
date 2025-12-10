@@ -20,8 +20,8 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Track which users we've already tried to email (in-memory, per session)
-const emailAttemptedUsers = new Set<string>();
+// Track which users we've already processed (in-memory, per session)
+const processedUsers = new Set<string>();
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SupabaseUser | null>(null);
@@ -33,6 +33,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const manageUserProfile = async (supabaseUser: SupabaseUser): Promise<Profile | null> => {
     try {
       console.log('👤 Managing profile for user:', supabaseUser.email);
+      
+      // Check if we've already processed this user this session
+      if (processedUsers.has(supabaseUser.id)) {
+        console.log('⏭️ User already processed this session, skipping email check');
+      }
       
       // First, try to fetch existing profile
       const { data: existingProfile, error: fetchError } = await supabase
@@ -47,39 +52,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return null;
       }
 
-      const isNewUser = !existingProfile;
-      const isGoogleOAuthUser = supabaseUser.app_metadata?.provider === 'google';
-      
+      // ✅ EXISTING USER - Just return profile, NO email
       if (existingProfile) {
-        console.log('✅ Existing profile found');
+        console.log('✅ Existing profile found - welcome back!');
+        processedUsers.add(supabaseUser.id);
         
-        // Check if this is a Google OAuth user who hasn't received welcome email yet
-        if (isGoogleOAuthUser && !emailAttemptedUsers.has(supabaseUser.id)) {
-          console.log('📧 Sending welcome email to existing Google OAuth user (first login this session)...');
-          emailAttemptedUsers.add(supabaseUser.id);
-          
-          const fullName = 
-            supabaseUser.user_metadata?.full_name || 
-            supabaseUser.user_metadata?.name ||
-            existingProfile.full_name ||
-            "User";
-          
-          sendWelcomeEmail(supabaseUser.email || "", fullName).then((result) => {
-            if (result.success) {
-              console.log('✅ Welcome email sent successfully');
-            } else {
-              console.error('❌ Failed to send welcome email:', result.error);
-            }
-          }).catch((err) => {
-            console.error('❌ Welcome email error:', err);
-          });
+        // Show welcome back toast (will be handled in the component)
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('auth-existing-user', { 
+            detail: { userName: existingProfile.full_name || supabaseUser.email } 
+          }));
         }
         
         return existingProfile;
       }
 
-      // Profile doesn't exist, create it
-      console.log('📝 Creating new profile for new user...');
+      // 🆕 NEW USER - Create profile and send welcome email
+      console.log('📝 Creating new profile for brand new user...');
       
       // Try to get full_name from multiple sources
       const fullName = 
@@ -109,23 +98,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       console.log('✅ New profile created successfully');
+      processedUsers.add(supabaseUser.id);
 
-      // Send welcome email for new users (both Google OAuth and email/password)
-      if (isNewUser && !emailAttemptedUsers.has(supabaseUser.id)) {
-        console.log('📧 Sending welcome email to brand new user...');
-        emailAttemptedUsers.add(supabaseUser.id);
-        
-        // Send email asynchronously (don't block authentication)
-        sendWelcomeEmail(supabaseUser.email || "", fullName).then((result) => {
-          if (result.success) {
-            console.log('✅ Welcome email sent successfully to new user');
-          } else {
-            console.error('❌ Failed to send welcome email to new user:', result.error);
-          }
-        }).catch((err) => {
-          console.error('❌ Welcome email error for new user:', err);
-        });
-      }
+      // 📧 Send welcome email ONLY for brand new users
+      console.log('📧 Sending welcome email to BRAND NEW user...');
+      
+      sendWelcomeEmail(supabaseUser.email || "", fullName).then((result) => {
+        if (result.success) {
+          console.log('✅ Welcome email sent successfully to new user');
+        } else {
+          console.error('❌ Failed to send welcome email to new user:', result.error);
+        }
+      }).catch((err) => {
+        console.error('❌ Welcome email error for new user:', err);
+      });
 
       return newProfile;
     } catch (error) {
