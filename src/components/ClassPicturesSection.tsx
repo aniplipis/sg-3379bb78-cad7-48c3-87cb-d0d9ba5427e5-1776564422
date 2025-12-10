@@ -9,8 +9,18 @@ import {
 } from "@/components/ui/dialog";
 
 export function ClassPicturesSection() {
-  const placeholders = Array.from({ length: 10 }, (_, i) => i + 1);
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const classImages = [
+    { id: 1, src: "/PHYSICAL_1_.jpg", alt: "Physical Class Session 1" },
+    { id: 2, src: "/PHYSICAL_2_.jpg", alt: "Physical Class Session 2" },
+    { id: 3, src: "/PHYSICAL_3_.jpg", alt: "Physical Class Session 3" },
+    { id: 4, src: "/PHYSICAL_4_.jpg", alt: "Physical Class Session 4" },
+    { id: 5, src: "/PHYSICAL_5_.jpg", alt: "Physical Class Session 5" },
+    { id: 6, src: "/PHYSICAL_6_.jpg", alt: "Physical Class Session 6" },
+    { id: 7, src: "/PHYSICAL_7_.jpg", alt: "Physical Class Session 7" },
+    { id: 8, src: "/PHYSICAL_8_.jpg", alt: "Physical Class Session 8" },
+    { id: 9, src: "/PHYSICAL_9_.jpg", alt: "Physical Class Session 9" },
+    { id: 10, src: "/PHYSICAL_10_.jpg", alt: "Physical Class Session 10" },
+  ];
 
   return (
     <section className="py-16 px-4 bg-gradient-to-b from-background to-muted/20">
@@ -32,55 +42,63 @@ export function ClassPicturesSection() {
           
           {/* Scrolling animation container */}
           <div className="flex gap-6 animate-scroll">
-            {placeholders.map((num) => (
-              <Dialog key={num}>
+            {classImages.map((image) => (
+              <Dialog key={image.id}>
                 <DialogTrigger asChild>
                   <Card className="flex-shrink-0 w-80 border-gold/20 bg-card/50 cursor-pointer hover:border-gold/40 transition-all hover:scale-105">
                     <CardContent className="p-0">
-                      <div className="relative aspect-[4/3] bg-gradient-to-br from-gold/10 to-muted/20 flex items-center justify-center overflow-hidden">
-                        <div className="text-center">
-                          <Camera className="w-16 h-16 text-gold/40 mx-auto mb-3" />
-                          <p className="text-sm text-muted-foreground">Class Picture {num}</p>
-                          <p className="text-xs text-muted-foreground/60 mt-1">Click to zoom</p>
-                        </div>
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          fill
+                          className="object-cover hover:scale-110 transition-transform duration-300"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
                       </div>
                     </CardContent>
                   </Card>
                 </DialogTrigger>
                 <DialogContent className="max-w-5xl w-full p-0 bg-black/90">
-                  <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-gold/10 to-muted/20 flex items-center justify-center">
-                    <div className="text-center">
-                      <Camera className="w-24 h-24 text-gold/40 mx-auto mb-4" />
-                      <p className="text-lg text-muted-foreground">Class Picture {num}</p>
-                      <p className="text-sm text-muted-foreground/60 mt-2">Upload image to display</p>
-                    </div>
+                  <div className="relative w-full aspect-[4/3]">
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 100vw, 80vw"
+                    />
                   </div>
                 </DialogContent>
               </Dialog>
             ))}
             {/* Duplicate for seamless loop */}
-            {placeholders.map((num) => (
-              <Dialog key={`duplicate-${num}`}>
+            {classImages.map((image) => (
+              <Dialog key={`duplicate-${image.id}`}>
                 <DialogTrigger asChild>
                   <Card className="flex-shrink-0 w-80 border-gold/20 bg-card/50 cursor-pointer hover:border-gold/40 transition-all hover:scale-105">
                     <CardContent className="p-0">
-                      <div className="relative aspect-[4/3] bg-gradient-to-br from-gold/10 to-muted/20 flex items-center justify-center overflow-hidden">
-                        <div className="text-center">
-                          <Camera className="w-16 h-16 text-gold/40 mx-auto mb-3" />
-                          <p className="text-sm text-muted-foreground">Class Picture {num}</p>
-                          <p className="text-xs text-muted-foreground/60 mt-1">Click to zoom</p>
-                        </div>
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          fill
+                          className="object-cover hover:scale-110 transition-transform duration-300"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
                       </div>
                     </CardContent>
                   </Card>
                 </DialogTrigger>
                 <DialogContent className="max-w-5xl w-full p-0 bg-black/90">
-                  <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-gold/10 to-muted/20 flex items-center justify-center">
-                    <div className="text-center">
-                      <Camera className="w-24 h-24 text-gold/40 mx-auto mb-4" />
-                      <p className="text-lg text-muted-foreground">Class Picture {num}</p>
-                      <p className="text-sm text-muted-foreground/60 mt-2">Upload image to display</p>
-                    </div>
+                  <div className="relative w-full aspect-[4/3]">
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      className="object-contain"
+                      sizes="(max-width: 768px) 100vw, 80vw"
+                    />
                   </div>
                 </DialogContent>
               </Dialog>
