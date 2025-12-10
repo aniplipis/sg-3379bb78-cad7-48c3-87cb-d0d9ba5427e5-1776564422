@@ -252,10 +252,8 @@ export default async function handler(
     console.log('🎫 Creating checkout session...');
     
     try {
-      // Get the correct base URL - prioritize production domain
-      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL?.startsWith('http') 
-        ? process.env.NEXT_PUBLIC_SITE_URL 
-        : 'https://maxsaham.com';
+      // CRITICAL FIX: Always use production domain for redirects
+      const baseUrl = 'https://maxsaham.com';
       
       console.log('🌐 Using base URL for redirects:', baseUrl);
       

@@ -83,7 +83,7 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
     }
   };
 
-  const displayPrice = discountApplied ? 'RM 1' : 'RM 1,350';
+  const displayPrice = discountApplied ? 'RM 1.00' : 'RM 1,350';
 
   return (
     <section id="membership" className="py-24 bg-gradient-to-br from-background to-muted/30">
