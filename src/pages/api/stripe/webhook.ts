@@ -39,9 +39,11 @@ export default async function handler(
       process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (error) {
-    console.error('Webhook signature verification failed:', error);
+    console.error('❌ Webhook signature verification failed:', error);
     return res.status(400).json({ error: 'Webhook signature verification failed' });
   }
+
+  console.log('📥 Webhook received:', event.type);
 
   try {
     switch (event.type) {
@@ -49,18 +51,35 @@ export default async function handler(
         const session = event.data.object;
         const userId = session.metadata?.supabase_user_id;
 
+        console.log('💳 Checkout completed for user:', userId);
+
         if (userId) {
-          // Grant premium access
-          await supabase
+          // Calculate subscription end date (1 year from now)
+          const subscriptionEndDate = new Date();
+          subscriptionEndDate.setFullYear(subscriptionEndDate.getFullYear() + 1);
+
+          // Grant premium access with subscription details
+          const { data: updateData, error: updateError } = await supabase
             .from('profiles')
             .update({ 
               is_premium: true,
+              subscription_status: 'active',
+              subscription_end_date: subscriptionEndDate.toISOString(),
               stripe_customer_id: session.customer as string,
               stripe_subscription_id: session.subscription as string,
+              stripe_subscription_status: 'active',
             })
-            .eq('id', userId);
+            .eq('id', userId)
+            .select();
 
-          console.log(`✅ Premium access granted to user: ${userId}`);
+          if (updateError) {
+            console.error('❌ Failed to update profile:', updateError);
+            throw updateError;
+          }
+
+          console.log('✅ Premium access granted to user:', userId);
+          console.log('📅 Subscription end date:', subscriptionEndDate.toISOString());
+          console.log('📊 Update result:', updateData);
 
           // Get user details for email
           const { data: profile } = await supabase
@@ -72,6 +91,8 @@ export default async function handler(
           if (profile) {
             // Send payment confirmation email via Edge Function
             try {
+              console.log('📧 Sending payment confirmation email to:', profile.email);
+              
               const response = await fetch(
                 `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send-email`,
                 {
@@ -91,13 +112,17 @@ export default async function handler(
               );
 
               if (!response.ok) {
-                console.error('Failed to send payment confirmation email');
+                console.error('❌ Failed to send payment confirmation email');
+              } else {
+                console.log('✅ Payment confirmation email sent successfully');
               }
             } catch (emailError) {
-              console.error('Error sending payment email:', emailError);
+              console.error('❌ Error sending payment email:', emailError);
               // Don't fail the webhook if email fails
             }
           }
+        } else {
+          console.error('⚠️ No user ID found in session metadata');
         }
         break;
       }
@@ -106,18 +131,34 @@ export default async function handler(
         const subscription = event.data.object;
         const userId = subscription.metadata?.supabase_user_id;
 
+        console.log('🔄 Subscription updated for user:', userId, 'status:', subscription.status);
+
         if (userId) {
           // Update subscription status
           const isActive = subscription.status === 'active';
-          await supabase
+          
+          // Calculate new end date if subscription is active
+          const updateData: any = { 
+            is_premium: isActive,
+            stripe_subscription_status: subscription.status,
+          };
+
+          if (isActive && subscription.current_period_end) {
+            const endDate = new Date(subscription.current_period_end * 1000);
+            updateData.subscription_end_date = endDate.toISOString();
+            console.log('📅 Updated subscription end date:', endDate.toISOString());
+          }
+
+          const { error: updateError } = await supabase
             .from('profiles')
-            .update({ 
-              is_premium: isActive,
-              stripe_subscription_status: subscription.status,
-            })
+            .update(updateData)
             .eq('id', userId);
 
-          console.log(`✅ Subscription updated for user: ${userId}, status: ${subscription.status}`);
+          if (updateError) {
+            console.error('❌ Failed to update subscription:', updateError);
+          } else {
+            console.log('✅ Subscription updated for user:', userId, 'status:', subscription.status);
+          }
         }
         break;
       }
@@ -126,17 +167,24 @@ export default async function handler(
         const subscription = event.data.object;
         const userId = subscription.metadata?.supabase_user_id;
 
+        console.log('❌ Subscription deleted for user:', userId);
+
         if (userId) {
           // Remove premium access
-          await supabase
+          const { error: updateError } = await supabase
             .from('profiles')
             .update({ 
               is_premium: false,
+              subscription_status: 'canceled',
               stripe_subscription_status: 'canceled',
             })
             .eq('id', userId);
 
-          console.log(`✅ Premium access removed from user: ${userId}`);
+          if (updateError) {
+            console.error('❌ Failed to cancel subscription:', updateError);
+          } else {
+            console.log('✅ Premium access removed from user:', userId);
+          }
         }
         break;
       }
@@ -144,6 +192,8 @@ export default async function handler(
       case 'invoice.payment_failed': {
         const invoice = event.data.object;
         const customerId = invoice.customer as string;
+
+        console.log('⚠️ Payment failed for customer:', customerId);
 
         // Find user by customer ID
         const { data: profile } = await supabase
@@ -153,16 +203,26 @@ export default async function handler(
           .single();
 
         if (profile) {
-          // Optionally: send email notification or take action
-          console.log(`⚠️ Payment failed for user: ${profile.id}`);
+          // Update subscription status to indicate payment failure
+          await supabase
+            .from('profiles')
+            .update({ 
+              stripe_subscription_status: 'past_due',
+            })
+            .eq('id', profile.id);
+
+          console.log('⚠️ Payment failed for user:', profile.id);
         }
         break;
       }
+
+      default:
+        console.log('ℹ️ Unhandled event type:', event.type);
     }
 
     return res.status(200).json({ received: true });
   } catch (error) {
-    console.error('Error processing webhook:', error);
+    console.error('❌ Error processing webhook:', error);
     return res.status(500).json({ error: 'Webhook processing failed' });
   }
 }

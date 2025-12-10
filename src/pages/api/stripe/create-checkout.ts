@@ -273,8 +273,8 @@ export default async function handler(
             quantity: 1,
           },
         ],
-        success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/members?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/#membership`,
+        success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://maxsaham.com'}/members?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://maxsaham.com'}/#membership`,
         metadata: {
           supabase_user_id: userId,
           discount_code: discountCode || 'none',
