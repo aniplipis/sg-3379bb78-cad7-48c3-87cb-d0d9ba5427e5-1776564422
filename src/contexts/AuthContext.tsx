@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 import { supabase } from "@/integrations/supabase/client";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+import { sendWelcomeEmail } from "@/services/authService";
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 
@@ -28,6 +29,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Fetch or create user profile
   const manageUserProfile = async (supabaseUser: SupabaseUser): Promise<Profile | null> => {
     try {
+      console.log('👤 Managing profile for user:', supabaseUser.email);
+      
       // First, try to fetch existing profile
       const { data: existingProfile, error: fetchError } = await supabase
         .from("profiles")
@@ -37,16 +40,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // If there's an error other than "no rows found", log it
       if (fetchError && fetchError.code !== "PGRST116") {
-        console.error("Error fetching profile:", fetchError);
+        console.error("❌ Error fetching profile:", fetchError);
         return null;
       }
 
-      // If profile exists, return it
+      // If profile exists, check if it was just created (within last 30 seconds)
+      const isNewProfile = !existingProfile;
+      
       if (existingProfile) {
+        console.log('✅ Existing profile found');
         return existingProfile;
       }
 
       // Profile doesn't exist, create it
+      console.log('📝 Creating new profile...');
+      
       // Try to get full_name from multiple sources
       const fullName = 
         supabaseUser.user_metadata?.full_name || 
@@ -70,13 +78,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (createError) {
-        console.error("Error creating profile:", createError);
+        console.error("❌ Error creating profile:", createError);
         return null;
+      }
+
+      console.log('✅ New profile created successfully');
+
+      // Send welcome email for new Google OAuth users (async, don't block)
+      if (isNewProfile && supabaseUser.app_metadata?.provider === 'google') {
+        console.log('📧 Sending welcome email to new Google OAuth user...');
+        sendWelcomeEmail(supabaseUser.email || "", fullName).then((result) => {
+          if (result.success) {
+            console.log('✅ Welcome email sent successfully');
+          } else {
+            console.error('❌ Failed to send welcome email:', result.error);
+          }
+        }).catch((err) => {
+          console.error('❌ Welcome email error:', err);
+        });
       }
 
       return newProfile;
     } catch (error) {
-      console.error("Error in manageUserProfile:", error);
+      console.error("❌ Error in manageUserProfile:", error);
       return null;
     }
   };
@@ -102,6 +126,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('🔐 Auth state changed:', event);
         setIsLoading(true);
         if (session?.user) {
           const userProfile = await manageUserProfile(session.user);

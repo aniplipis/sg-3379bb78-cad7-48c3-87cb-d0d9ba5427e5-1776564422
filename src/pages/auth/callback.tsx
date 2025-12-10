@@ -11,49 +11,39 @@ export default function AuthCallback() {
       try {
         console.log('🔐 Auth callback started...');
         
-        // Get the session from the URL hash
+        // Wait a bit for the hash to be processed by Supabase
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Get the session
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
         if (sessionError) {
-          console.error("❌ Error in auth callback:", sessionError);
-          setError(sessionError.message);
-          setTimeout(() => {
-            router.push("/?auth_error=" + encodeURIComponent(sessionError.message));
-          }, 2000);
+          console.error("❌ Session error:", sessionError);
+          // Don't block redirect on session errors - just go home
+          router.push("/");
           return;
         }
 
-        if (!session) {
-          console.error("❌ No session found");
-          setError("No session found");
-          setTimeout(() => {
-            router.push("/?auth_error=no_session");
-          }, 2000);
-          return;
+        if (session) {
+          console.log('✅ Session found for:', session.user.email);
+        } else {
+          console.log('⚠️ No session found, but redirecting anyway');
         }
 
-        console.log('✅ Session found:', session.user.email);
-        console.log('✅ Authentication successful, redirecting to home...');
-        
-        // Just redirect - let AuthContext handle profile creation and welcome email
+        // Always redirect to home - let AuthContext handle the rest
+        console.log('➡️ Redirecting to home...');
         router.push("/");
         
       } catch (err) {
-        console.error("❌ Unexpected error in auth callback:", err);
-        setError("Authentication failed. Please try again.");
-        setTimeout(() => {
-          router.push("/?auth_error=unexpected_error");
-        }, 2000);
+        console.error("❌ Callback error:", err);
+        // Even on error, redirect to home
+        router.push("/");
       }
     };
 
-    // Small delay to ensure URL hash is processed
-    const timer = setTimeout(() => {
-      handleAuthCallback();
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [router]);
+    // Only run once when component mounts
+    handleAuthCallback();
+  }, []); // Empty dependency array - run only once
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
@@ -65,13 +55,13 @@ export default function AuthCallback() {
             </div>
             <h2 className="text-xl font-bold text-red-400 mb-2">Authentication Error</h2>
             <p className="text-muted-foreground mb-4">{error}</p>
-            <p className="text-sm text-muted-foreground">Redirecting you back...</p>
+            <p className="text-sm text-muted-foreground">Redirecting...</p>
           </>
         ) : (
           <>
             <div className="w-16 h-16 border-4 border-gold border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <h2 className="text-xl font-bold mb-2">Completing Authentication</h2>
-            <p className="text-muted-foreground">Please wait while we sign you in...</p>
+            <h2 className="text-xl font-bold mb-2">Completing Sign In</h2>
+            <p className="text-muted-foreground">Please wait...</p>
           </>
         )}
       </div>
