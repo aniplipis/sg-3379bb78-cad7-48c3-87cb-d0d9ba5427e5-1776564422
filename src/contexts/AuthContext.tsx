@@ -14,6 +14,7 @@ interface AuthContextType {
   register: (name: string, email: string, password: string, phone: string, tradingview_username?: string) => Promise<void>;
   logout: () => Promise<void>;
   isLoading: boolean;
+  isLoggingOut: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,6 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Fetch or create user profile
   const manageUserProfile = async (supabaseUser: SupabaseUser): Promise<Profile | null> => {
@@ -153,7 +155,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
+    try {
+      setIsLoggingOut(true);
+      
+      // Clear local state immediately
+      setUser(null);
+      setProfile(null);
+      
+      // Sign out from Supabase
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error("Logout error:", error);
+        throw error;
+      }
+      
+      // Redirect to home page after successful logout
+      if (typeof window !== 'undefined') {
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.error("Failed to logout:", error);
+      // Even if there's an error, clear local state
+      setUser(null);
+      setProfile(null);
+      
+      // Force redirect to home
+      if (typeof window !== 'undefined') {
+        window.location.href = '/';
+      }
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (
@@ -167,6 +200,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         register,
         logout,
         isLoading,
+        isLoggingOut,
       }}
     >
       {children}
