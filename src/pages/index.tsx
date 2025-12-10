@@ -1,48 +1,119 @@
-import { Navigation } from "@/components/Navigation";
 import { HeroSection } from "@/components/HeroSection";
 import { AboutSection } from "@/components/AboutSection";
-import { FuturesExplainedSection } from "@/components/FuturesExplainedSection";
-import { FCPOSection } from "@/components/FCPOSection";
 import { TradingApproachSection } from "@/components/TradingApproachSection";
-import { BrokerSection } from "@/components/BrokerSection";
 import { ClassSection } from "@/components/ClassSection";
 import { PhysicalClassSection } from "@/components/PhysicalClassSection";
-import { PublicGoldSection } from "@/components/PublicGoldSection";
-import { MediaSection } from "@/components/MediaSection";
-import { VerificationSection } from "@/components/VerificationSection";
-import { MembershipSection } from "@/components/MembershipSection";
-import { ContactSection } from "@/components/ContactSection";
-import { Footer } from "@/components/Footer";
-import { AuthModal } from "@/components/AuthModal";
 import { ClassPicturesSection } from "@/components/ClassPicturesSection";
-import { useState } from "react";
+import { FCPOSection } from "@/components/FCPOSection";
+import { FuturesExplainedSection } from "@/components/FuturesExplainedSection";
+import { MembershipSection } from "@/components/MembershipSection";
+import { PublicGoldSection } from "@/components/PublicGoldSection";
+import { BrokerSection } from "@/components/BrokerSection";
+import { VerificationSection } from "@/components/VerificationSection";
+import { MediaSection } from "@/components/MediaSection";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { ContactSection } from "@/components/ContactSection";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
+import SEO from "@/components/SEO";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Check, X } from "lucide-react";
 
-export default function HomePage() {
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+export default function Home() {
+  const router = useRouter();
+  const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
+
+  useEffect(() => {
+    // Check for payment success parameter
+    if (router.query.payment === 'success') {
+      setShowPaymentSuccess(true);
+      
+      // Auto-hide after 10 seconds
+      const timer = setTimeout(() => {
+        setShowPaymentSuccess(false);
+        // Clean up URL
+        router.replace('/', undefined, { shallow: true });
+      }, 10000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [router.query.payment]);
+
+  const handleDismissSuccess = () => {
+    setShowPaymentSuccess(false);
+    router.replace('/', undefined, { shallow: true });
+  };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <>
+      <SEO />
       <Navigation />
-      <HeroSection onOpenAuthModal={() => setIsAuthModalOpen(true)} />
+      
+      {/* Payment Success Banner */}
+      {showPaymentSuccess && (
+        <div className="fixed top-20 left-0 right-0 z-50 px-4 animate-in slide-in-from-top duration-500">
+          <Card className="max-w-2xl mx-auto border-green-500/50 bg-gradient-to-r from-green-500/10 to-green-500/5 shadow-xl">
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Check className="w-6 h-6 text-green-500" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-green-500 mb-2">🎉 Payment Successful!</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Your premium membership is being activated. This may take a few moments...
+                  </p>
+                  <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 space-y-2">
+                    <p className="text-sm">✅ Payment processed successfully</p>
+                    <p className="text-sm">✅ Membership upgrade in progress</p>
+                    <p className="text-sm">✅ Welcome email sent</p>
+                  </div>
+                  <div className="mt-4 flex gap-3">
+                    <Button
+                      onClick={() => router.push('/members')}
+                      className="bg-green-600 hover:bg-green-700"
+                    >
+                      Go to Dashboard
+                    </Button>
+                    <Button
+                      onClick={handleDismissSuccess}
+                      variant="outline"
+                    >
+                      Dismiss
+                    </Button>
+                  </div>
+                </div>
+                <button
+                  onClick={handleDismissSuccess}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      <HeroSection />
       <AboutSection />
-      <FuturesExplainedSection />
-      <FCPOSection />
       <TradingApproachSection />
-      <BrokerSection />
       <ClassSection />
       <PhysicalClassSection />
       <ClassPicturesSection />
+      <FCPOSection />
+      <FuturesExplainedSection />
+      <MembershipSection />
       <PublicGoldSection />
-      <MediaSection />
+      <BrokerSection />
       <VerificationSection />
-      <MembershipSection onOpenAuthModal={() => setIsAuthModalOpen(true)} />
+      <MediaSection />
+      <TestimonialsSection />
       <ContactSection />
       <Footer />
-      
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-      />
-    </div>
+    </>
   );
 }

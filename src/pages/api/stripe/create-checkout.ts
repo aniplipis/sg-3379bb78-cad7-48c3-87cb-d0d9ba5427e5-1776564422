@@ -302,7 +302,7 @@ export default async function handler(
             quantity: 1,
           },
         ],
-        success_url: `${baseUrl}/members?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${baseUrl}/?payment=success`,
         cancel_url: `${baseUrl}/#membership`,
         metadata: {
           supabase_user_id: userId,
