@@ -321,27 +321,149 @@ async function handler(req: Request): Promise<Response> {
         <!DOCTYPE html>
         <html>
         <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #D4AF37 0%, #1E90FF 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-            .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-            .success-badge { background: #10B981; color: white; padding: 10px 20px; border-radius: 20px; display: inline-block; margin: 20px 0; }
-            .button { display: inline-block; background: #D4AF37; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-            .details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
-            .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+            body { 
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+              line-height: 1.6; 
+              color: #333;
+              background-color: #f5f5f5;
+              margin: 0;
+              padding: 0;
+            }
+            .container { 
+              max-width: 600px; 
+              margin: 20px auto; 
+              background: white;
+              border-radius: 12px;
+              overflow: hidden;
+              box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            .header { 
+              background: linear-gradient(135deg, #10B981 0%, #059669 100%); 
+              color: white; 
+              padding: 40px 30px; 
+              text-align: center;
+            }
+            .logo {
+              max-width: 150px;
+              height: auto;
+              margin-bottom: 20px;
+              border-radius: 8px;
+            }
+            .header h1 {
+              margin: 0;
+              font-size: 28px;
+              font-weight: bold;
+            }
+            .content { 
+              padding: 40px 30px;
+              background: white;
+            }
+            .success-badge { 
+              background: #10B981; 
+              color: white; 
+              padding: 12px 24px; 
+              border-radius: 25px; 
+              display: inline-block; 
+              margin: 20px 0;
+              font-weight: bold;
+              font-size: 18px;
+            }
+            .button { 
+              display: inline-block; 
+              background: #D4AF37; 
+              color: white !important; 
+              padding: 16px 40px; 
+              text-decoration: none; 
+              border-radius: 8px; 
+              margin: 25px 0;
+              font-weight: bold;
+              font-size: 16px;
+              text-align: center;
+              box-shadow: 0 4px 6px rgba(212, 175, 55, 0.3);
+            }
+            .button:hover {
+              background: #c49b2e;
+            }
+            .details { 
+              background: #f0f9ff; 
+              padding: 25px; 
+              border-radius: 8px; 
+              margin: 25px 0;
+              border-left: 4px solid #1E90FF;
+            }
+            .details h3 {
+              margin-top: 0;
+              color: #1E90FF;
+              font-size: 18px;
+            }
+            .details p {
+              margin: 10px 0;
+              font-size: 15px;
+            }
+            .benefits {
+              margin: 25px 0;
+            }
+            .benefits h3 {
+              color: #D4AF37;
+              font-size: 18px;
+              margin-bottom: 15px;
+            }
+            .benefits ul {
+              list-style: none;
+              padding: 0;
+            }
+            .benefits li {
+              padding: 8px 0;
+              font-size: 15px;
+              color: #444;
+            }
+            .contact-section {
+              background: #f9f9f9;
+              padding: 20px;
+              border-radius: 8px;
+              margin: 25px 0;
+              text-align: center;
+            }
+            .whatsapp-link {
+              color: #25D366;
+              text-decoration: none;
+              font-weight: bold;
+              font-size: 16px;
+            }
+            .footer { 
+              text-align: center; 
+              padding: 30px 20px; 
+              background: #f9f9f9;
+              color: #666; 
+              font-size: 14px;
+              border-top: 1px solid #eee;
+            }
+            .footer-tagline {
+              font-size: 16px;
+              color: #D4AF37;
+              font-weight: bold;
+              margin: 15px 0;
+            }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
+              <img src="https://maxsaham.com/LOGO-square-for-rounded-crop.jpg" alt="Max Saham Logo" class="logo">
               <h1>✅ Payment Successful!</h1>
             </div>
             <div class="content">
-              <div class="success-badge">🎉 Pembayaran Berjaya!</div>
+              <div style="text-align: center;">
+                <div class="success-badge">🎉 Pembayaran Berjaya!</div>
+              </div>
               
-              <h2>Terima Kasih, ${userName || 'Trader'}!</h2>
-              <p>Pembayaran anda telah berjaya diproses. Sekarang anda boleh akses semua content premium kami!</p>
+              <h2 style="color: #333; font-size: 22px; margin: 30px 0 20px 0;">Terima Kasih, ${userName || 'Trader'}!</h2>
+              <p style="font-size: 16px; color: #555; line-height: 1.8;">
+                Pembayaran anda telah berjaya diproses. Sekarang anda boleh akses semua content premium kami!
+              </p>
               
               <div class="details">
                 <h3>Membership Details:</h3>
@@ -350,23 +472,35 @@ async function handler(req: Request): Promise<Response> {
                 <p><strong>Access:</strong> Full Access to All Resources</p>
               </div>
               
-              <h3>Apa Yang Anda Dapat:</h3>
-              <ul>
-                <li>✅ Access to all premium video tutorials</li>
-                <li>✅ Downloadable trading notes and guides</li>
-                <li>✅ Live class recordings</li>
-                <li>✅ Private Telegram group access</li>
-                <li>✅ Weekly market analysis</li>
-              </ul>
+              <div class="benefits">
+                <h3>Apa Yang Anda Dapat:</h3>
+                <ul>
+                  <li>✅ Access to all premium video tutorials</li>
+                  <li>✅ Downloadable trading notes and guides</li>
+                  <li>✅ Live class recordings</li>
+                  <li>✅ Private Telegram group access</li>
+                  <li>✅ Weekly market analysis</li>
+                </ul>
+              </div>
               
-              <a href="${Deno.env.get('NEXT_PUBLIC_APP_URL') || 'https://maxsaham.com'}/members" class="button">Start Learning Now</a>
+              <div style="text-align: center;">
+                <a href="${Deno.env.get('NEXT_PUBLIC_APP_URL') || 'https://maxsaham.com'}/members" class="button">
+                  Start Learning Now 🚀
+                </a>
+              </div>
               
-              <p><strong>Questions?</strong> Reach out anytime:</p>
-              <p>WhatsApp: <a href="https://wa.me/60115411008">+60 11-5411 0086</a></p>
+              <div class="contact-section">
+                <p style="margin-bottom: 10px;"><strong>Questions?</strong> Reach out anytime:</p>
+                <p>WhatsApp: <a href="https://wa.me/60115411008" class="whatsapp-link">+60 11-5411 0086</a></p>
+              </div>
             </div>
             <div class="footer">
-              <p>© 2025 Team Max Saham. All rights reserved.</p>
-              <p>Professional FCPO Trading Education</p>
+              <div class="footer-tagline">Professional FCPO Trading Education</div>
+              <p style="margin: 10px 0;">© 2025 Team Max Saham. All rights reserved.</p>
+              <p style="margin: 10px 0; font-size: 13px;">
+                <a href="https://maxsaham.com" style="color: #D4AF37; text-decoration: none;">maxsaham.com</a> | 
+                <a href="https://wa.me/60115411008" style="color: #25D366; text-decoration: none;">WhatsApp Support</a>
+              </p>
             </div>
           </div>
         </body>
