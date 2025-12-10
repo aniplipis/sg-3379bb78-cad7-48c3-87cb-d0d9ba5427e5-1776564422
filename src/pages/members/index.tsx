@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import SEO from "@/components/SEO";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 
 interface DashboardStats {
   totalVideos: number;
@@ -86,7 +88,8 @@ export default function MemberDashboard() {
         title="Member Dashboard - Max Saham"
         description="Access your exclusive FCPO trading resources, videos, and community features"
       />
-      <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-8 px-4">
+      <Navigation />
+      <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-8 px-4 pt-24">
         <div className="max-w-7xl mx-auto">
           {/* Welcome Header */}
           <div className="mb-8">
@@ -256,6 +259,7 @@ export default function MemberDashboard() {
           )}
         </div>
       </div>
+      <Footer />
     </>
   );
 }
