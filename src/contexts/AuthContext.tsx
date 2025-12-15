@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
@@ -28,16 +28,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  
+  // Prevent multiple simultaneous profile fetches for the same user
+  const fetchingProfile = useRef<string | null>(null);
 
-  // Fetch or create user profile
-  const manageUserProfile = async (supabaseUser: SupabaseUser): Promise<Profile | null> => {
+  // Fetch or create user profile - memoized to prevent unnecessary recreations
+  const manageUserProfile = useCallback(async (supabaseUser: SupabaseUser): Promise<Profile | null> => {
+    // Prevent duplicate fetches
+    if (fetchingProfile.current === supabaseUser.id) {
+      console.log('⏭️ Profile fetch already in progress for user:', supabaseUser.id);
+      return null;
+    }
+
     try {
+      fetchingProfile.current = supabaseUser.id;
       console.log('👤 Managing profile for user:', supabaseUser.email);
-      
-      // Check if we've already processed this user this session
-      if (processedUsers.has(supabaseUser.id)) {
-        console.log('⏭️ User already processed this session, skipping email check');
-      }
       
       // First, try to fetch existing profile
       const { data: existingProfile, error: fetchError } = await supabase
@@ -56,14 +61,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (existingProfile) {
         console.log('✅ Existing profile found - welcome back!');
         processedUsers.add(supabaseUser.id);
-        
-        // Show welcome back toast (will be handled in the component)
-        if (typeof window !== 'undefined') {
-          window.dispatchEvent(new CustomEvent('auth-existing-user', { 
-            detail: { userName: existingProfile.full_name || supabaseUser.email } 
-          }));
-        }
-        
         return existingProfile;
       }
 
@@ -100,65 +97,106 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.log('✅ New profile created successfully');
       processedUsers.add(supabaseUser.id);
 
-      // 📧 Send welcome email ONLY for brand new users
-      console.log('📧 Sending welcome email to BRAND NEW user...');
-      
-      sendWelcomeEmail(supabaseUser.email || "", fullName).then((result) => {
-        if (result.success) {
-          console.log('✅ Welcome email sent successfully to new user');
-        } else {
-          console.error('❌ Failed to send welcome email to new user:', result.error);
-        }
-      }).catch((err) => {
-        console.error('❌ Welcome email error for new user:', err);
-      });
+      // 📧 Send welcome email ONLY for brand new users (non-blocking)
+      if (!processedUsers.has(`email-sent-${supabaseUser.id}`)) {
+        console.log('📧 Sending welcome email to BRAND NEW user...');
+        processedUsers.add(`email-sent-${supabaseUser.id}`);
+        
+        // Don't await - send email in background to prevent blocking
+        sendWelcomeEmail(supabaseUser.email || "", fullName)
+          .then((result) => {
+            if (result.success) {
+              console.log('✅ Welcome email sent successfully to new user');
+            } else {
+              console.error('❌ Failed to send welcome email to new user:', result.error);
+            }
+          })
+          .catch((err) => {
+            console.error('❌ Welcome email error for new user:', err);
+          });
+      }
 
       return newProfile;
     } catch (error) {
       console.error("❌ Error in manageUserProfile:", error);
       return null;
+    } finally {
+      fetchingProfile.current = null;
     }
-  };
+  }, []); // Empty dependency array - function is stable
 
+  // Initialize auth on mount
   useEffect(() => {
+    let mounted = true;
+
     const initAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         
-        if (session?.user) {
+        if (mounted && session?.user) {
           const userProfile = await manageUserProfile(session.user);
-          setUser(session.user);
-          setProfile(userProfile);
+          if (mounted) {
+            setUser(session.user);
+            setProfile(userProfile);
+          }
         }
       } catch (error) {
         console.error("Error initializing auth:", error);
       } finally {
-        setIsLoading(false);
+        if (mounted) {
+          setIsLoading(false);
+        }
       }
     };
 
     initAuth();
 
+    return () => {
+      mounted = false;
+    };
+  }, [manageUserProfile]);
+
+  // Listen to auth state changes
+  useEffect(() => {
+    let mounted = true;
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('🔐 Auth state changed:', event);
-        setIsLoading(true);
+        
+        if (!mounted) return;
+
+        if (event === 'SIGNED_OUT') {
+          setUser(null);
+          setProfile(null);
+          setIsLoading(false);
+          return;
+        }
+
         if (session?.user) {
-          const userProfile = await manageUserProfile(session.user);
-          setUser(session.user);
-          setProfile(userProfile);
+          // Only fetch profile if we don't already have this user
+          if (!user || user.id !== session.user.id) {
+            setIsLoading(true);
+            const userProfile = await manageUserProfile(session.user);
+            if (mounted) {
+              setUser(session.user);
+              setProfile(userProfile);
+              setIsLoading(false);
+            }
+          }
         } else {
           setUser(null);
           setProfile(null);
+          setIsLoading(false);
         }
-        setIsLoading(false);
       }
     );
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
-  }, []);
+  }, [user, manageUserProfile]);
 
   const login = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
