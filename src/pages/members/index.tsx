@@ -34,6 +34,7 @@ export default function MemberDashboard() {
   const [isLoadingStats, setIsLoadingStats] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [isCheckingPremium, setIsCheckingPremium] = useState(true);
 
   // Check for Stripe checkout success
   useEffect(() => {
@@ -57,9 +58,17 @@ export default function MemberDashboard() {
   }, [user, authLoading, router]);
 
   useEffect(() => {
-    // Redirect non-premium users to free dashboard IMMEDIATELY (no delay)
-    if (!authLoading && user && profile && !profile.is_premium && !router.query.session_id) {
-      router.push("/members/free-dashboard");
+    // FIXED: Only redirect after profile is fully loaded AND we're certain user is not premium
+    if (!authLoading && user && profile) {
+      setIsCheckingPremium(false);
+      
+      // Only redirect if explicitly NOT premium (false) AND no session_id
+      if (profile.is_premium === false && !router.query.session_id) {
+        console.log('⚠️ Non-premium user detected, redirecting to free dashboard');
+        router.push("/members/free-dashboard");
+      } else if (profile.is_premium === true) {
+        console.log('✅ Premium user confirmed, staying on premium dashboard');
+      }
     }
   }, [user, profile, authLoading, router, router.query.session_id]);
 
@@ -90,7 +99,7 @@ export default function MemberDashboard() {
     }
   };
 
-  if (authLoading) {
+  if (authLoading || isCheckingPremium) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-gold" />
