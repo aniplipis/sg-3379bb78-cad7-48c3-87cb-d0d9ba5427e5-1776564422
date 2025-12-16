@@ -51,24 +51,38 @@ export default function MemberDashboard() {
   }, [router.query.session_id]);
 
   useEffect(() => {
-    // Don't redirect immediately - give time for webhook to update premium status
-    if (!authLoading && !user) {
-      router.push("/");
+    // Wait for auth to complete before making any decisions
+    if (authLoading) {
+      return;
     }
-  }, [user, authLoading, router]);
 
-  useEffect(() => {
-    // FIXED: Only redirect after profile is fully loaded AND we're certain user is not premium
-    if (!authLoading && user && profile) {
-      setIsCheckingPremium(false);
-      
-      // Only redirect if explicitly NOT premium (false) AND no session_id
-      if (profile.is_premium === false && !router.query.session_id) {
-        console.log('⚠️ Non-premium user detected, redirecting to free dashboard');
-        router.push("/members/free-dashboard");
-      } else if (profile.is_premium === true) {
-        console.log('✅ Premium user confirmed, staying on premium dashboard');
-      }
+    // If no user after auth completes, redirect to home
+    if (!user) {
+      console.log('⚠️ No user found, redirecting to home');
+      router.push("/");
+      return;
+    }
+
+    // If we have user but no profile yet, keep waiting
+    if (!profile) {
+      console.log('⏳ Waiting for profile to load...');
+      return;
+    }
+
+    // Now we have both user and profile - check premium status
+    setIsCheckingPremium(false);
+    
+    console.log('👤 User loaded:', user.email);
+    console.log('📊 Profile loaded:', profile.full_name, 'Premium:', profile.is_premium);
+
+    // Only redirect if explicitly NOT premium (false) AND no session_id
+    if (profile.is_premium === false && !router.query.session_id) {
+      console.log('⚠️ Non-premium user detected, redirecting to free dashboard');
+      router.push("/members/free-dashboard");
+    } else if (profile.is_premium === true) {
+      console.log('✅ Premium user confirmed, staying on premium dashboard');
+    } else {
+      console.log('⏳ Premium status unclear, waiting...', profile.is_premium);
     }
   }, [user, profile, authLoading, router, router.query.session_id]);
 
