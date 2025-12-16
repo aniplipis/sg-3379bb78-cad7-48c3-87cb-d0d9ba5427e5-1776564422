@@ -34,7 +34,6 @@ export default function MemberDashboard() {
   const [isLoadingStats, setIsLoadingStats] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [isCheckingPremium, setIsCheckingPremium] = useState(true);
 
   // Check for Stripe checkout success
   useEffect(() => {
@@ -50,39 +49,38 @@ export default function MemberDashboard() {
     }
   }, [router.query.session_id]);
 
+  // Handle authentication and redirects
   useEffect(() => {
-    // Wait for auth to complete before making any decisions
+    // Wait for auth to complete
     if (authLoading) {
+      console.log('⏳ Auth still loading...');
       return;
     }
 
-    // If no user after auth completes, redirect to home
+    // No user after auth completes = redirect to home
     if (!user) {
-      console.log('⚠️ No user found, redirecting to home');
+      console.log('❌ No user found, redirecting to home');
       router.push("/");
       return;
     }
 
-    // If we have user but no profile yet, keep waiting
+    // Have user but no profile = keep waiting
     if (!profile) {
-      console.log('⏳ Waiting for profile to load...');
+      console.log('⏳ User found but profile still loading...');
       return;
     }
 
-    // Now we have both user and profile - check premium status
-    setIsCheckingPremium(false);
-    
-    console.log('👤 User loaded:', user.email);
-    console.log('📊 Profile loaded:', profile.full_name, 'Premium:', profile.is_premium);
+    // Now we have both user AND profile
+    console.log('✅ User:', user.email);
+    console.log('✅ Profile:', profile.full_name);
+    console.log('✅ Premium status:', profile.is_premium);
 
-    // Only redirect if explicitly NOT premium (false) AND no session_id
+    // Redirect non-premium users (but allow Stripe success page to show first)
     if (profile.is_premium === false && !router.query.session_id) {
-      console.log('⚠️ Non-premium user detected, redirecting to free dashboard');
+      console.log('⚠️ Non-premium user, redirecting to free dashboard');
       router.push("/members/free-dashboard");
     } else if (profile.is_premium === true) {
-      console.log('✅ Premium user confirmed, staying on premium dashboard');
-    } else {
-      console.log('⏳ Premium status unclear, waiting...', profile.is_premium);
+      console.log('✅ Premium user confirmed on premium dashboard');
     }
   }, [user, profile, authLoading, router, router.query.session_id]);
 
@@ -113,7 +111,7 @@ export default function MemberDashboard() {
     }
   };
 
-  if (authLoading || isCheckingPremium) {
+  if (authLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-gold" />

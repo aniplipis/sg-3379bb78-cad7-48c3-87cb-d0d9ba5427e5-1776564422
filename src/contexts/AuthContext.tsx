@@ -31,6 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   
   // Prevent multiple simultaneous profile fetches for the same user
   const fetchingProfile = useRef<string | null>(null);
+  const initialized = useRef(false);
 
   // Fetch or create user profile - memoized to prevent unnecessary recreations
   const manageUserProfile = useCallback(async (supabaseUser: SupabaseUser): Promise<Profile | null> => {
@@ -60,6 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // ✅ EXISTING USER - Just return profile, NO email
       if (existingProfile) {
         console.log('✅ Existing profile found - welcome back!');
+        console.log('📊 Premium status:', existingProfile.is_premium);
         processedUsers.add(supabaseUser.id);
         return existingProfile;
       }
@@ -125,26 +127,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []); // Empty dependency array - function is stable
 
-  // Initialize auth on mount
+  // Initialize auth on mount - ONLY ONCE
   useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
     let mounted = true;
 
     const initAuth = async () => {
       try {
+        console.log('🔐 Initializing authentication...');
         const { data: { session } } = await supabase.auth.getSession();
         
-        if (mounted && session?.user) {
+        if (session?.user && mounted) {
+          console.log('✅ Session found for:', session.user.email);
           const userProfile = await manageUserProfile(session.user);
-          if (mounted) {
+          if (mounted && userProfile) {
+            // Set both user and profile together atomically
             setUser(session.user);
             setProfile(userProfile);
+            console.log('✅ User and profile loaded successfully');
           }
+        } else {
+          console.log('❌ No active session found');
         }
       } catch (error) {
-        console.error("Error initializing auth:", error);
+        console.error("❌ Error initializing auth:", error);
       } finally {
         if (mounted) {
           setIsLoading(false);
+          console.log('✅ Auth initialization complete');
         }
       }
     };
@@ -167,24 +179,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (!mounted) return;
 
         if (event === 'SIGNED_OUT') {
+          console.log('👋 User signed out');
           setUser(null);
           setProfile(null);
           setIsLoading(false);
           return;
         }
 
+        if (event === 'INITIAL_SESSION') {
+          // Skip - already handled by initAuth
+          console.log('⏭️ Skipping INITIAL_SESSION - already handled');
+          return;
+        }
+
         if (session?.user) {
-          // Only fetch profile if we don't already have this user
-          if (!user || user.id !== session.user.id) {
+          console.log('👤 Auth state change with user:', session.user.email);
+          // Only fetch profile if we don't already have this user with the same data
+          if (!user || user.id !== session.user.id || !profile) {
+            console.log('🔄 Fetching updated profile...');
             setIsLoading(true);
             const userProfile = await manageUserProfile(session.user);
-            if (mounted) {
+            if (mounted && userProfile) {
               setUser(session.user);
               setProfile(userProfile);
-              setIsLoading(false);
+              console.log('✅ Profile updated in state');
             }
+            setIsLoading(false);
+          } else {
+            console.log('⏭️ Profile already loaded, skipping fetch');
           }
         } else {
+          console.log('❌ No user in session');
           setUser(null);
           setProfile(null);
           setIsLoading(false);
@@ -196,7 +221,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [user, manageUserProfile]);
+  }, [user, profile, manageUserProfile]);
 
   const login = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
