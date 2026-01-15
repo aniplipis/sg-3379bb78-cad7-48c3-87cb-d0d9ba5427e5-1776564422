@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/router";
 import { Navigation } from "@/components/Navigation";
@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Mail, AlertCircle, CheckCircle } from "lucide-react";
 
 export default function SendBulkEmail() {
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
@@ -24,9 +24,9 @@ export default function SendBulkEmail() {
   const [recipientCount, setRecipientCount] = useState(0);
 
   // Load recipient count on mount
-  useState(() => {
+  useEffect(() => {
     loadRecipientCount();
-  });
+  }, []);
 
   const loadRecipientCount = async () => {
     try {
@@ -217,7 +217,7 @@ export default function SendBulkEmail() {
           </div>
           <div class="footer">
             <div class="footer-tagline">Professional FCPO Trading Education</div>
-            <p style="margin: 10px 0;">© 2025 Team Max Saham. All rights reserved.</p>
+            <p style="margin: 10px 0;">© 2026 Team Max Saham. All rights reserved.</p>
             <p style="margin: 10px 0; font-size: 13px;">
               <a href="https://maxsaham.com" style="color: #D4AF37; text-decoration: none;">maxsaham.com</a> | 
               <a href="https://wa.me/60115411008" style="color: #25D366; text-decoration: none;">WhatsApp Support</a>
