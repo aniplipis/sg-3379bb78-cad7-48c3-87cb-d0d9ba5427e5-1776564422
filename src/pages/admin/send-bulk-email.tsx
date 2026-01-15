@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Mail, AlertCircle, CheckCircle } from "lucide-react";
 
 export default function SendBulkEmail() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
@@ -23,10 +23,19 @@ export default function SendBulkEmail() {
   }>({ type: null, message: "" });
   const [recipientCount, setRecipientCount] = useState(0);
 
+  // Handle authentication redirect
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/");
+    }
+  }, [user, isLoading, router]);
+
   // Load recipient count on mount
   useEffect(() => {
-    loadRecipientCount();
-  }, []);
+    if (user) {
+      loadRecipientCount();
+    }
+  }, [user]);
 
   const loadRecipientCount = async () => {
     try {
@@ -229,10 +238,21 @@ export default function SendBulkEmail() {
     `;
   };
 
-  // Check if user is admin (you can add admin check logic here)
-  // For now, just check if user is logged in
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <>
+        <Navigation />
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-gold" />
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  // Don't render anything if not authenticated (redirect will happen via useEffect)
   if (!user) {
-    router.push("/");
     return null;
   }
 
