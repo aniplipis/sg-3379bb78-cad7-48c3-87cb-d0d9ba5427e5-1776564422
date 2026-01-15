@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/HeroSection";
+import { AITradingViewPromoSection } from "@/components/AITradingViewPromoSection";
 import { AboutSection } from "@/components/AboutSection";
 import { TradingApproachSection } from "@/components/TradingApproachSection";
 import { ClassSection } from "@/components/ClassSection";
@@ -122,6 +123,7 @@ export default function Home() {
       )}
 
       <HeroSection onOpenAuthModal={() => setAuthModalOpen(true)} />
+      <AITradingViewPromoSection />
       <AboutSection />
       <TradingApproachSection />
       <ClassSection />
