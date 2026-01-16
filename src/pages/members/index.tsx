@@ -14,7 +14,8 @@ import {
   Calendar,
   Award,
   Loader2,
-  Check
+  Check,
+  Mail
 } from "lucide-react";
 import Link from "next/link";
 import SEO from "@/components/SEO";
@@ -443,6 +444,60 @@ export default function MemberDashboard() {
               </p>
             </CardContent>
           </Card>
+
+          {/* Admin Tools Section - Only visible for admin users */}
+          {profile?.email === "aniplipis@gmail.com" && (
+            <Card className="mb-8 border-purple-500/20 bg-gradient-to-r from-purple-500/5 to-pink-500/5">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-2xl">
+                  <Mail className="w-6 h-6 text-purple-500" />
+                  Admin Tools
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  Administrative tools for managing subscribers and communications
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-muted/50 rounded-lg border border-purple-500/20">
+                    <h4 className="font-semibold mb-2 flex items-center gap-2">
+                      <Mail className="w-4 h-4 text-purple-500" />
+                      Bulk Email Sender
+                    </h4>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Send announcements and updates to premium subscribers
+                    </p>
+                    <Button 
+                      className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                      asChild
+                    >
+                      <Link href="/admin/send-bulk-email">
+                        Open Email Tool
+                      </Link>
+                    </Button>
+                  </div>
+
+                  <div className="p-4 bg-muted/50 rounded-lg border border-blue-500/20">
+                    <h4 className="font-semibold mb-2 flex items-center gap-2">
+                      <Users className="w-4 h-4 text-blue-500" />
+                      Membership Management
+                    </h4>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      View and manage user memberships
+                    </p>
+                    <Button 
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                      asChild
+                    >
+                      <Link href="/admin/memberships">
+                        Manage Members
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Premium Upgrade CTA for Free Members */}
           {!isPremium && (
