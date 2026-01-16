@@ -40,10 +40,10 @@ export default function SendBulkEmail() {
 
   // Handle authentication redirect
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!authLoading && !user) {
       router.push("/");
     }
-  }, [user, isLoading, router]);
+  }, [user, authLoading, router]);
 
   // Load recipients on mount and when filter changes
   useEffect(() => {
@@ -338,7 +338,7 @@ export default function SendBulkEmail() {
   };
 
   // Show loading state while checking authentication
-  if (isLoading) {
+  if (authLoading) {
     return (
       <>
         <Navigation />
