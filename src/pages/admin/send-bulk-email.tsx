@@ -19,8 +19,10 @@ interface Recipient {
   selected: boolean;
 }
 
+type RecipientFilter = "premium-only" | "all" | "non-premium-only";
+
 export default function SendBulkEmail() {
-  const { user, isLoading } = useAuth();
+  const { user, profile, isLoading: authLoading } = useAuth();
   const router = useRouter();
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
@@ -31,7 +33,7 @@ export default function SendBulkEmail() {
   }>({ type: null, message: "" });
   
   const [recipients, setRecipients] = useState<Recipient[]>([]);
-  const [includeNonPremium, setIncludeNonPremium] = useState(false);
+  const [recipientFilter, setRecipientFilter] = useState<RecipientFilter>("premium-only");
   const [sendProgress, setSendProgress] = useState({ sent: 0, failed: 0, total: 0 });
   const [failedEmails, setFailedEmails] = useState<string[]>([]);
   const [showManualSelect, setShowManualSelect] = useState(false);
@@ -48,7 +50,7 @@ export default function SendBulkEmail() {
     if (user) {
       loadRecipients();
     }
-  }, [user, includeNonPremium]);
+  }, [user, recipientFilter]);
 
   const loadRecipients = async () => {
     try {
@@ -57,9 +59,12 @@ export default function SendBulkEmail() {
         .select("email, full_name, is_premium")
         .order("full_name");
 
-      if (!includeNonPremium) {
+      if (recipientFilter === "premium-only") {
         query = query.eq("is_premium", true);
+      } else if (recipientFilter === "non-premium-only") {
+        query = query.eq("is_premium", false);
       }
+      // If "all", no filter applied
 
       const { data, error } = await query;
 
@@ -377,18 +382,57 @@ export default function SendBulkEmail() {
                     <Users className="w-5 h-5 text-gold" />
                     <p className="font-semibold text-gold">Recipient Filter</p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="include-non-premium"
-                      checked={includeNonPremium}
-                      onCheckedChange={(checked) => setIncludeNonPremium(checked as boolean)}
-                    />
-                    <label
-                      htmlFor="include-non-premium"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Include non-premium subscribers
-                    </label>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        id="premium-only"
+                        name="recipient-filter"
+                        checked={recipientFilter === "premium-only"}
+                        onChange={() => setRecipientFilter("premium-only")}
+                        className="w-4 h-4 text-gold border-gray-300 focus:ring-gold"
+                      />
+                      <label
+                        htmlFor="premium-only"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                      >
+                        Premium members only
+                      </label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        id="all-members"
+                        name="recipient-filter"
+                        checked={recipientFilter === "all"}
+                        onChange={() => setRecipientFilter("all")}
+                        className="w-4 h-4 text-gold border-gray-300 focus:ring-gold"
+                      />
+                      <label
+                        htmlFor="all-members"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                      >
+                        All members (Premium + Non-Premium)
+                      </label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        id="non-premium-only"
+                        name="recipient-filter"
+                        checked={recipientFilter === "non-premium-only"}
+                        onChange={() => setRecipientFilter("non-premium-only")}
+                        className="w-4 h-4 text-gold border-gray-300 focus:ring-gold"
+                      />
+                      <label
+                        htmlFor="non-premium-only"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                      >
+                        Non-premium members only
+                      </label>
+                    </div>
                   </div>
                 </div>
 
@@ -398,7 +442,7 @@ export default function SendBulkEmail() {
                   </p>
                   <div className="space-y-1 text-sm">
                     <p>✅ Premium: {premiumCount}</p>
-                    {includeNonPremium && <p>👥 Non-Premium: {nonPremiumCount}</p>}
+                    <p>👥 Non-Premium: {nonPremiumCount}</p>
                     <p className="font-bold text-blue-700 dark:text-blue-300">
                       🎯 Selected: {selectedCount} / {recipients.length}
                     </p>
