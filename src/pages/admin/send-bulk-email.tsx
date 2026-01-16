@@ -8,8 +8,16 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Mail, AlertCircle, CheckCircle } from "lucide-react";
+import { Loader2, Mail, AlertCircle, CheckCircle, Send, Users, RefreshCw } from "lucide-react";
+
+interface Recipient {
+  email: string;
+  full_name: string;
+  is_premium: boolean;
+  selected: boolean;
+}
 
 export default function SendBulkEmail() {
   const { user, isLoading } = useAuth();
@@ -21,7 +29,12 @@ export default function SendBulkEmail() {
     type: "success" | "error" | "info" | null;
     message: string;
   }>({ type: null, message: "" });
-  const [recipientCount, setRecipientCount] = useState(0);
+  
+  const [recipients, setRecipients] = useState<Recipient[]>([]);
+  const [includeNonPremium, setIncludeNonPremium] = useState(false);
+  const [sendProgress, setSendProgress] = useState({ sent: 0, failed: 0, total: 0 });
+  const [failedEmails, setFailedEmails] = useState<string[]>([]);
+  const [showManualSelect, setShowManualSelect] = useState(false);
 
   // Handle authentication redirect
   useEffect(() => {
@@ -30,28 +43,44 @@ export default function SendBulkEmail() {
     }
   }, [user, isLoading, router]);
 
-  // Load recipient count on mount
+  // Load recipients on mount and when filter changes
   useEffect(() => {
     if (user) {
-      loadRecipientCount();
+      loadRecipients();
     }
-  }, [user]);
+  }, [user, includeNonPremium]);
 
-  const loadRecipientCount = async () => {
+  const loadRecipients = async () => {
     try {
-      const { count, error } = await supabase
+      let query = supabase
         .from("profiles")
-        .select("*", { count: "exact", head: true })
-        .eq("is_premium", true);
+        .select("email, full_name, is_premium")
+        .order("full_name");
+
+      if (!includeNonPremium) {
+        query = query.eq("is_premium", true);
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
-      setRecipientCount(count || 0);
+
+      const recipientsWithSelection = (data || []).map((r) => ({
+        ...r,
+        selected: true, // All selected by default
+      }));
+
+      setRecipients(recipientsWithSelection);
     } catch (error) {
-      console.error("Error loading recipient count:", error);
+      console.error("Error loading recipients:", error);
+      setStatus({
+        type: "error",
+        message: "Failed to load recipients",
+      });
     }
   };
 
-  const handleSendEmails = async () => {
+  const handleSendTestEmail = async () => {
     if (!subject || !message) {
       setStatus({
         type: "error",
@@ -60,85 +89,150 @@ export default function SendBulkEmail() {
       return;
     }
 
-    setIsSending(true);
-    setStatus({ type: "info", message: "Fetching premium subscribers..." });
-
-    try {
-      // Get all premium subscribers
-      const { data: premiumUsers, error: fetchError } = await supabase
-        .from("profiles")
-        .select("email, full_name")
-        .eq("is_premium", true);
-
-      if (fetchError) throw fetchError;
-
-      if (!premiumUsers || premiumUsers.length === 0) {
-        setStatus({
-          type: "error",
-          message: "No premium subscribers found",
-        });
-        setIsSending(false);
-        return;
-      }
-
-      setStatus({
-        type: "info",
-        message: `Sending emails to ${premiumUsers.length} premium subscribers...`,
-      });
-
-      // Send emails one by one (you can batch this for better performance)
-      let successCount = 0;
-      let errorCount = 0;
-
-      for (const user of premiumUsers) {
-        try {
-          const { error: emailError } = await supabase.functions.invoke(
-            "send-email",
-            {
-              body: {
-                to: user.email,
-                subject: subject,
-                html: generateEmailHTML(message, user.full_name),
-                type: "custom",
-                userName: user.full_name,
-              },
-            }
-          );
-
-          if (emailError) {
-            console.error(`Failed to send to ${user.email}:`, emailError);
-            errorCount++;
-          } else {
-            successCount++;
-          }
-
-          // Add small delay to avoid rate limiting
-          await new Promise((resolve) => setTimeout(resolve, 100));
-        } catch (error) {
-          console.error(`Error sending to ${user.email}:`, error);
-          errorCount++;
-        }
-      }
-
-      setStatus({
-        type: successCount > 0 ? "success" : "error",
-        message: `✅ Successfully sent: ${successCount} | ❌ Failed: ${errorCount}`,
-      });
-
-      // Clear form on success
-      if (successCount > 0) {
-        setSubject("");
-        setMessage("");
-      }
-    } catch (error) {
-      console.error("Error sending bulk emails:", error);
+    if (!user?.email) {
       setStatus({
         type: "error",
-        message: "Failed to send emails. Please try again.",
+        message: "No user email found for test",
+      });
+      return;
+    }
+
+    setIsSending(true);
+    setStatus({ type: "info", message: "Sending test email..." });
+
+    try {
+      const { error: emailError } = await supabase.functions.invoke(
+        "send-email",
+        {
+          body: {
+            to: user.email,
+            subject: `[TEST] ${subject}`,
+            html: generateEmailHTML(message, "Test User"),
+            type: "custom",
+            userName: "Test User",
+          },
+        }
+      );
+
+      if (emailError) {
+        throw emailError;
+      }
+
+      setStatus({
+        type: "success",
+        message: `✅ Test email sent successfully to ${user.email}`,
+      });
+    } catch (error) {
+      console.error("Error sending test email:", error);
+      setStatus({
+        type: "error",
+        message: "Failed to send test email. Please try again.",
       });
     } finally {
       setIsSending(false);
     }
+  };
+
+  const handleSendBulkEmails = async (resendMode = false) => {
+    if (!subject || !message) {
+      setStatus({
+        type: "error",
+        message: "Please fill in both subject and message fields",
+      });
+      return;
+    }
+
+    const selectedRecipients = resendMode
+      ? recipients.filter((r) => failedEmails.includes(r.email))
+      : recipients.filter((r) => r.selected);
+
+    if (selectedRecipients.length === 0) {
+      setStatus({
+        type: "error",
+        message: resendMode ? "No failed emails to resend" : "No recipients selected",
+      });
+      return;
+    }
+
+    setIsSending(true);
+    setSendProgress({ sent: 0, failed: 0, total: selectedRecipients.length });
+    setFailedEmails([]);
+    setStatus({
+      type: "info",
+      message: `Sending emails to ${selectedRecipients.length} recipients...`,
+    });
+
+    let successCount = 0;
+    let errorCount = 0;
+    const newFailedEmails: string[] = [];
+
+    for (const recipient of selectedRecipients) {
+      try {
+        const { error: emailError } = await supabase.functions.invoke(
+          "send-email",
+          {
+            body: {
+              to: recipient.email,
+              subject: subject,
+              html: generateEmailHTML(message, recipient.full_name),
+              type: "custom",
+              userName: recipient.full_name,
+            },
+          }
+        );
+
+        if (emailError) {
+          console.error(`Failed to send to ${recipient.email}:`, emailError);
+          errorCount++;
+          newFailedEmails.push(recipient.email);
+        } else {
+          successCount++;
+        }
+
+        // Update progress in real-time
+        setSendProgress({
+          sent: successCount,
+          failed: errorCount,
+          total: selectedRecipients.length,
+        });
+
+        // Add small delay to avoid rate limiting
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      } catch (error) {
+        console.error(`Error sending to ${recipient.email}:`, error);
+        errorCount++;
+        newFailedEmails.push(recipient.email);
+        setSendProgress({
+          sent: successCount,
+          failed: errorCount,
+          total: selectedRecipients.length,
+        });
+      }
+    }
+
+    setFailedEmails(newFailedEmails);
+    setStatus({
+      type: successCount > 0 ? "success" : "error",
+      message: `✅ Successfully sent: ${successCount} | ❌ Failed: ${errorCount}`,
+    });
+
+    // Clear form on complete success
+    if (successCount > 0 && errorCount === 0) {
+      setSubject("");
+      setMessage("");
+    }
+
+    setIsSending(false);
+  };
+
+  const toggleRecipient = (email: string) => {
+    setRecipients((prev) =>
+      prev.map((r) => (r.email === email ? { ...r, selected: !r.selected } : r))
+    );
+  };
+
+  const toggleAllRecipients = (selected: boolean) => {
+    setRecipients((prev) => prev.map((r) => ({ ...r, selected })));
   };
 
   const generateEmailHTML = (content: string, userName: string) => {
@@ -251,65 +345,150 @@ export default function SendBulkEmail() {
     );
   }
 
-  // Don't render anything if not authenticated (redirect will happen via useEffect)
+  // Don't render anything if not authenticated
   if (!user) {
     return null;
   }
+
+  const selectedCount = recipients.filter((r) => r.selected).length;
+  const premiumCount = recipients.filter((r) => r.is_premium).length;
+  const nonPremiumCount = recipients.length - premiumCount;
 
   return (
     <>
       <Navigation />
       <div className="min-h-screen bg-background py-8 px-4 pt-24">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <Card className="border-gold/20">
             <CardHeader>
               <CardTitle className="text-3xl flex items-center gap-2">
                 <Mail className="w-8 h-8 text-gold" />
-                Send Bulk Email to Premium Subscribers
+                Send Bulk Email to Subscribers
               </CardTitle>
               <p className="text-muted-foreground mt-2">
-                Send announcements, updates, or important information to all premium members
+                Send announcements, updates, or important information to your subscribers
               </p>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Recipient Count */}
-              <div className="bg-gold/10 border border-gold/20 rounded-lg p-4">
-                <p className="text-sm font-semibold text-gold">
-                  📊 Total Recipients: {recipientCount} premium subscribers
-                </p>
+              {/* Recipient Filter & Count */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-gold/10 border border-gold/20 rounded-lg p-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Users className="w-5 h-5 text-gold" />
+                    <p className="font-semibold text-gold">Recipient Filter</p>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="include-non-premium"
+                      checked={includeNonPremium}
+                      onCheckedChange={(checked) => setIncludeNonPremium(checked as boolean)}
+                    />
+                    <label
+                      htmlFor="include-non-premium"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Include non-premium subscribers
+                    </label>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                  <p className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-2">
+                    📊 Recipient Statistics
+                  </p>
+                  <div className="space-y-1 text-sm">
+                    <p>✅ Premium: {premiumCount}</p>
+                    {includeNonPremium && <p>👥 Non-Premium: {nonPremiumCount}</p>}
+                    <p className="font-bold text-blue-700 dark:text-blue-300">
+                      🎯 Selected: {selectedCount} / {recipients.length}
+                    </p>
+                  </div>
+                </div>
               </div>
+
+              {/* Send Progress */}
+              {isSending && (
+                <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
+                    <p className="font-semibold text-blue-600 dark:text-blue-400">Sending in progress...</p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>✅ Sent: {sendProgress.sent}</span>
+                      <span>❌ Failed: {sendProgress.failed}</span>
+                      <span>📊 Total: {sendProgress.total}</span>
+                    </div>
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                      <div
+                        className="bg-blue-600 h-2 rounded-full transition-all"
+                        style={{
+                          width: `${((sendProgress.sent + sendProgress.failed) / sendProgress.total) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Status Messages */}
               {status.type && (
                 <div
                   className={`p-4 rounded-lg border flex items-start gap-3 ${
                     status.type === "success"
-                      ? "bg-green-50 border-green-200"
+                      ? "bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800"
                       : status.type === "error"
-                      ? "bg-red-50 border-red-200"
-                      : "bg-blue-50 border-blue-200"
+                      ? "bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800"
+                      : "bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800"
                   }`}
                 >
                   {status.type === "success" && (
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
                   )}
                   {status.type === "error" && (
-                    <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                   )}
                   {status.type === "info" && (
-                    <Loader2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5 animate-spin" />
+                    <Loader2 className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5 animate-spin" />
                   )}
                   <p
                     className={`text-sm ${
                       status.type === "success"
-                        ? "text-green-800"
+                        ? "text-green-800 dark:text-green-300"
                         : status.type === "error"
-                        ? "text-red-800"
-                        : "text-blue-800"
+                        ? "text-red-800 dark:text-red-300"
+                        : "text-blue-800 dark:text-blue-300"
                     }`}
                   >
                     {status.message}
                   </p>
+                </div>
+              )}
+
+              {/* Failed Emails - Resend Option */}
+              {failedEmails.length > 0 && !isSending && (
+                <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="font-semibold text-amber-700 dark:text-amber-400">
+                      ⚠️ Failed Emails ({failedEmails.length})
+                    </p>
+                    <Button
+                      onClick={() => handleSendBulkEmails(true)}
+                      variant="outline"
+                      size="sm"
+                      className="border-amber-500 text-amber-700 hover:bg-amber-100"
+                    >
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                      Resend Failed
+                    </Button>
+                  </div>
+                  <div className="max-h-32 overflow-y-auto text-sm space-y-1">
+                    {failedEmails.map((email) => (
+                      <p key={email} className="text-amber-700 dark:text-amber-300">
+                        • {email}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -345,6 +524,64 @@ export default function SendBulkEmail() {
                 </div>
               </div>
 
+              {/* Manual Recipient Selection */}
+              <div className="border border-border rounded-lg p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-semibold">Manual Recipient Selection</h3>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowManualSelect(!showManualSelect)}
+                  >
+                    {showManualSelect ? "Hide" : "Show"} Recipients
+                  </Button>
+                </div>
+
+                {showManualSelect && (
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => toggleAllRecipients(true)}
+                      >
+                        Select All
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => toggleAllRecipients(false)}
+                      >
+                        Deselect All
+                      </Button>
+                    </div>
+
+                    <div className="max-h-64 overflow-y-auto border border-border rounded p-3 space-y-2">
+                      {recipients.map((recipient) => (
+                        <div
+                          key={recipient.email}
+                          className="flex items-center space-x-3 p-2 hover:bg-muted/50 rounded"
+                        >
+                          <Checkbox
+                            checked={recipient.selected}
+                            onCheckedChange={() => toggleRecipient(recipient.email)}
+                          />
+                          <div className="flex-1">
+                            <p className="text-sm font-medium">{recipient.full_name}</p>
+                            <p className="text-xs text-muted-foreground">{recipient.email}</p>
+                          </div>
+                          {recipient.is_premium && (
+                            <span className="text-xs bg-gold/20 text-gold px-2 py-1 rounded">
+                              Premium
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Preview Section */}
               <div className="border border-border rounded-lg p-4 bg-muted/30">
                 <h3 className="font-semibold mb-2">Email Preview:</h3>
@@ -361,33 +598,52 @@ export default function SendBulkEmail() {
                 </div>
               </div>
 
-              {/* Send Button */}
-              <div className="flex gap-4">
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Button
-                  onClick={handleSendEmails}
+                  onClick={handleSendTestEmail}
                   disabled={isSending || !subject || !message}
+                  variant="outline"
+                  className="flex-1 border-blue-500 text-blue-600 hover:bg-blue-50"
+                  size="lg"
+                >
+                  {isSending ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5 mr-2" />
+                      Send Test Email to Me
+                    </>
+                  )}
+                </Button>
+
+                <Button
+                  onClick={() => handleSendBulkEmails(false)}
+                  disabled={isSending || !subject || !message || selectedCount === 0}
                   className="flex-1 bg-gold hover:bg-gold/90 text-black font-semibold"
                   size="lg"
                 >
                   {isSending ? (
                     <>
                       <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                      Sending Emails...
+                      Sending...
                     </>
                   ) : (
                     <>
                       <Mail className="w-5 h-5 mr-2" />
-                      Send to All Premium Subscribers
+                      Send to {selectedCount} Recipients
                     </>
                   )}
                 </Button>
               </div>
 
               {/* Warning */}
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                <p className="text-sm text-amber-800">
-                  ⚠️ <strong>Important:</strong> This will send emails to ALL premium subscribers. 
-                  Please review your message carefully before sending.
+              <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+                <p className="text-sm text-amber-800 dark:text-amber-300">
+                  ⚠️ <strong>Important:</strong> Always send a test email to yourself first. Review carefully before sending to all subscribers.
                 </p>
               </div>
             </CardContent>
