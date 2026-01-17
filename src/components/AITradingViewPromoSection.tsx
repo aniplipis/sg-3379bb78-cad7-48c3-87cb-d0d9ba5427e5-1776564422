@@ -1,90 +1,101 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
-import Image from "next/image";
 
 export function AITradingViewPromoSection() {
   return (
-    <section className="py-16 px-4 bg-gradient-to-b from-background to-muted/20">
-      <div className="container max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <div className="inline-block px-6 py-2 bg-green-500/10 border border-green-500/20 rounded-full mb-4">
-            <span className="text-green-500 font-semibold text-sm uppercase tracking-wide">
-              🔥 Special Promotion
-            </span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            AI for TradingView Class
-          </h2>
-        </div>
-
-        <Card className="overflow-hidden border-2 border-green-500/20 hover:border-green-500/40 transition-all duration-300 hover:shadow-2xl hover:shadow-green-500/10">
+    <section className="py-16 px-4 bg-gradient-to-b from-background to-muted/30">
+      <div className="max-w-6xl mx-auto">
+        <Card className="border-2 border-gold/30 bg-gradient-to-br from-gold/5 via-background to-green-500/5 overflow-hidden shadow-2xl">
           <CardContent className="p-0">
-            <a
-              href="https://t.me/maxsaham"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block relative group"
-            >
-              <div className="relative overflow-hidden">
-                <Image
-                  src="/ai-tradingview-promo.png"
-                  alt="AI for TradingView Class Promotion"
-                  width={1200}
-                  height={630}
-                  className="w-full h-auto transition-transform duration-500 group-hover:scale-105"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                  <span className="font-semibold">Daftar Sekarang</span>
-                  <ExternalLink className="w-4 h-4" />
+            {/* Badge */}
+            <div className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 py-3 px-6 text-center">
+              <p className="text-white font-bold text-lg flex items-center justify-center gap-2">
+                🔥🌴 SPECIAL PROMOTION
+              </p>
+            </div>
+
+            {/* Main Content */}
+            <div className="p-8 md:p-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 bg-gradient-to-r from-gold via-yellow-400 to-gold bg-clip-text text-transparent">
+                Kelas Rancangan Khas Futures (Online)
+              </h2>
+
+              {/* Promotional Poster */}
+              <a
+                href="https://t.me/maxsaham"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block mb-8 group"
+              >
+                <div className="relative overflow-hidden rounded-xl border-4 border-gold/40 shadow-2xl transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-gold/30 group-hover:border-gold/60">
+                  <img
+                    src="/futures-class-promo-2026.png"
+                    alt="Kelas Rancangan Khas Futures Online Promotion"
+                    className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
+                  />
+                  
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8">
+                    <div className="bg-gold/90 text-black px-6 py-3 rounded-full font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <ExternalLink className="w-5 h-5" />
+                      Klik untuk Daftar di Telegram
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </a>
+              </a>
 
-            <div className="p-6 md:p-8 bg-gradient-to-b from-muted/50 to-background">
-              <div className="prose prose-invert max-w-none">
-                <p className="text-lg mb-4 leading-relaxed">
-                  🚀 Trader, stop buang masa trial & error buat indicator.
-                </p>
-                <p className="mb-4">
-                  Dalam kelas <strong>AI for TradingView</strong>, saya tunjuk cara sebenar guna AI untuk:
-                </p>
-                <ul className="space-y-2 mb-4">
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-500 mt-1">✅</span>
-                    <span>bina indicator</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-500 mt-1">✅</span>
-                    <span>setup alert real-time</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-500 mt-1">✅</span>
-                    <span>tukar idea → strategy</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-green-500 mt-1">✅</span>
-                    <span>test terus LIVE market (FCPO, CL, ZL)</span>
-                  </li>
-                </ul>
+              {/* Caption Content */}
+              <div className="bg-gradient-to-br from-muted/50 to-muted/30 rounded-xl p-6 md:p-8 border border-gold/20 space-y-4">
+                <div className="space-y-3 text-foreground/90">
+                  <p className="text-lg font-semibold text-gold">
+                    🔥🌴 KELAS RANCANGAN KHAS FUTURES (ONLINE)<br />
+                    PERTAMA 2026
+                  </p>
+                  
+                  <div className="space-y-2 text-base">
+                    <p>📅 <strong>19 – 23 Januari 2026</strong></p>
+                    <p>🕘 <strong>9.00 Malam – 11.00 Malam</strong></p>
+                    <p>📍 <strong>Online (Zoom) — Rakaman Disediakan</strong></p>
+                  </div>
 
-                <div className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-500/20 rounded-lg p-4 mb-4">
-                  <p className="text-green-400 font-semibold mb-2">🎁 PERCUMA untuk Max Clan Premium</p>
-                  <p className="text-blue-400 font-semibold mb-2">💰 Non-member: RM80 sahaja</p>
-                  <p className="text-yellow-400 font-semibold">👥 Terhad 50 orang</p>
+                  <div className="pt-4 space-y-2">
+                    <p className="text-base">
+                      🚀 <strong>Syllabus baharu, lebih MUDAH & PADU</strong><br />
+                      💸 "Rahsia Buat Duit di Pasaran Futures"<br />
+                      📈 Kaedah yang senang faham, berstruktur & sesuai untuk semua peringkat — dari beginner sampai trader yang nak kemaskan execution.
+                    </p>
+                  </div>
+
+                  <div className="pt-4">
+                    <p className="text-lg font-semibold text-green-400 mb-3">✨ Apa yang anda akan dapat:</p>
+                    <div className="space-y-2 pl-4">
+                      <p>✅ 3 sesi kelas intensif + rakaman penuh</p>
+                      <p>✅ Lepas daftar → terus dapat Indicator Max Saham + rakaman kelas (boleh mula belajar awal)</p>
+                      <p>✅ Akses Channel ALERT FCPO secara PERCUMA</p>
+                      <p>✅ Koleksi video training sebelum ini</p>
+                      <p>✅ Technical Library (Ebook premium TA & FA)</p>
+                      <p>✅ Support berterusan bersama komuniti MAX CLAN</p>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-gold/20 mt-4">
+                    <p className="text-base italic text-muted-foreground">
+                      🎯 Kelas ini fokus pada struktur pasaran, disiplin & execution —<br />
+                      bukan teka arah, bukan janji kosong.
+                    </p>
+                  </div>
                 </div>
 
-                <div className="text-center">
-                  <p className="mb-4 text-muted-foreground">👉 Daftar sekarang di:</p>
+                {/* CTA Button */}
+                <div className="pt-6 flex justify-center">
                   <a
                     href="https://t.me/maxsaham"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white font-bold rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-green-500/50 hover:scale-105"
+                    className="group inline-flex items-center gap-3 bg-gradient-to-r from-gold via-yellow-400 to-gold text-black font-bold text-lg px-8 py-4 rounded-full shadow-lg hover:shadow-2xl hover:shadow-gold/50 transition-all duration-300 hover:scale-105"
                   >
-                    <span>🌐 https://t.me/maxsaham</span>
-                    <ExternalLink className="w-5 h-5" />
+                    <span>👉 Daftar Sekarang di Telegram</span>
+                    <ExternalLink className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </a>
                 </div>
               </div>
