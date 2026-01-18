@@ -15,12 +15,14 @@ import {
   Award,
   Loader2,
   Check,
-  Mail
+  Mail,
+  Play
 } from "lucide-react";
 import Link from "next/link";
 import SEO from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 interface DashboardStats {
   totalVideos: number;
@@ -169,6 +171,103 @@ export default function MemberDashboard() {
               {isPremium ? "Premium Member" : "Free Member"} • Member since {stats?.memberSince || "..."}
             </p>
           </div>
+
+          {/* Featured Video - AI for TradingView */}
+          {isPremium && (
+            <Card className="mb-8 border-gold/20 bg-gradient-to-r from-gold/5 via-blue-500/5 to-purple-500/5 overflow-hidden">
+              <CardContent className="p-0">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                  {/* Video Thumbnail */}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="relative cursor-pointer group overflow-hidden">
+                        <img 
+                          src="/ai-tradingview-promo.png" 
+                          alt="AI for TradingView Live Class"
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                          <div className="w-20 h-20 bg-gold/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-2xl">
+                            <Play className="w-10 h-10 text-black ml-1" fill="currentColor" />
+                          </div>
+                        </div>
+                        <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold animate-pulse">
+                          🔴 LIVE CLASS
+                        </div>
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl w-full">
+                      <DialogHeader>
+                        <DialogTitle className="text-2xl font-bold">AI FOR TRADINGVIEW – LIVE CLASS</DialogTitle>
+                      </DialogHeader>
+                      <div className="relative w-full" style={{paddingBottom: "56.25%"}}>
+                        <iframe 
+                          src="https://player.vimeo.com/video/1155703245?badge=0&autopause=0&player_id=0&app_id=58479" 
+                          className="absolute top-0 left-0 w-full h-full"
+                          frameBorder="0" 
+                          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          title="AI FOR TRADINGVIEW – LIVE CLASS"
+                        />
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+
+                  {/* Video Info */}
+                  <div className="p-8 flex flex-col justify-center">
+                    <div className="inline-block mb-4">
+                      <span className="bg-gold/20 text-gold px-3 py-1 rounded-full text-sm font-semibold">
+                        🎯 FEATURED CLASS
+                      </span>
+                    </div>
+                    <h2 className="text-3xl font-bold mb-3">
+                      AI FOR TRADINGVIEW
+                    </h2>
+                    <p className="text-lg text-muted-foreground mb-4">
+                      Discover how to leverage AI tools to enhance your TradingView analysis and trading strategies
+                    </p>
+                    <ul className="space-y-2 mb-6">
+                      <li className="flex items-start gap-2">
+                        <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">AI-powered technical analysis techniques</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">Automated trading setup strategies</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="w-5 h-5 text-gold mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">Live demonstration and Q&A session</span>
+                      </li>
+                    </ul>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button className="bg-gold hover:bg-gold/90 text-black font-semibold w-full lg:w-auto">
+                          <Play className="w-4 h-4 mr-2" />
+                          Watch Now
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-4xl w-full">
+                        <DialogHeader>
+                          <DialogTitle className="text-2xl font-bold">AI FOR TRADINGVIEW – LIVE CLASS</DialogTitle>
+                        </DialogHeader>
+                        <div className="relative w-full" style={{paddingBottom: "56.25%"}}>
+                          <iframe 
+                            src="https://player.vimeo.com/video/1155703245?badge=0&autopause=0&player_id=0&app_id=58479" 
+                            className="absolute top-0 left-0 w-full h-full"
+                            frameBorder="0" 
+                            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            title="AI FOR TRADINGVIEW – LIVE CLASS"
+                          />
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Error Message */}
           {error && (
