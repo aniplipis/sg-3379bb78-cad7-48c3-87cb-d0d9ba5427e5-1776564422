@@ -70,6 +70,18 @@ export default function VideoLibrary() {
   ];
 
   const videos = [
+    // Featured Video - AI for TradingView
+    {
+      id: "ai-tradingview-featured",
+      title: "AI FOR TRADINGVIEW – LIVE CLASS",
+      category: "all",
+      subcategory: "Featured",
+      duration: "Video Length",
+      vimeoId: "1155703245",
+      thumbnail: "/ai-tradingview-promo.png",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1155703245?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="AI FOR TRADINGVIEW – LIVE CLASS"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Discover how to leverage AI tools to enhance your TradingView analysis and trading strategies"
+    },
     // Class Recordings - HYBRID SMC OCTOBER 2025 (NEWEST)
     {
       id: "hybrid-oct-1",
