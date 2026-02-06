@@ -56,7 +56,7 @@ export default function VideoLibrary() {
   ];
 
   const subfolders = [
-    { id: "HYBRID SMC JANUARY 2026", label: "HYBRID SMC JANUARY 2026", count: 3 },
+    { id: "HYBRID SMC JANUARY 2026", label: "HYBRID SMC JANUARY 2026", count: 2 },
     { id: "HYBRID SMC OCTOBER 2025", label: "HYBRID SMC OCTOBER 2025", count: 3 },
     { id: "CHATGPT", label: "CHATGPT", count: 1 },
     { id: "HYBRID SMC AUGUST 2025", label: "HYBRID SMC AUGUST 2025", count: 3 },
@@ -105,6 +105,17 @@ export default function VideoLibrary() {
       thumbnail: "https://vumbnail.com/1157467269.jpg",
       vimeoEmbed: `<div style="padding:75% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1157467269?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC 2026 PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Second session covering advanced Hybrid SMC 2026 concepts"
+    },
+    {
+      id: "hybrid-jan26-3",
+      title: "HYBRID SMC 2026 PART 3",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JANUARY 2026",
+      duration: "Video Length",
+      vimeoId: "1162132424",
+      thumbnail: "https://vumbnail.com/1162132424.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1162132424?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC 2026 PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Third session completing the Hybrid SMC 2026 methodology training"
     },
     // Class Recordings - HYBRID SMC OCTOBER 2025
     {
