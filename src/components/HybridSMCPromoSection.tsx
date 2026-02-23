@@ -7,7 +7,7 @@ import Link from "next/link";
 export function HybridSMCPromoSection() {
   return (
     <section className="py-12 md:py-20 bg-gradient-to-b from-background to-muted/30">
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent px-2">
@@ -21,7 +21,7 @@ export function HybridSMCPromoSection() {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 md:gap-12">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 max-w-7xl mx-auto">
           {/* Left: Poster */}
           <div className="relative group w-full">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/5 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
