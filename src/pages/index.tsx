@@ -15,6 +15,7 @@ import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { ContactSection } from "@/components/ContactSection";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { HybridSMCPromoSection } from "@/components/HybridSMCPromoSection";
 import SEO from "@/components/SEO";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -122,6 +123,7 @@ export default function Home() {
       )}
 
       <HeroSection onOpenAuthModal={() => setAuthModalOpen(true)} />
+      <HybridSMCPromoSection />
       <AboutSection />
       <TradingApproachSection />
       <ClassSection />
