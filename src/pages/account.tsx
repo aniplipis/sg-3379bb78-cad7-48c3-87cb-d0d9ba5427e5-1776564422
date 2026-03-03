@@ -19,7 +19,9 @@ import {
   AlertCircle,
   CheckCircle,
   Eye,
-  EyeOff
+  EyeOff,
+  Phone,
+  TrendingUp
 } from "lucide-react";
 
 export default function AccountPage() {
@@ -29,6 +31,8 @@ export default function AccountPage() {
   // Profile update states
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [tradingviewUsername, setTradingviewUsername] = useState("");
   const [updatingProfile, setUpdatingProfile] = useState(false);
   
   // Password update states
@@ -52,6 +56,8 @@ export default function AccountPage() {
     if (profile) {
       setFullName(profile.full_name || "");
       setEmail(profile.email || "");
+      setPhone(profile.phone || "");
+      setTradingviewUsername(profile.tradingview_username || "");
     }
   }, [profile]);
 
@@ -69,24 +75,14 @@ export default function AccountPage() {
         .from("profiles")
         .update({
           full_name: fullName.trim(),
-          email: email.trim(),
+          phone: phone.trim(),
+          tradingview_username: tradingviewUsername.trim(),
         })
         .eq("id", user.id);
 
       if (updateError) throw updateError;
 
-      // Update email in auth if changed
-      if (email !== user.email) {
-        const { error: emailError } = await supabase.auth.updateUser({
-          email: email.trim(),
-        });
-
-        if (emailError) throw emailError;
-        setSuccess("Profile updated! Check your new email for verification.");
-      } else {
-        setSuccess("Profile updated successfully!");
-      }
-
+      setSuccess("Profile updated successfully!");
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       console.error("Profile update error:", err);
@@ -311,13 +307,50 @@ export default function AccountPage() {
                           id="email"
                           type="email"
                           value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="pl-10"
+                          disabled
+                          className="pl-10 bg-slate-100 dark:bg-slate-800 cursor-not-allowed"
                           placeholder="Enter your email"
                         />
                       </div>
                       <p className="text-xs text-slate-500">
-                        Changing your email will require verification
+                        Email address cannot be changed. Contact support if you need to update it.
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="phone" className="text-sm font-medium">
+                        Phone Number
+                      </label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <Input
+                          id="phone"
+                          type="tel"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          className="pl-10"
+                          placeholder="Enter your phone number"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="tradingviewUsername" className="text-sm font-medium">
+                        TradingView Username
+                      </label>
+                      <div className="relative">
+                        <TrendingUp className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <Input
+                          id="tradingviewUsername"
+                          type="text"
+                          value={tradingviewUsername}
+                          onChange={(e) => setTradingviewUsername(e.target.value)}
+                          className="pl-10"
+                          placeholder="Enter your TradingView username"
+                        />
+                      </div>
+                      <p className="text-xs text-slate-500">
+                        Your TradingView username for accessing shared charts and indicators
                       </p>
                     </div>
 
