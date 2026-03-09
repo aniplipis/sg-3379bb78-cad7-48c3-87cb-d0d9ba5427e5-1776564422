@@ -43,8 +43,8 @@ export default function VideoLibrary() {
   const isPremium = profile?.is_premium || false;
 
   const categories = [
-    { id: "all", label: "All Videos", count: 95 },
-    { id: "class-recordings", label: "Class Recordings", count: 40, icon: Folder },
+    { id: "all", label: "All Videos", count: 96 },
+    { id: "class-recordings", label: "Class Recordings", count: 41, icon: Folder },
     { id: "wyckoff", label: "Wyckoff Lessons", count: 12 },
     { id: "smc", label: "Smart Money Concepts", count: 15 },
     { id: "fcpo", label: "FCPO Strategy", count: 10 },
@@ -56,7 +56,7 @@ export default function VideoLibrary() {
   ];
 
   const subfolders = [
-    { id: "HYBRID SMC JANUARY 2026", label: "HYBRID SMC JANUARY 2026", count: 2 },
+    { id: "HYBRID SMC JANUARY 2026", label: "HYBRID SMC JANUARY 2026", count: 3 },
     { id: "HYBRID SMC OCTOBER 2025", label: "HYBRID SMC OCTOBER 2025", count: 3 },
     { id: "CHATGPT", label: "CHATGPT", count: 1 },
     { id: "HYBRID SMC AUGUST 2025", label: "HYBRID SMC AUGUST 2025", count: 3 },
