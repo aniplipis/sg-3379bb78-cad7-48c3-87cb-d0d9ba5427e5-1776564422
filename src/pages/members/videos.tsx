@@ -43,8 +43,8 @@ export default function VideoLibrary() {
   const isPremium = profile?.is_premium || false;
 
   const categories = [
-    { id: "all", label: "All Videos", count: 96 },
-    { id: "class-recordings", label: "Class Recordings", count: 41, icon: Folder },
+    { id: "all", label: "All Videos", count: 97 },
+    { id: "class-recordings", label: "Class Recordings", count: 42, icon: Folder },
     { id: "wyckoff", label: "Wyckoff Lessons", count: 12 },
     { id: "smc", label: "Smart Money Concepts", count: 15 },
     { id: "fcpo", label: "FCPO Strategy", count: 10 },
@@ -56,6 +56,7 @@ export default function VideoLibrary() {
   ];
 
   const subfolders = [
+    { id: "PROJEK DUIT RAYA 2026", label: "PROJEK DUIT RAYA 2026", count: 2 },
     { id: "HYBRID SMC JANUARY 2026", label: "HYBRID SMC JANUARY 2026", count: 3 },
     { id: "HYBRID SMC OCTOBER 2025", label: "HYBRID SMC OCTOBER 2025", count: 3 },
     { id: "CHATGPT", label: "CHATGPT", count: 1 },
@@ -71,19 +72,30 @@ export default function VideoLibrary() {
   ];
 
   const videos = [
-    // Featured Video - AI for TradingView
+    // PROJEK DUIT RAYA 2026 Series (NEWEST - REPLACES FEATURED)
     {
-      id: "ai-tradingview-featured",
-      title: "AI FOR TRADINGVIEW – LIVE CLASS",
-      category: "all",
-      subcategory: "Featured",
+      id: "projek-duit-raya-1",
+      title: "PROJEK DUIT RAYA 2026 PART 1",
+      category: "class-recordings",
+      subcategory: "PROJEK DUIT RAYA 2026",
       duration: "Video Length",
-      vimeoId: "1155703245",
-      thumbnail: "/ai-tradingview-promo.png",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1155703245?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="AI FOR TRADINGVIEW – LIVE CLASS"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Discover how to leverage AI tools to enhance your TradingView analysis and trading strategies"
+      vimeoId: "1171831741",
+      thumbnail: "https://vumbnail.com/1171831741.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1171831741?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="PROJEK DUIT RAYA 2026 PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "First session of the Projek Duit Raya 2026 special series"
     },
-    // Class Recordings - HYBRID SMC JANUARY 2026 (NEWEST)
+    {
+      id: "projek-duit-raya-2",
+      title: "PROJEK DUIT RAYA 2026 PART 2",
+      category: "class-recordings",
+      subcategory: "PROJEK DUIT RAYA 2026",
+      duration: "Video Length",
+      vimeoId: "1171832268",
+      thumbnail: "https://vumbnail.com/1171832268.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1171832268?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="PROJEK DUIT RAYA 2026 PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Second session covering advanced concepts from Projek Duit Raya 2026"
+    },
+    // Class Recordings - HYBRID SMC JANUARY 2026
     {
       id: "hybrid-jan26-1",
       title: "HYBRID SMC 2026 PART 1",
@@ -321,7 +333,7 @@ export default function VideoLibrary() {
       vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425527?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 25_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 25/04/2025"
     },
-    // Class Recordings - HYBRID SMC JANUARY 2025 (OLDEST)
+    // Class Recordings - HYBRID SMC JANUARY 2025
     {
       id: "hybrid-jan-1",
       title: "FUNDAMENTALS OF HYBRID SMC (PART 1)",
