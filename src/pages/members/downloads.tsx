@@ -40,6 +40,7 @@ export default function Downloads() {
 
   // All 103 eBooks with Google Drive links
   const allEbooks = [
+    { id: 0, title: "HYBRID SMC v4 MAR26 Class Slides", category: ["Class Slides"], link: "https://drive.google.com/file/d/13ER99RSUAlNBCztIpqVyMWHV3UI4S-pQ/view?usp=drive_link" },
     { id: 1, title: "3 Simple Options Strategies - Andy Crowder", category: ["Options Trading"], link: "https://drive.google.com/file/d/13ER99RSUAlNBCztIpqVyMWHV3UI4S-pQ/view?usp=drive_link" },
     { id: 2, title: "7 Strategies for Wealth & Happiness - Jim E Rohn", category: ["Personal Finance", "Trading Mindset"], link: "https://drive.google.com/file/d/1rcNVTQnr6qQrmpHYb3RjcaftW_tYrkkZ/view?usp=drive_link" },
     { id: 3, title: "212°: The Complete Trader - God & Rohan Mehta", category: ["Trading Mindset", "Trading Psychology"], link: "https://drive.google.com/file/d/1NQQ80TeeCm_Dg56UMvdAbBMR8DwbBG17/view?usp=drive_link" },
