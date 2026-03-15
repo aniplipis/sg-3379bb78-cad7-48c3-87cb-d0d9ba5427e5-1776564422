@@ -56,7 +56,7 @@ export default function VideoLibrary() {
   ];
 
   const subfolders = [
-    { id: "PROJEK DUIT RAYA 2026", label: "PROJEK DUIT RAYA 2026", count: 2 },
+    { id: "PROJEK DUIT RAYA 2026", label: "PROJEK DUIT RAYA 2026", count: 4 },
     { id: "HYBRID SMC JANUARY 2026", label: "HYBRID SMC JANUARY 2026", count: 3 },
     { id: "HYBRID SMC OCTOBER 2025", label: "HYBRID SMC OCTOBER 2025", count: 3 },
     { id: "CHATGPT", label: "CHATGPT", count: 1 },
