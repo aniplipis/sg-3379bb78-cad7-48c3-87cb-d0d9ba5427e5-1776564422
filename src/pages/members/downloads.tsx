@@ -145,7 +145,7 @@ export default function Downloads() {
     { id: 103, title: "eBook #103", category: ["Advanced Concepts"], link: "https://drive.google.com/file/d/1UDFsr_sbYWQ-mXmmLNJLCdLkiExbaJRe/view?usp=drive_link" }
   ];
 
-  const categories = ["All", "Options Trading", "Personal Development", "Trading Psychology", "Trading Systems", "Futures Trading", "Swing Trading", "Trading Biography", "Portfolio Management", "Technical Analysis", "Trading Strategy", "Risk Management", "Order Flow", "FCPO & Commodities", "Psychology", "Advanced Concepts"];
+  const categories = ["All", "Class Slides", "Options Trading", "Personal Development", "Trading Psychology", "Trading Systems", "Futures Trading", "Swing Trading", "Trading Biography", "Portfolio Management", "Technical Analysis", "Trading Strategy", "Risk Management", "Order Flow", "FCPO & Commodities", "Psychology", "Advanced Concepts"];
 
   // Free eBooks IDs that are accessible to all users
   const freeEbookIds = [3, 5, 4];
