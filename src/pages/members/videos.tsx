@@ -43,8 +43,8 @@ export default function VideoLibrary() {
   const isPremium = profile?.is_premium || false;
 
   const categories = [
-    { id: "all", label: "All Videos", count: 97 },
-    { id: "class-recordings", label: "Class Recordings", count: 42, icon: Folder },
+    { id: "all", label: "All Videos", count: 99 },
+    { id: "class-recordings", label: "Class Recordings", count: 44, icon: Folder },
     { id: "wyckoff", label: "Wyckoff Lessons", count: 12 },
     { id: "smc", label: "Smart Money Concepts", count: 15 },
     { id: "fcpo", label: "FCPO Strategy", count: 10 },
@@ -94,6 +94,28 @@ export default function VideoLibrary() {
       thumbnail: "https://vumbnail.com/1171832268.jpg",
       vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1171832268?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="PROJEK DUIT RAYA 2026 PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Second session covering advanced concepts from Projek Duit Raya 2026"
+    },
+    {
+      id: "projek-duit-raya-3",
+      title: "PROJEK DUIT RAYA 2026 PART 3",
+      category: "class-recordings",
+      subcategory: "PROJEK DUIT RAYA 2026",
+      duration: "Video Length",
+      vimeoId: "1173774245",
+      thumbnail: "https://vumbnail.com/1173774245.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1173774245?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="PROJEK DUIT RAYA PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Third session of the Projek Duit Raya 2026 special series"
+    },
+    {
+      id: "projek-duit-raya-4",
+      title: "PROJEK DUIT RAYA 2026 PART 4",
+      category: "class-recordings",
+      subcategory: "PROJEK DUIT RAYA 2026",
+      duration: "Video Length",
+      vimeoId: "1173774455",
+      thumbnail: "https://vumbnail.com/1173774455.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1173774455?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="PROJEK DUIT RAYA PART 4"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Fourth and final session of the Projek Duit Raya 2026 special series"
     },
     // Class Recordings - HYBRID SMC JANUARY 2026
     {
@@ -252,7 +274,7 @@ export default function VideoLibrary() {
       duration: "Video Length",
       vimeoId: "1144426249",
       thumbnail: "https://vumbnail.com/1144426249.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426249?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 1) 16_06_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426249?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 1) KAEDAH HIGH WIN RATE UNTUK MARKET FCPO, ZL & CL"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Kelas Rancangan Khas Futures Trading - 16/06/2025"
     },
     {
