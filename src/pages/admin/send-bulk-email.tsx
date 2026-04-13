@@ -37,6 +37,8 @@ export default function SendBulkEmail() {
   const [sendProgress, setSendProgress] = useState({ sent: 0, failed: 0, total: 0 });
   const [failedEmails, setFailedEmails] = useState<string[]>([]);
   const [showManualSelect, setShowManualSelect] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [estimatedTime, setEstimatedTime] = useState("");
 
   // Handle authentication redirect
   useEffect(() => {
@@ -159,66 +161,127 @@ export default function SendBulkEmail() {
       return;
     }
 
+    // Calculate batches and estimated time
+    const BATCH_SIZE = 20;
+    const BATCH_DELAY_MS = 5 * 60 * 1000; // 5 minutes
+    const totalBatches = Math.ceil(selectedRecipients.length / BATCH_SIZE);
+    const estimatedMinutes = Math.ceil((totalBatches - 1) * 5);
+    
+    setEstimatedTime(
+      estimatedMinutes > 0
+        ? `Estimated time: ~${estimatedMinutes} minutes for ${totalBatches} batches`
+        : "Sending in one batch..."
+    );
+
     setIsSending(true);
+    setIsPaused(false);
     setSendProgress({ sent: 0, failed: 0, total: selectedRecipients.length });
     setFailedEmails([]);
     setStatus({
       type: "info",
-      message: `Sending emails to ${selectedRecipients.length} recipients...`,
+      message: `Starting batch send to ${selectedRecipients.length} recipients (${BATCH_SIZE} per batch, 5 min intervals)...`,
     });
 
     let successCount = 0;
     let errorCount = 0;
     const newFailedEmails: string[] = [];
 
-    for (const recipient of selectedRecipients) {
-      try {
-        const { error: emailError } = await supabase.functions.invoke(
-          "send-email",
-          {
-            body: {
-              to: recipient.email,
-              subject: subject,
-              html: generateEmailHTML(message, recipient.full_name),
-              type: "custom",
-              userName: recipient.full_name,
-            },
-          }
-        );
+    // Process in batches
+    for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
+      // Check if paused
+      if (isPaused) {
+        setStatus({
+          type: "info",
+          message: `Sending paused. Sent: ${successCount}, Failed: ${errorCount}`,
+        });
+        break;
+      }
 
-        if (emailError) {
-          console.error(`Failed to send to ${recipient.email}:`, emailError);
+      const start = batchIndex * BATCH_SIZE;
+      const end = Math.min(start + BATCH_SIZE, selectedRecipients.length);
+      const batch = selectedRecipients.slice(start, end);
+
+      setStatus({
+        type: "info",
+        message: `Processing batch ${batchIndex + 1}/${totalBatches} (${batch.length} emails)...`,
+      });
+
+      // Send emails in current batch
+      for (const recipient of batch) {
+        try {
+          const { error: emailError } = await supabase.functions.invoke(
+            "send-email",
+            {
+              body: {
+                to: recipient.email,
+                subject: subject,
+                html: generateEmailHTML(message, recipient.full_name),
+                type: "custom",
+                userName: recipient.full_name,
+              },
+            }
+          );
+
+          if (emailError) {
+            console.error(`Failed to send to ${recipient.email}:`, emailError);
+            errorCount++;
+            newFailedEmails.push(recipient.email);
+          } else {
+            successCount++;
+          }
+
+          // Update progress in real-time
+          setSendProgress({
+            sent: successCount,
+            failed: errorCount,
+            total: selectedRecipients.length,
+          });
+
+          // Small delay between individual emails (100ms)
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        } catch (error) {
+          console.error(`Error sending to ${recipient.email}:`, error);
           errorCount++;
           newFailedEmails.push(recipient.email);
-        } else {
-          successCount++;
+          setSendProgress({
+            sent: successCount,
+            failed: errorCount,
+            total: selectedRecipients.length,
+          });
         }
+      }
 
-        // Update progress in real-time
-        setSendProgress({
-          sent: successCount,
-          failed: errorCount,
-          total: selectedRecipients.length,
+      // Wait 5 minutes before next batch (except for last batch)
+      if (batchIndex < totalBatches - 1 && !isPaused) {
+        const remainingBatches = totalBatches - batchIndex - 1;
+        setStatus({
+          type: "info",
+          message: `Batch ${batchIndex + 1}/${totalBatches} complete. Waiting 5 minutes before next batch... (${remainingBatches} batches remaining)`,
         });
 
-        // Add small delay to avoid rate limiting
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      } catch (error) {
-        console.error(`Error sending to ${recipient.email}:`, error);
-        errorCount++;
-        newFailedEmails.push(recipient.email);
-        setSendProgress({
-          sent: successCount,
-          failed: errorCount,
-          total: selectedRecipients.length,
-        });
+        // Wait with countdown
+        for (let i = 0; i < 300; i++) {
+          if (isPaused) break;
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          
+          // Update countdown every 30 seconds
+          if (i % 30 === 0 && i > 0) {
+            const remainingSeconds = 300 - i;
+            const minutes = Math.floor(remainingSeconds / 60);
+            const seconds = remainingSeconds % 60;
+            setStatus({
+              type: "info",
+              message: `Waiting ${minutes}m ${seconds}s before next batch... (${successCount} sent, ${errorCount} failed so far)`,
+            });
+          }
+        }
       }
     }
 
     setFailedEmails(newFailedEmails);
     setStatus({
       type: successCount > 0 ? "success" : "error",
-      message: `✅ Successfully sent: ${successCount} | ❌ Failed: ${errorCount}`,
+      message: `✅ Successfully sent: ${successCount} | ❌ Failed: ${errorCount} | Total batches: ${totalBatches}`,
     });
 
     // Clear form on complete success
@@ -228,6 +291,15 @@ export default function SendBulkEmail() {
     }
 
     setIsSending(false);
+    setEstimatedTime("");
+  };
+
+  const handlePauseSending = () => {
+    setIsPaused(true);
+    setStatus({
+      type: "info",
+      message: "Pausing after current batch completes...",
+    });
   };
 
   const toggleRecipient = (email: string) => {
@@ -453,9 +525,20 @@ export default function SendBulkEmail() {
               {/* Send Progress */}
               {isSending && (
                 <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
-                    <p className="font-semibold text-blue-600 dark:text-blue-400">Sending in progress...</p>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
+                      <p className="font-semibold text-blue-600 dark:text-blue-400">Sending in progress...</p>
+                    </div>
+                    <Button
+                      onClick={handlePauseSending}
+                      variant="outline"
+                      size="sm"
+                      disabled={isPaused}
+                      className="border-red-500 text-red-600 hover:bg-red-50"
+                    >
+                      {isPaused ? "Pausing..." : "Pause Sending"}
+                    </Button>
                   </div>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
@@ -471,6 +554,11 @@ export default function SendBulkEmail() {
                         }}
                       />
                     </div>
+                    {estimatedTime && (
+                      <p className="text-xs text-blue-600 dark:text-blue-400 text-center">
+                        {estimatedTime}
+                      </p>
+                    )}
                   </div>
                 </div>
               )}
@@ -688,6 +776,9 @@ export default function SendBulkEmail() {
               <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
                 <p className="text-sm text-amber-800 dark:text-amber-300">
                   ⚠️ <strong>Important:</strong> Always send a test email to yourself first. Review carefully before sending to all subscribers.
+                </p>
+                <p className="text-xs text-amber-700 dark:text-amber-400 mt-2">
+                  📧 <strong>Rate Limiting:</strong> Emails are sent in batches of 20 every 5 minutes to ensure optimal deliverability and avoid spam filters.
                 </p>
               </div>
             </CardContent>

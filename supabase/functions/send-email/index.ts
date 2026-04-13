@@ -739,10 +739,15 @@ async function handler(req: Request): Promise<Response> {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'Abg Max - Team Max Saham <noreply@abgmax.maxsaham.com>',
+        from: 'Abg Max - Team Max Saham <admin@abgmax.maxsaham.com>',
         to: [to],
         subject: subject,
         html: emailContent,
+        headers: {
+          'X-Entity-Ref-ID': `maxsaham-${Date.now()}`,
+          'List-Unsubscribe': `<mailto:admin@abgmax.maxsaham.com?subject=unsubscribe>`,
+          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        },
       }),
     });
 
