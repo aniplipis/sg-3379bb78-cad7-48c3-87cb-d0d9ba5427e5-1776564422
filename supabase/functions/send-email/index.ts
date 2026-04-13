@@ -1,64 +1,71 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
 interface EmailRequest {
   to: string;
   subject: string;
   html: string;
-  type?: 'registration' | 'payment' | 'password-reset' | 'custom';
+  type?: "welcome" | "payment" | "password-reset" | "custom";
   userName?: string;
   membershipType?: string;
+  amount?: string;
+  transactionId?: string;
+  resetLink?: string;
 }
 
-async function handler(req: Request): Promise<Response> {
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+serve(async (req) => {
+  // Handle CORS preflight requests
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
   }
 
   try {
-    const { to, subject, html, type, userName, membershipType } = await req.json() as EmailRequest;
-    
-    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
-    
-    if (!RESEND_API_KEY) {
-      throw new Error('RESEND_API_KEY not configured');
+    const { to, subject, html, type, userName, membershipType, amount, transactionId, resetLink } = await req.json() as EmailRequest;
+
+    if (!to || !subject) {
+      throw new Error("Missing required fields: to, subject");
     }
 
-    let emailContent = html;
-    
-    // Generate email templates based on type
-    if (type === 'registration') {
-      emailContent = `
+    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+    if (!RESEND_API_KEY) {
+      throw new Error("RESEND_API_KEY is not set");
+    }
+
+    let emailHtml = html;
+
+    // Generate email template based on type
+    if (type === "welcome") {
+      emailHtml = `
         <!DOCTYPE html>
         <html>
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
-            body { 
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-              line-height: 1.8; 
-              color: #333; 
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              line-height: 1.6;
+              color: #333;
               background-color: #f5f5f5;
               margin: 0;
               padding: 0;
             }
-            .container { 
-              max-width: 600px; 
-              margin: 20px auto; 
+            .container {
+              max-width: 600px;
+              margin: 20px auto;
               background: white;
               border-radius: 12px;
               overflow: hidden;
               box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             }
-            .header { 
-              background: linear-gradient(135deg, #D4AF37 0%, #1E90FF 100%); 
-              color: white; 
-              padding: 40px 30px; 
+            .header {
+              background: linear-gradient(135deg, #D4AF37 0%, #1E90FF 100%);
+              color: white;
+              padding: 40px 30px;
               text-align: center;
             }
             .logo {
@@ -72,107 +79,84 @@ async function handler(req: Request): Promise<Response> {
               font-size: 28px;
               font-weight: bold;
             }
-            .content { 
+            .content {
               padding: 40px 30px;
               background: white;
             }
             .greeting {
-              font-size: 20px;
-              font-weight: bold;
-              color: #333;
-              margin-bottom: 20px;
-            }
-            .intro {
-              font-size: 16px;
-              color: #555;
-              margin-bottom: 30px;
-              line-height: 1.8;
-            }
-            .section-title {
-              font-size: 18px;
+              font-size: 24px;
               font-weight: bold;
               color: #D4AF37;
+              margin-bottom: 20px;
+            }
+            .welcome-message {
+              font-size: 18px;
+              color: #333;
+              line-height: 1.8;
+              margin-bottom: 30px;
+            }
+            .section-title {
+              font-size: 20px;
+              font-weight: bold;
+              color: #1E90FF;
               margin: 30px 0 15px 0;
               display: flex;
               align-items: center;
-              gap: 8px;
+              gap: 10px;
             }
-            .steps {
-              background: #f9f9f9;
-              padding: 20px;
-              border-radius: 8px;
+            .emoji {
+              font-size: 24px;
+            }
+            .benefits-list {
+              background: #f8f9fa;
               border-left: 4px solid #D4AF37;
-              margin: 20px 0;
-            }
-            .step {
-              margin: 12px 0;
-              padding-left: 10px;
-              font-size: 15px;
-              color: #444;
-            }
-            .benefits {
-              background: #f0f9ff;
               padding: 20px;
-              border-radius: 8px;
-              border-left: 4px solid #1E90FF;
               margin: 20px 0;
             }
             .benefit-item {
-              margin: 10px 0;
-              padding-left: 10px;
-              font-size: 15px;
-              color: #444;
-            }
-            .button { 
-              display: inline-block; 
-              background: #D4AF37; 
-              color: white !important; 
-              padding: 16px 40px; 
-              text-decoration: none; 
-              border-radius: 8px; 
-              margin: 25px 0;
-              font-weight: bold;
-              font-size: 16px;
-              text-align: center;
-              box-shadow: 0 4px 6px rgba(212, 175, 55, 0.3);
-            }
-            .button:hover {
-              background: #c49b2e;
-            }
-            .disclaimer {
-              background: #fff9e6;
-              border: 2px solid #ffd700;
-              border-radius: 8px;
-              padding: 25px;
-              margin: 30px 0;
-              font-size: 13px;
-              color: #666;
-              line-height: 1.8;
-            }
-            .disclaimer-title {
-              font-size: 16px;
-              font-weight: bold;
-              color: #d97706;
-              margin-bottom: 15px;
               display: flex;
-              align-items: center;
-              gap: 8px;
+              align-items: start;
+              margin-bottom: 15px;
+              gap: 10px;
             }
-            .disclaimer p {
-              margin: 10px 0;
+            .benefit-item:last-child {
+              margin-bottom: 0;
             }
-            .disclaimer ul {
-              margin: 15px 0;
-              padding-left: 20px;
+            .checkmark {
+              color: #28a745;
+              font-size: 20px;
+              flex-shrink: 0;
             }
-            .disclaimer li {
-              margin: 8px 0;
+            .cta-button {
+              display: inline-block;
+              background: linear-gradient(135deg, #D4AF37 0%, #1E90FF 100%);
+              color: white;
+              padding: 15px 40px;
+              text-decoration: none;
+              border-radius: 8px;
+              font-weight: bold;
+              font-size: 16px;
+              margin: 20px 0;
+              text-align: center;
             }
-            .footer { 
-              text-align: center; 
-              padding: 30px 20px; 
+            .cta-button:hover {
+              opacity: 0.9;
+            }
+            .important-note {
+              background: #fff3cd;
+              border: 2px solid #ffc107;
+              border-radius: 8px;
+              padding: 20px;
+              margin: 20px 0;
+            }
+            .important-note strong {
+              color: #856404;
+            }
+            .footer {
+              text-align: center;
+              padding: 30px 20px;
               background: #f9f9f9;
-              color: #666; 
+              color: #666;
               font-size: 14px;
               border-top: 1px solid #eee;
             }
@@ -182,106 +166,123 @@ async function handler(req: Request): Promise<Response> {
               font-weight: bold;
               margin: 15px 0;
             }
-            .emoji {
-              font-size: 20px;
+            .contact-info {
+              margin: 15px 0;
+              padding: 15px;
+              background: #f8f9fa;
+              border-radius: 8px;
             }
           </style>
         </head>
         <body>
           <div class="container">
-            <!-- Header with Logo -->
+            <!-- Header -->
             <div class="header">
               <img src="https://maxsaham.com/LOGO-square-for-rounded-crop.jpg" alt="Max Saham Logo" class="logo">
-              <h1><span class="emoji">🎉</span> Welcome to Team Max Saham!</h1>
+              <h1>Selamat Datang ke Team Max Saham!</h1>
             </div>
-            
-            <!-- Main Content -->
+
+            <!-- Content -->
             <div class="content">
-              <!-- Greeting -->
-              <div class="greeting">
-                Hi ${userName || 'Trader'}, <span class="emoji">🚀</span>
-              </div>
+              <div class="greeting">Halo ${userName || "Trader"}! 👋</div>
               
-              <!-- Introduction -->
-              <div class="intro">
-                Terima kasih kerana mendaftar dengan <strong>Team Max Saham</strong>! Kami amat berbesar hati untuk bantu anda dalam perjalanan belajar FCPO trading dengan lebih jelas, tersusun, serta berfokus kepada pengurusan risiko.
-              </div>
-              
-              <!-- What You Can Do Now -->
+              <p class="welcome-message">
+                Terima kasih kerana mendaftar dengan <strong>Team Max Saham</strong> — platform pendidikan trading FCPO terkemuka di Malaysia! 🚀
+              </p>
+
+              <p>
+                Kami sangat gembira menyambut anda ke dalam komuniti trader profesional kami. Anda kini telah mengambil langkah pertama untuk menguasai dunia <strong>Futures Trading</strong> dengan bimbingan pakar.
+              </p>
+
+              <!-- What's Next Section -->
               <div class="section-title">
-                <span class="emoji">✔</span> Apa yang anda boleh lakukan sekarang
+                <span class="emoji">📋</span> Apa yang perlu anda lakukan sekarang?
               </div>
-              <div class="steps">
-                <div class="step">1️⃣ Log masuk ke akaun anda</div>
-                <div class="step">2️⃣ Lengkapkan profil</div>
-                <div class="step">3️⃣ Pilih plan / membership yang sesuai</div>
-                <div class="step">4️⃣ Akses video, notes & resources</div>
-                <div class="step">5️⃣ Join Telegram Support Group (jika berkenaan)</div>
+
+              <div class="benefits-list">
+                <div class="benefit-item">
+                  <span class="checkmark">✅</span>
+                  <div>
+                    <strong>Login ke Dashboard Anda:</strong><br>
+                    Akses dashboard ahli anda di <a href="https://maxsaham.com" style="color: #1E90FF; text-decoration: none;">maxsaham.com</a>
+                  </div>
+                </div>
+                <div class="benefit-item">
+                  <span class="checkmark">✅</span>
+                  <div>
+                    <strong>Terokai Kandungan Percuma:</strong><br>
+                    Lihat video, nota, dan sumber percuma yang tersedia untuk anda
+                  </div>
+                </div>
+                <div class="benefit-item">
+                  <span class="checkmark">✅</span>
+                  <div>
+                    <strong>Upgrade ke Premium:</strong><br>
+                    Dapatkan akses penuh ke semua kelas, strategi, dan bimbingan 1-on-1
+                  </div>
+                </div>
               </div>
-              
-              <!-- Dashboard Button -->
-              <div style="text-align: center;">
-                <a href="${Deno.env.get('NEXT_PUBLIC_APP_URL') || 'https://maxsaham.com'}/members" class="button">
-                  👉 Access Dashboard
+
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="https://maxsaham.com/members" class="cta-button">
+                  🚀 Pergi ke Dashboard Saya
                 </a>
               </div>
-              
-              <!-- What You Will Get -->
+
+              <!-- Premium Benefits Section -->
               <div class="section-title">
-                <span class="emoji">🧑‍💻</span> Apa yang anda akan dapat
+                <span class="emoji">⭐</span> Kenapa Upgrade ke Premium?
               </div>
-              <div class="benefits">
-                <div class="benefit-item">📚 Basic learning material</div>
-                <div class="benefit-item">🎥 Video tutorial peringkat asas</div>
-                <div class="benefit-item">📖 Akses ke eBook</div>
-                <div class="benefit-item">📊 Akses ke indicator terpilih</div>
+
+              <div class="benefits-list">
+                <div class="benefit-item">
+                  <span class="checkmark">💎</span>
+                  <div><strong>Akses 24/7</strong> ke semua kelas video dan nota strategi</div>
+                </div>
+                <div class="benefit-item">
+                  <span class="checkmark">📊</span>
+                  <div><strong>Strategi Hybrid SMC</strong> — gabungan Smart Money Concept & Technical Analysis</div>
+                </div>
+                <div class="benefit-item">
+                  <span class="checkmark">🎯</span>
+                  <div><strong>Live Trading Sessions</strong> setiap minggu dengan Abg Max</div>
+                </div>
+                <div class="benefit-item">
+                  <span class="checkmark">👥</span>
+                  <div><strong>Komuniti Premium</strong> — diskusi dengan trader berpengalaman</div>
+                </div>
+                <div class="benefit-item">
+                  <span class="checkmark">📈</span>
+                  <div><strong>Support 1-on-1</strong> untuk tanya soalan dan dapatkan bimbingan</div>
+                </div>
               </div>
-              
+
+              <!-- Important Note -->
+              <div class="important-note">
+                <p style="margin: 0 0 10px 0;">
+                  <strong>📌 Penting:</strong>
+                </p>
+                <p style="margin: 0;">
+                  Akaun percuma anda memberi akses kepada sebahagian kecil kandungan sahaja. Untuk mendapat manfaat penuh, upgrade ke <strong>Ahli Premium</strong> dan mulakan perjalanan trading anda dengan betul!
+                </p>
+              </div>
+
               <!-- Need Help -->
               <div class="section-title">
                 <span class="emoji">💬</span> Perlu bantuan?
               </div>
               <p style="margin-bottom: 10px; color: #555;">Hubungi kami melalui email di <a href="mailto:admin@abgmax.maxsaham.com" style="color: #D4AF37; text-decoration: none;">admin@abgmax.maxsaham.com</a></p>
-              
-              <!-- Disclaimer -->
-              <div class="disclaimer">
-                <div class="disclaimer-title">
-                  ⚠️ Penting – Disclaimer
-                </div>
-                
-                <p><strong>Max Saham bukan penasihat pelaburan atau broker berdaftar.</strong></p>
-                
-                <p>Semua kandungan adalah untuk <strong>tujuan pendidikan sahaja</strong> dan bukan saranan untuk membeli atau menjual sebarang sekuriti atau derivatif.</p>
-                
-                <p><strong>Trading futures melibatkan risiko kerugian modal.</strong> Prestasi lalu tidak menjamin keputusan pada masa hadapan. Sila rujuk licensed Financial Planner / Advisor sekiranya memerlukan nasihat profesional.</p>
-                
-                <p style="margin-top: 15px;"><strong>Dengan meneruskan pendaftaran & penggunaan platform, anda bersetuju bahawa:</strong></p>
-                
-                <ul>
-                  <li>anda memahami risiko FCPO,</li>
-                  <li>anda bertanggungjawab ke atas keputusan trading anda,</li>
-                  <li>dan Team Max Saham tidak bertanggungjawab terhadap sebarang kerugian kewangan.</li>
-                </ul>
-              </div>
-              
-              <!-- Closing -->
-              <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #f0f0f0;">
-                <h3 style="color: #D4AF37; font-size: 20px; margin-bottom: 15px;">
-                  <span class="emoji">🚀</span> Selamat datang ke komuniti Max Saham!
-                </h3>
-                <p style="font-size: 16px; color: #555; line-height: 1.8;">
-                  Kami percaya bahawa <strong>pendidikan + disiplin = longevity</strong> dalam futures market.<br>
-                  Let's grow together!
-                </p>
-                <p style="font-size: 16px; color: #555; margin-top: 20px;">
-                  Jumpa anda dalam dashboard! <span class="emoji">💛</span>
-                </p>
-                <p style="font-size: 15px; color: #888; margin-top: 25px; font-style: italic;">
-                  — Team Max Saham
-                </p>
-              </div>
+
+              <p style="margin-top: 40px; color: #666; font-style: italic;">
+                Terima kasih sekali lagi kerana menyertai kami. Kami tidak sabar untuk melihat kejayaan anda dalam trading!
+              </p>
+
+              <p style="margin-top: 20px; font-weight: bold; color: #D4AF37;">
+                See you in the charts! 📈<br>
+                — Team Max Saham
+              </p>
             </div>
-            
+
             <!-- Footer -->
             <div class="footer">
               <div class="footer-tagline">Professional FCPO Trading Education</div>
@@ -294,122 +295,115 @@ async function handler(req: Request): Promise<Response> {
         </body>
         </html>
       `;
-    } else if (type === 'payment') {
-      emailContent = `
+    } else if (type === "payment") {
+      emailHtml = `
         <!DOCTYPE html>
         <html>
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
-            body { 
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-              line-height: 1.6; 
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              line-height: 1.6;
               color: #333;
               background-color: #f5f5f5;
               margin: 0;
               padding: 0;
             }
-            .container { 
-              max-width: 600px; 
-              margin: 20px auto; 
+            .container {
+              max-width: 600px;
+              margin: 20px auto;
               background: white;
               border-radius: 12px;
               overflow: hidden;
               box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             }
-            .header { 
-              background: linear-gradient(135deg, #10B981 0%, #059669 100%); 
-              color: white; 
-              padding: 40px 30px; 
+            .header {
+              background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+              color: white;
+              padding: 40px 30px;
               text-align: center;
             }
-            .logo {
-              max-width: 150px;
-              height: auto;
+            .success-icon {
+              font-size: 64px;
               margin-bottom: 20px;
-              border-radius: 8px;
             }
             .header h1 {
               margin: 0;
-              font-size: 28px;
+              font-size: 32px;
               font-weight: bold;
             }
-            .content { 
+            .content {
               padding: 40px 30px;
               background: white;
             }
-            .success-badge { 
-              background: #10B981; 
-              color: white; 
-              padding: 12px 24px; 
-              border-radius: 25px; 
-              display: inline-block; 
-              margin: 20px 0;
+            .greeting {
+              font-size: 24px;
               font-weight: bold;
-              font-size: 18px;
+              color: #28a745;
+              margin-bottom: 20px;
             }
-            .button { 
-              display: inline-block; 
-              background: #D4AF37; 
-              color: white !important; 
-              padding: 16px 40px; 
-              text-decoration: none; 
-              border-radius: 8px; 
-              margin: 25px 0;
+            .payment-details {
+              background: #f8f9fa;
+              border: 2px solid #28a745;
+              border-radius: 12px;
+              padding: 25px;
+              margin: 30px 0;
+            }
+            .detail-row {
+              display: flex;
+              justify-content: space-between;
+              padding: 12px 0;
+              border-bottom: 1px solid #dee2e6;
+            }
+            .detail-row:last-child {
+              border-bottom: none;
+            }
+            .detail-label {
+              font-weight: bold;
+              color: #666;
+            }
+            .detail-value {
+              color: #333;
+              font-weight: 600;
+            }
+            .cta-button {
+              display: inline-block;
+              background: linear-gradient(135deg, #D4AF37 0%, #1E90FF 100%);
+              color: white;
+              padding: 15px 40px;
+              text-decoration: none;
+              border-radius: 8px;
               font-weight: bold;
               font-size: 16px;
+              margin: 20px 0;
               text-align: center;
-              box-shadow: 0 4px 6px rgba(212, 175, 55, 0.3);
             }
-            .button:hover {
-              background: #c49b2e;
+            .benefits-section {
+              background: #fff8e1;
+              border-left: 4px solid #D4AF37;
+              padding: 20px;
+              margin: 30px 0;
             }
-            .details { 
-              background: #f0f9ff; 
-              padding: 25px; 
-              border-radius: 8px; 
-              margin: 25px 0;
-              border-left: 4px solid #1E90FF;
-            }
-            .details h3 {
-              margin-top: 0;
-              color: #1E90FF;
-              font-size: 18px;
-            }
-            .details p {
-              margin: 10px 0;
-              font-size: 15px;
-            }
-            .benefits {
-              margin: 25px 0;
-            }
-            .benefits h3 {
-              color: #D4AF37;
-              font-size: 18px;
-              margin-bottom: 15px;
-            }
-            .benefits ul {
-              list-style: none;
-              padding: 0;
-            }
-            .benefits li {
-              padding: 8px 0;
-              font-size: 15px;
-              color: #444;
+            .benefit-item {
+              display: flex;
+              align-items: start;
+              margin-bottom: 12px;
+              gap: 10px;
             }
             .contact-section {
-              background: #f9f9f9;
+              margin-top: 30px;
               padding: 20px;
+              background: #f8f9fa;
               border-radius: 8px;
-              margin: 25px 0;
               text-align: center;
             }
-            .footer { 
-              text-align: center; 
-              padding: 30px 20px; 
+            .footer {
+              text-align: center;
+              padding: 30px 20px;
               background: #f9f9f9;
-              color: #666; 
+              color: #666;
               font-size: 14px;
               border-top: 1px solid #eee;
             }
@@ -423,49 +417,97 @@ async function handler(req: Request): Promise<Response> {
         </head>
         <body>
           <div class="container">
+            <!-- Header -->
             <div class="header">
-              <img src="https://maxsaham.com/LOGO-square-for-rounded-crop.jpg" alt="Max Saham Logo" class="logo">
-              <h1>✅ Payment Successful!</h1>
+              <div class="success-icon">✅</div>
+              <h1>Payment Confirmed!</h1>
+              <p style="margin: 10px 0 0 0; font-size: 18px;">Welcome to Premium Membership</p>
             </div>
+
+            <!-- Content -->
             <div class="content">
-              <div style="text-align: center;">
-                <div class="success-badge">🎉 Pembayaran Berjaya!</div>
-              </div>
+              <div class="greeting">Hi ${userName || "Trader"}! 🎉</div>
               
-              <h2 style="color: #333; font-size: 22px; margin: 30px 0 20px 0;">Terima Kasih, ${userName || 'Trader'}!</h2>
-              <p style="font-size: 16px; color: #555; line-height: 1.8;">
-                Pembayaran anda telah berjaya diproses. Sekarang anda boleh akses semua content premium kami!
+              <p style="font-size: 18px; line-height: 1.8;">
+                <strong>Congratulations!</strong> Your payment has been successfully processed, and your <strong>${membershipType || "Premium"} Membership</strong> is now active! 🚀
               </p>
-              
-              <div class="details">
-                <h3>Membership Details:</h3>
-                <p><strong>Package:</strong> ${membershipType || 'Premium Membership'}</p>
-                <p><strong>Status:</strong> Active ✓</p>
-                <p><strong>Access:</strong> Full Access to All Resources</p>
+
+              <!-- Payment Details -->
+              <div class="payment-details">
+                <h3 style="margin-top: 0; color: #28a745;">📋 Payment Details</h3>
+                <div class="detail-row">
+                  <span class="detail-label">Membership Type:</span>
+                  <span class="detail-value">${membershipType || "Premium Membership"}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Amount Paid:</span>
+                  <span class="detail-value">RM ${amount || "0.00"}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Transaction ID:</span>
+                  <span class="detail-value">${transactionId || "N/A"}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Status:</span>
+                  <span class="detail-value" style="color: #28a745;">✅ Confirmed</span>
+                </div>
               </div>
-              
-              <div class="benefits">
-                <h3>Apa Yang Anda Dapat:</h3>
-                <ul>
-                  <li>✅ Access to all premium video tutorials</li>
-                  <li>✅ Downloadable trading notes and guides</li>
-                  <li>✅ Live class recordings</li>
-                  <li>✅ Private Telegram group access</li>
-                  <li>✅ Weekly market analysis</li>
-                </ul>
+
+              <p style="font-size: 16px; color: #555;">
+                You now have <strong>full access</strong> to all premium content, including:
+              </p>
+
+              <!-- Benefits -->
+              <div class="benefits-section">
+                <div class="benefit-item">
+                  <span style="color: #D4AF37; font-size: 20px;">🎓</span>
+                  <div><strong>All Premium Classes & Video Tutorials</strong></div>
+                </div>
+                <div class="benefit-item">
+                  <span style="color: #D4AF37; font-size: 20px;">📊</span>
+                  <div><strong>Advanced Trading Strategies (Hybrid SMC)</strong></div>
+                </div>
+                <div class="benefit-item">
+                  <span style="color: #D4AF37; font-size: 20px;">📈</span>
+                  <div><strong>Live Trading Sessions with Abg Max</strong></div>
+                </div>
+                <div class="benefit-item">
+                  <span style="color: #D4AF37; font-size: 20px;">💬</span>
+                  <div><strong>Exclusive Community & 1-on-1 Support</strong></div>
+                </div>
+                <div class="benefit-item">
+                  <span style="color: #D4AF37; font-size: 20px;">📥</span>
+                  <div><strong>Downloadable Resources & Trading Tools</strong></div>
+                </div>
               </div>
-              
-              <div style="text-align: center;">
-                <a href="${Deno.env.get('NEXT_PUBLIC_APP_URL') || 'https://maxsaham.com'}/members" class="button">
-                  Start Learning Now 🚀
+
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="https://maxsaham.com/members" class="cta-button">
+                  🚀 Access Your Premium Dashboard
                 </a>
               </div>
-              
+
+              <p style="background: #e7f3ff; border-left: 4px solid #1E90FF; padding: 15px; margin: 20px 0;">
+                <strong>💡 Pro Tip:</strong> Start with the "Fundamentals" section if you're new, or jump straight into "Advanced Strategies" if you already have trading experience.
+              </p>
+
+              <!-- Contact Section -->
               <div class="contact-section">
                 <p style="margin-bottom: 10px;"><strong>Questions?</strong> Reach out anytime:</p>
                 <p>Email: <a href="mailto:admin@abgmax.maxsaham.com" style="color: #D4AF37; text-decoration: none; font-weight: bold;">admin@abgmax.maxsaham.com</a></p>
               </div>
+
+              <p style="margin-top: 40px; color: #666; font-style: italic;">
+                Thank you for trusting Team Max Saham with your trading education. We're here to support you every step of the way!
+              </p>
+
+              <p style="margin-top: 20px; font-weight: bold; color: #28a745;">
+                Welcome to the family! 🎊<br>
+                — Team Max Saham
+              </p>
             </div>
+
+            <!-- Footer -->
             <div class="footer">
               <div class="footer-tagline">Professional FCPO Trading Education</div>
               <p style="margin: 10px 0;">© 2025 Team Max Saham. All rights reserved.</p>
@@ -477,119 +519,97 @@ async function handler(req: Request): Promise<Response> {
         </body>
         </html>
       `;
-    } else if (type === 'password-reset') {
-      emailContent = `
+    } else if (type === "password-reset") {
+      emailHtml = `
         <!DOCTYPE html>
         <html>
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
-            body { 
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-              line-height: 1.8; 
-              color: #333; 
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              line-height: 1.6;
+              color: #333;
               background-color: #f5f5f5;
               margin: 0;
               padding: 0;
             }
-            .container { 
-              max-width: 600px; 
-              margin: 20px auto; 
+            .container {
+              max-width: 600px;
+              margin: 20px auto;
               background: white;
               border-radius: 12px;
               overflow: hidden;
               box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             }
-            .header { 
-              background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%); 
-              color: white; 
-              padding: 40px 30px; 
+            .header {
+              background: linear-gradient(135deg, #1E90FF 0%, #D4AF37 100%);
+              color: white;
+              padding: 40px 30px;
               text-align: center;
             }
-            .logo {
-              max-width: 150px;
-              height: auto;
+            .icon {
+              font-size: 64px;
               margin-bottom: 20px;
-              border-radius: 8px;
             }
             .header h1 {
               margin: 0;
               font-size: 28px;
               font-weight: bold;
             }
-            .content { 
+            .content {
               padding: 40px 30px;
               background: white;
             }
             .greeting {
-              font-size: 20px;
+              font-size: 22px;
               font-weight: bold;
-              color: #333;
+              color: #1E90FF;
               margin-bottom: 20px;
             }
-            .intro {
-              font-size: 16px;
-              color: #555;
-              margin-bottom: 30px;
-              line-height: 1.8;
+            .reset-button {
+              display: inline-block;
+              background: linear-gradient(135deg, #1E90FF 0%, #D4AF37 100%);
+              color: white;
+              padding: 16px 50px;
+              text-decoration: none;
+              border-radius: 8px;
+              font-weight: bold;
+              font-size: 18px;
+              margin: 30px 0;
+              text-align: center;
             }
-            .security-notice {
-              background: #fef3c7;
-              border: 2px solid #fbbf24;
+            .important-box {
+              background: #fff3cd;
+              border: 2px solid #ffc107;
               border-radius: 8px;
               padding: 20px;
               margin: 25px 0;
-              font-size: 14px;
-              color: #92400e;
             }
-            .security-notice-title {
-              font-size: 16px;
-              font-weight: bold;
-              color: #b45309;
-              margin-bottom: 10px;
-              display: flex;
-              align-items: center;
-              gap: 8px;
-            }
-            .button { 
-              display: inline-block; 
-              background: #EF4444; 
-              color: white !important; 
-              padding: 16px 40px; 
-              text-decoration: none; 
-              border-radius: 8px; 
+            .security-tips {
+              background: #f8f9fa;
+              border-left: 4px solid #D4AF37;
+              padding: 20px;
               margin: 25px 0;
-              font-weight: bold;
-              font-size: 16px;
-              text-align: center;
-              box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
             }
-            .button:hover {
-              background: #dc2626;
-            }
-            .expiry-notice {
-              background: #f9f9f9;
-              padding: 15px;
-              border-radius: 8px;
-              border-left: 4px solid #6b7280;
-              margin: 20px 0;
-              font-size: 14px;
-              color: #374151;
+            .security-tip {
+              margin: 10px 0;
+              display: flex;
+              align-items: start;
+              gap: 10px;
             }
             .contact-section {
-              background: #f0f9ff;
+              margin-top: 30px;
               padding: 20px;
+              background: #e7f3ff;
               border-radius: 8px;
-              margin: 25px 0;
-              text-align: center;
-              border-left: 4px solid #1E90FF;
             }
-            .footer { 
-              text-align: center; 
-              padding: 30px 20px; 
+            .footer {
+              text-align: center;
+              padding: 30px 20px;
               background: #f9f9f9;
-              color: #666; 
+              color: #666;
               font-size: 14px;
               border-top: 1px solid #eee;
             }
@@ -603,65 +623,64 @@ async function handler(req: Request): Promise<Response> {
         </head>
         <body>
           <div class="container">
-            <!-- Header with Logo -->
+            <!-- Header -->
             <div class="header">
-              <img src="https://maxsaham.com/LOGO-square-for-rounded-crop.jpg" alt="Max Saham Logo" class="logo">
-              <h1>🔐 Password Reset Request</h1>
+              <div class="icon">🔐</div>
+              <h1>Reset Password Anda</h1>
+              <p style="margin: 10px 0 0 0; font-size: 16px;">Permintaan untuk tukar kata laluan</p>
             </div>
-            
-            <!-- Main Content -->
+
+            <!-- Content -->
             <div class="content">
-              <!-- Greeting -->
-              <div class="greeting">
-                Hi ${userName || 'Trader'}, 👋
-              </div>
+              <div class="greeting">Hi ${userName || "Trader"}! 👋</div>
               
-              <!-- Introduction -->
-              <div class="intro">
-                Kami menerima permintaan untuk reset password akaun <strong>Team Max Saham</strong> anda. Jika anda tidak membuat permintaan ini, sila abaikan email ini.
-              </div>
-              
-              <!-- Security Notice -->
-              <div class="security-notice">
-                <div class="security-notice-title">
-                  ⚠️ Amaran Keselamatan
-                </div>
-                <p style="margin: 10px 0;">
-                  • Jangan kongsikan link ini dengan sesiapa<br>
-                  • Link ini hanya sah untuk <strong>1 jam</strong><br>
-                  • Jika anda tidak request password reset, sila hubungi kami segera
-                </p>
-              </div>
-              
-              <!-- Reset Button -->
-              <div style="text-align: center;">
-                <p style="font-size: 16px; color: #555; margin-bottom: 15px;">
-                  Klik butang di bawah untuk set password baru:
-                </p>
-                <a href="${html || '#'}" class="button">
-                  🔑 Reset Password Sekarang
+              <p style="font-size: 16px; line-height: 1.8; color: #555;">
+                Kami telah menerima permintaan untuk reset password akaun anda di <strong>Team Max Saham</strong>.
+              </p>
+
+              <p style="font-size: 16px; color: #555;">
+                Klik butang di bawah untuk menetapkan kata laluan baharu:
+              </p>
+
+              <div style="text-align: center; margin: 35px 0;">
+                <a href="${resetLink}" class="reset-button">
+                  🔓 Reset Password Saya
                 </a>
               </div>
-              
-              <!-- Expiry Notice -->
-              <div class="expiry-notice">
-                <strong>⏰ Link akan expire dalam 1 jam.</strong><br>
-                Jika link sudah expire, sila request password reset yang baru di halaman login.
+
+              <!-- Important Notice -->
+              <div class="important-box">
+                <p style="margin: 0 0 10px 0; font-weight: bold; color: #856404;">
+                  ⚠️ Penting:
+                </p>
+                <ul style="margin: 0; padding-left: 20px; color: #856404;">
+                  <li>Link ini akan <strong>expired dalam 1 jam</strong></li>
+                  <li>Jika anda tidak meminta reset password, <strong>abaikan email ini</strong></li>
+                  <li>Jangan kongsikan link ini dengan sesiapa</li>
+                </ul>
               </div>
-              
-              <!-- Alternative Instructions -->
-              <div style="margin: 30px 0; padding: 20px; background: #f9f9f9; border-radius: 8px;">
-                <h3 style="color: #333; font-size: 18px; margin-top: 0;">Cara Reset Password:</h3>
-                <ol style="color: #555; font-size: 15px; line-height: 1.8; padding-left: 20px;">
-                  <li>Klik butang "Reset Password Sekarang" di atas</li>
-                  <li>Anda akan dibawa ke page untuk set password baru</li>
-                  <li>Masukkan password baru anda (minimum 6 karakter)</li>
-                  <li>Confirm password baru anda</li>
-                  <li>Klik "Update Password"</li>
-                  <li>Login dengan password baru anda</li>
-                </ol>
+
+              <!-- Security Tips -->
+              <div class="security-tips">
+                <h3 style="margin-top: 0; color: #333;">🛡️ Tips Keselamatan Password:</h3>
+                <div class="security-tip">
+                  <span style="color: #28a745; font-weight: bold;">✓</span>
+                  <span>Gunakan sekurang-kurangnya 8 karakter</span>
+                </div>
+                <div class="security-tip">
+                  <span style="color: #28a745; font-weight: bold;">✓</span>
+                  <span>Campurkan huruf besar, huruf kecil, nombor & simbol</span>
+                </div>
+                <div class="security-tip">
+                  <span style="color: #28a745; font-weight: bold;">✓</span>
+                  <span>Jangan guna password yang sama untuk platform lain</span>
+                </div>
+                <div class="security-tip">
+                  <span style="color: #28a745; font-weight: bold;">✓</span>
+                  <span>Jangan kongsikan password dengan sesiapa</span>
+                </div>
               </div>
-              
+
               <!-- Need Help -->
               <div class="contact-section">
                 <p style="margin-bottom: 10px; font-size: 16px; color: #333;">
@@ -672,15 +691,18 @@ async function handler(req: Request): Promise<Response> {
                   Email: <a href="mailto:admin@abgmax.maxsaham.com" style="color: #D4AF37; text-decoration: none; font-weight: bold;">admin@abgmax.maxsaham.com</a>
                 </p>
               </div>
-              
-              <!-- Closing -->
-              <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #f0f0f0;">
-                <p style="font-size: 15px; color: #888; font-style: italic;">
-                  — Team Max Saham
-                </p>
-              </div>
+
+              <p style="margin-top: 30px; color: #666; font-size: 14px; font-style: italic;">
+                Jika butang di atas tidak berfungsi, copy dan paste link ini ke browser anda:<br>
+                <a href="${resetLink}" style="color: #1E90FF; word-break: break-all;">${resetLink}</a>
+              </p>
+
+              <p style="margin-top: 30px; font-weight: bold; color: #1E90FF;">
+                Stay secure! 🔒<br>
+                — Team Max Saham
+              </p>
             </div>
-            
+
             <!-- Footer -->
             <div class="footer">
               <div class="footer-tagline">Professional FCPO Trading Education</div>
@@ -696,46 +718,44 @@ async function handler(req: Request): Promise<Response> {
     }
 
     // Send email via Resend
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'Abg Max - Team Max Saham <admin@abgmax.maxsaham.com>',
+        from: "Abg Max - Team Max Saham <admin@abgmax.maxsaham.com>",
         to: [to],
         subject: subject,
-        html: emailContent,
+        html: emailHtml,
         headers: {
-          'X-Entity-Ref-ID': `maxsaham-${Date.now()}`,
-          'List-Unsubscribe': `<mailto:admin@abgmax.maxsaham.com?subject=unsubscribe>`,
-          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+          'List-Unsubscribe': '<mailto:admin@abgmax.maxsaham.com?subject=Unsubscribe>',
+          'X-Entity-Ref-ID': Math.random().toString(36).substring(7),
         },
       }),
     });
 
-    const data = await res.json();
+    const data = await response.json();
 
-    if (!res.ok) {
-      console.error('Resend API Error:', data);
-      return new Response(JSON.stringify({ error: 'Failed to send email', details: data }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: res.status,
-      });
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to send email");
     }
 
     return new Response(JSON.stringify({ success: true, data }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
   } catch (error) {
-    console.error('Error sending email:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 400,
-    });
+    console.error("Error sending email:", error);
+    return new Response(
+      JSON.stringify({
+        error: error.message || "Failed to send email",
+      }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400,
+      }
+    );
   }
-}
-
-serve(handler);
+});
