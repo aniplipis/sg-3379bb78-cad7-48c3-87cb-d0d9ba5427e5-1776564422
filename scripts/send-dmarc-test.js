@@ -304,8 +304,14 @@ async function sendInBatches() {
     
     console.log(`\n📤 Batch ${i + 1}/${totalBatches} - Sending to ${batch.length} addresses...`);
     
-    // Send all emails in current batch simultaneously
-    const results = await Promise.all(batch.map(email => sendEmail(email)));
+    // Send all emails in current batch with rate limiting
+    const results = [];
+    for (const email of batch) {
+      const result = await sendEmail(email);
+      results.push(result);
+      // Respect Resend's 2 req/sec rate limit
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
     
     // Count successes and failures
     results.forEach(result => {

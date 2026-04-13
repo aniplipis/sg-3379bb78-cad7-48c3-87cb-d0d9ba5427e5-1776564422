@@ -180,8 +180,14 @@ async function runQuickTest() {
 
   console.log('📤 Sending to 10 test addresses...\n');
   
-  // Send all emails simultaneously
-  const results = await Promise.all(testEmails.map(email => sendEmail(email)));
+  // Send emails with rate limiting (2 per second max)
+  const results = [];
+  for (const email of testEmails) {
+    const result = await sendEmail(email);
+    results.push(result);
+    // Respect Resend's 2 req/sec rate limit
+    await new Promise(resolve => setTimeout(resolve, 500));
+  }
   
   // Display results
   results.forEach(result => {
