@@ -751,10 +751,41 @@ async function handler(req: Request): Promise<Response> {
       }),
     });
 
-    const data = await res.json();
+    const resData = await res.json();
 
     if (!res.ok) {
-      throw new Error(`Resend API error: ${JSON.stringify(data)}`);
+      console.error('Resend API Error:', resData);
+      
+      // Check if it's a bounce/invalid email error
+      const isBounce = resData.message?.toLowerCase().includes('bounce') || 
+                       resData.message?.toLowerCase().includes('invalid') ||
+                       resData.statusCode === 422;
+      
+      if (isBounce && emailRequest.to) {
+        // Mark email as bounced in database
+        const { error: updateError } = await supabaseClient
+          .from('profiles')
+          .update({ email_bounced: true })
+          .eq('email', emailRequest.to);
+        
+        if (updateError) {
+          console.error('Failed to mark email as bounced:', updateError);
+        } else {
+          console.log('Marked email as bounced:', emailRequest.to);
+        }
+      }
+      
+      return new Response(
+        JSON.stringify({ 
+          error: 'Failed to send email', 
+          details: resData,
+          bounced: isBounce 
+        }),
+        { 
+          status: res.status,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
     }
 
     return new Response(JSON.stringify({ success: true, data }), {

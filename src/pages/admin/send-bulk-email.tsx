@@ -59,6 +59,7 @@ export default function SendBulkEmail() {
       let query = supabase
         .from("profiles")
         .select("email, full_name, is_premium")
+        .eq("email_bounced", false) // Exclude bounced emails
         .order("full_name");
 
       if (recipientFilter === "premium-only") {
@@ -517,6 +518,9 @@ export default function SendBulkEmail() {
                     <p>👥 Non-Premium: {nonPremiumCount}</p>
                     <p className="font-bold text-blue-700 dark:text-blue-300">
                       🎯 Selected: {selectedCount} / {recipients.length}
+                    </p>
+                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
+                      ℹ️ Bounced emails are automatically excluded
                     </p>
                   </div>
                 </div>
