@@ -39,6 +39,7 @@ export default function SendBulkEmail() {
   const [showManualSelect, setShowManualSelect] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [estimatedTime, setEstimatedTime] = useState("");
+  const [batchSize, setBatchSize] = useState<number>(20); // 0 = off, 20 = default, 50 = large batches
 
   // Handle authentication redirect
   useEffect(() => {
@@ -163,13 +164,15 @@ export default function SendBulkEmail() {
     }
 
     // Calculate batches and estimated time
-    const BATCH_SIZE = 20;
+    const BATCH_SIZE = batchSize; // Use selected batch size
     const BATCH_DELAY_MS = 5 * 60 * 1000; // 5 minutes
-    const totalBatches = Math.ceil(selectedRecipients.length / BATCH_SIZE);
-    const estimatedMinutes = Math.ceil((totalBatches - 1) * 5);
+    const totalBatches = BATCH_SIZE === 0 ? 1 : Math.ceil(selectedRecipients.length / BATCH_SIZE);
+    const estimatedMinutes = BATCH_SIZE === 0 ? 0 : Math.ceil((totalBatches - 1) * 5);
     
     setEstimatedTime(
-      estimatedMinutes > 0
+      BATCH_SIZE === 0
+        ? "Sending all emails at once..."
+        : estimatedMinutes > 0
         ? `Estimated time: ~${estimatedMinutes} minutes for ${totalBatches} batches`
         : "Sending in one batch..."
     );
@@ -178,17 +181,30 @@ export default function SendBulkEmail() {
     setIsPaused(false);
     setSendProgress({ sent: 0, failed: 0, total: selectedRecipients.length });
     setFailedEmails([]);
+    
+    const statusMessage = BATCH_SIZE === 0
+      ? `Sending to all ${selectedRecipients.length} recipients at once...`
+      : `Starting batch send to ${selectedRecipients.length} recipients (${BATCH_SIZE} per batch, 5 min intervals)...`;
+    
     setStatus({
       type: "info",
-      message: `Starting batch send to ${selectedRecipients.length} recipients (${BATCH_SIZE} per batch, 5 min intervals)...`,
+      message: statusMessage,
     });
 
     let successCount = 0;
     let errorCount = 0;
     const newFailedEmails: string[] = [];
 
-    // Process in batches
-    for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
+    // Process in batches (or all at once if BATCH_SIZE = 0)
+    const batchesToProcess = BATCH_SIZE === 0 
+      ? [selectedRecipients] 
+      : Array.from({ length: totalBatches }, (_, i) => {
+          const start = i * BATCH_SIZE;
+          const end = Math.min(start + BATCH_SIZE, selectedRecipients.length);
+          return selectedRecipients.slice(start, end);
+        });
+
+    for (let batchIndex = 0; batchIndex < batchesToProcess.length; batchIndex++) {
       // Check if paused
       if (isPaused) {
         setStatus({
@@ -198,14 +214,14 @@ export default function SendBulkEmail() {
         break;
       }
 
-      const start = batchIndex * BATCH_SIZE;
-      const end = Math.min(start + BATCH_SIZE, selectedRecipients.length);
-      const batch = selectedRecipients.slice(start, end);
+      const batch = batchesToProcess[batchIndex];
 
-      setStatus({
-        type: "info",
-        message: `Processing batch ${batchIndex + 1}/${totalBatches} (${batch.length} emails)...`,
-      });
+      if (BATCH_SIZE > 0) {
+        setStatus({
+          type: "info",
+          message: `Processing batch ${batchIndex + 1}/${totalBatches} (${batch.length} emails)...`,
+        });
+      }
 
       // Send emails in current batch
       for (const recipient of batch) {
@@ -253,8 +269,8 @@ export default function SendBulkEmail() {
       }
 
       // Wait 5 minutes before next batch (except for last batch)
-      if (batchIndex < totalBatches - 1 && !isPaused) {
-        const remainingBatches = totalBatches - batchIndex - 1;
+      if (batchIndex < batchesToProcess.length - 1 && !isPaused && BATCH_SIZE > 0) {
+        const remainingBatches = batchesToProcess.length - batchIndex - 1;
         setStatus({
           type: "info",
           message: `Batch ${batchIndex + 1}/${totalBatches} complete. Waiting 5 minutes before next batch... (${remainingBatches} batches remaining)`,
@@ -280,9 +296,14 @@ export default function SendBulkEmail() {
     }
 
     setFailedEmails(newFailedEmails);
+    
+    const finalMessage = BATCH_SIZE === 0
+      ? `✅ Successfully sent: ${successCount} | ❌ Failed: ${errorCount} | Sent all at once`
+      : `✅ Successfully sent: ${successCount} | ❌ Failed: ${errorCount} | Total batches: ${totalBatches}`;
+    
     setStatus({
       type: successCount > 0 ? "success" : "error",
-      message: `✅ Successfully sent: ${successCount} | ❌ Failed: ${errorCount} | Total batches: ${totalBatches}`,
+      message: finalMessage,
     });
 
     // Clear form on complete success
@@ -522,6 +543,66 @@ export default function SendBulkEmail() {
                     <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
                       ℹ️ Bounced emails are automatically excluded
                     </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Batch Size Selector */}
+              <div className="bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <Send className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  <p className="font-semibold text-purple-600 dark:text-purple-400">Batch Sending Mode</p>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      id="batch-off"
+                      name="batch-size"
+                      checked={batchSize === 0}
+                      onChange={() => setBatchSize(0)}
+                      className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-600"
+                    />
+                    <label
+                      htmlFor="batch-off"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                      Off - Send all emails at once (fastest, but may trigger spam filters)
+                    </label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      id="batch-20"
+                      name="batch-size"
+                      checked={batchSize === 20}
+                      onChange={() => setBatchSize(20)}
+                      className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-600"
+                    />
+                    <label
+                      htmlFor="batch-20"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                      20 emails per batch - Recommended (best deliverability, 5 min intervals)
+                    </label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      id="batch-50"
+                      name="batch-size"
+                      checked={batchSize === 50}
+                      onChange={() => setBatchSize(50)}
+                      className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-600"
+                    />
+                    <label
+                      htmlFor="batch-50"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                      50 emails per batch - Faster (moderate deliverability, 5 min intervals)
+                    </label>
                   </div>
                 </div>
               </div>
@@ -781,9 +862,15 @@ export default function SendBulkEmail() {
                 <p className="text-sm text-amber-800 dark:text-amber-300">
                   ⚠️ <strong>Important:</strong> Always send a test email to yourself first. Review carefully before sending to all subscribers.
                 </p>
-                <p className="text-xs text-amber-700 dark:text-amber-400 mt-2">
-                  📧 <strong>Rate Limiting:</strong> Emails are sent in batches of 20 every 5 minutes to ensure optimal deliverability and avoid spam filters.
-                </p>
+                {batchSize > 0 ? (
+                  <p className="text-xs text-amber-700 dark:text-amber-400 mt-2">
+                    📧 <strong>Rate Limiting:</strong> Emails are sent in batches of {batchSize} every 5 minutes to ensure optimal deliverability and avoid spam filters.
+                  </p>
+                ) : (
+                  <p className="text-xs text-amber-700 dark:text-amber-400 mt-2">
+                    ⚡ <strong>Batch Mode Off:</strong> All emails will be sent at once. This is faster but may trigger spam filters for large campaigns.
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>
