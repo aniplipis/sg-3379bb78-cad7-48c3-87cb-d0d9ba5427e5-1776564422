@@ -565,7 +565,7 @@ export default function SendBulkEmail() {
                     />
                     <label
                       htmlFor="batch-off"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer text-gray-700 dark:text-gray-300"
                     >
                       Off - Send all emails at once (fastest, but may trigger spam filters)
                     </label>
@@ -582,7 +582,7 @@ export default function SendBulkEmail() {
                     />
                     <label
                       htmlFor="batch-20"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer text-gray-700 dark:text-gray-300"
                     >
                       20 emails per batch - Recommended (best deliverability, 5 min intervals)
                     </label>
@@ -599,7 +599,7 @@ export default function SendBulkEmail() {
                     />
                     <label
                       htmlFor="batch-50"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer text-gray-700 dark:text-gray-300"
                     >
                       50 emails per batch - Faster (moderate deliverability, 5 min intervals)
                     </label>
