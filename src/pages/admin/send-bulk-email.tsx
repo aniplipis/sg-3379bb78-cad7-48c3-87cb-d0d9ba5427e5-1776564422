@@ -421,8 +421,7 @@ export default function SendBulkEmail() {
             <div class="footer-tagline">Professional FCPO Trading Education</div>
             <p style="margin: 10px 0;">© 2026 Team Max Saham. All rights reserved.</p>
             <p style="margin: 10px 0; font-size: 13px;">
-              <a href="https://maxsaham.com" style="color: #D4AF37; text-decoration: none;">maxsaham.com</a> | 
-              <a href="https://wa.me/60115411008" style="color: #25D366; text-decoration: none;">WhatsApp Support</a>
+              <a href="https://maxsaham.com" style="color: #D4AF37; text-decoration: none;">maxsaham.com</a>
             </p>
           </div>
         </div>
