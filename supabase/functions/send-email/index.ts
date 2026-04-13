@@ -139,22 +139,6 @@ async function handler(req: Request): Promise<Response> {
             .button:hover {
               background: #c49b2e;
             }
-            .whatsapp-button {
-              display: inline-block;
-              background: #25D366;
-              color: white !important;
-              padding: 14px 30px;
-              text-decoration: none;
-              border-radius: 8px;
-              margin: 20px 0;
-              font-weight: bold;
-              font-size: 15px;
-              text-align: center;
-              box-shadow: 0 4px 6px rgba(37, 211, 102, 0.3);
-            }
-            .whatsapp-button:hover {
-              background: #20bd5a;
-            }
             .disclaimer {
               background: #fff9e6;
               border: 2px solid #ffd700;
@@ -257,12 +241,7 @@ async function handler(req: Request): Promise<Response> {
               <div class="section-title">
                 <span class="emoji">💬</span> Perlu bantuan?
               </div>
-              <p style="margin-bottom: 10px; color: #555;">Hubungi kami bila-bila masa!</p>
-              <div style="text-align: center;">
-                <a href="https://wa.me/60115411008" class="whatsapp-button">
-                  👉 Hubungi melalui WhatsApp
-                </a>
-              </div>
+              <p style="margin-bottom: 10px; color: #555;">Hubungi kami melalui email di <a href="mailto:admin@abgmax.maxsaham.com" style="color: #D4AF37; text-decoration: none;">admin@abgmax.maxsaham.com</a></p>
               
               <!-- Disclaimer -->
               <div class="disclaimer">
@@ -308,8 +287,7 @@ async function handler(req: Request): Promise<Response> {
               <div class="footer-tagline">Professional FCPO Trading Education</div>
               <p style="margin: 10px 0;">© 2025 Team Max Saham. All rights reserved.</p>
               <p style="margin: 10px 0; font-size: 13px;">
-                <a href="https://maxsaham.com" style="color: #D4AF37; text-decoration: none;">maxsaham.com</a> | 
-                <a href="https://wa.me/60115411008" style="color: #25D366; text-decoration: none;">WhatsApp Support</a>
+                <a href="https://maxsaham.com" style="color: #D4AF37; text-decoration: none;">maxsaham.com</a>
               </p>
             </div>
           </div>
@@ -427,12 +405,6 @@ async function handler(req: Request): Promise<Response> {
               margin: 25px 0;
               text-align: center;
             }
-            .whatsapp-link {
-              color: #25D366;
-              text-decoration: none;
-              font-weight: bold;
-              font-size: 16px;
-            }
             .footer { 
               text-align: center; 
               padding: 30px 20px; 
@@ -491,15 +463,14 @@ async function handler(req: Request): Promise<Response> {
               
               <div class="contact-section">
                 <p style="margin-bottom: 10px;"><strong>Questions?</strong> Reach out anytime:</p>
-                <p>WhatsApp: <a href="https://wa.me/60115411008" class="whatsapp-link">+60 11-5411 0086</a></p>
+                <p>Email: <a href="mailto:admin@abgmax.maxsaham.com" style="color: #D4AF37; text-decoration: none; font-weight: bold;">admin@abgmax.maxsaham.com</a></p>
               </div>
             </div>
             <div class="footer">
               <div class="footer-tagline">Professional FCPO Trading Education</div>
               <p style="margin: 10px 0;">© 2025 Team Max Saham. All rights reserved.</p>
               <p style="margin: 10px 0; font-size: 13px;">
-                <a href="https://maxsaham.com" style="color: #D4AF37; text-decoration: none;">maxsaham.com</a> | 
-                <a href="https://wa.me/60115411008" style="color: #25D366; text-decoration: none;">WhatsApp Support</a>
+                <a href="https://maxsaham.com" style="color: #D4AF37; text-decoration: none;">maxsaham.com</a>
               </p>
             </div>
           </div>
@@ -614,12 +585,6 @@ async function handler(req: Request): Promise<Response> {
               text-align: center;
               border-left: 4px solid #1E90FF;
             }
-            .whatsapp-link {
-              color: #25D366;
-              text-decoration: none;
-              font-weight: bold;
-              font-size: 16px;
-            }
             .footer { 
               text-align: center; 
               padding: 30px 20px; 
@@ -704,7 +669,7 @@ async function handler(req: Request): Promise<Response> {
                 </p>
                 <p style="color: #555;">Hubungi kami jika anda menghadapi sebarang masalah:</p>
                 <p style="margin-top: 15px;">
-                  WhatsApp: <a href="https://wa.me/60115411008" class="whatsapp-link">+60 11-5411 0086</a>
+                  Email: <a href="mailto:admin@abgmax.maxsaham.com" style="color: #D4AF37; text-decoration: none; font-weight: bold;">admin@abgmax.maxsaham.com</a>
                 </p>
               </div>
               
@@ -721,8 +686,7 @@ async function handler(req: Request): Promise<Response> {
               <div class="footer-tagline">Professional FCPO Trading Education</div>
               <p style="margin: 10px 0;">© 2025 Team Max Saham. All rights reserved.</p>
               <p style="margin: 10px 0; font-size: 13px;">
-                <a href="https://maxsaham.com" style="color: #D4AF37; text-decoration: none;">maxsaham.com</a> | 
-                <a href="https://wa.me/60115411008" style="color: #25D366; text-decoration: none;">WhatsApp Support</a>
+                <a href="https://maxsaham.com" style="color: #D4AF37; text-decoration: none;">maxsaham.com</a>
               </p>
             </div>
           </div>
