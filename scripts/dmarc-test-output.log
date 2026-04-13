@@ -1,0 +1,30 @@
+🚀 Starting DMARC Test Email Campaign
+📊 Total emails: 124
+📦 Batches: 7 (20 emails per batch)
+⏱️  Estimated time: ~30 minutes
+
+
+📤 Batch 1/7 - Sending to 20 addresses...
+  ❌ lucindasmith7291@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ marcusrodriguez5042@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ felicitynguyen9015@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ donovanwilliams2876@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ cynthiawilson6329@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ elliotthughes4158@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ mackenzieparker92032@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ lincolnadams5634@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ isabellahall3816@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ gabrielcooper8973@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ✅ paigebrown6148@gmail.com
+  ❌ zacharythompson2847@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ emilysanchez4791@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ owenrussell7921@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ carterbutler5682@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ averymartin4018@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ lilygonzalez8261@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ❌ ethanmurphy9407@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+  ✅ savannahturner6053@gmail.com
+  ❌ hudsonwright4196@gmail.com - {"error":"Resend API error: {\"statusCode\":429,\"name\":\"rate_limit_exceeded\",\"message\":\"Too many requests. You can only make 2 requests per second. See rate limit response headers for more information. Or contact support to increase rate limit.\"}"}
+
+✅ Batch 1 complete: 2 sent, 18 failed
+⏳ Waiting 5 minutes before next batch...
