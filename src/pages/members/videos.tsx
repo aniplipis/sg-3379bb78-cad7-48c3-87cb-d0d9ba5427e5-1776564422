@@ -57,7 +57,7 @@ export default function VideoLibrary() {
 
   const subfolders = [
     { id: "HYBRID SMC APRIL 2026", label: "HYBRID SMC APRIL 2026", count: 2 },
-    { id: "PROJEK DUIT RAYA 2026", label: "PROJEK DUIT RAYA 2026", count: 2 },
+    { id: "PROJEK DUIT RAYA 2026", label: "PROJEK DUIT RAYA 2026", count: 4 },
     { id: "HYBRID SMC JANUARY 2026", label: "HYBRID SMC JANUARY 2026", count: 3 },
     { id: "HYBRID SMC OCTOBER 2025", label: "HYBRID SMC OCTOBER 2025", count: 3 },
     { id: "CHATGPT", label: "CHATGPT", count: 1 },
@@ -118,6 +118,28 @@ export default function VideoLibrary() {
       thumbnail: "https://vumbnail.com/1171832268.jpg",
       vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1171832268?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="PROJEK DUIT RAYA 2026 PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Second session covering advanced concepts from Projek Duit Raya 2026"
+    },
+    {
+      id: "projek-duit-raya-3",
+      title: "PROJEK DUIT RAYA 2026 PART 3",
+      category: "class-recordings",
+      subcategory: "PROJEK DUIT RAYA 2026",
+      duration: "Video Length",
+      vimeoId: "1173774245",
+      thumbnail: "https://vumbnail.com/1173774245.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1173774245?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="PROJEK DUIT RAYA PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Third session of the Projek Duit Raya 2026 special series"
+    },
+    {
+      id: "projek-duit-raya-4",
+      title: "PROJEK DUIT RAYA 2026 PART 4",
+      category: "class-recordings",
+      subcategory: "PROJEK DUIT RAYA 2026",
+      duration: "Video Length",
+      vimeoId: "1173774455",
+      thumbnail: "https://vumbnail.com/1173774455.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1173774455?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="PROJEK DUIT RAYA PART 4"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Fourth session completing the Projek Duit Raya 2026 special series"
     },
     // Class Recordings - HYBRID SMC JANUARY 2026
     {
