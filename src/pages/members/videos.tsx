@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Play, Lock, Clock } from "lucide-react";
-import { SEO } from "@/components/SEO";
+import SEO from "@/components/SEO";
 
 interface Video {
   id: string;
@@ -218,18 +218,19 @@ const videoData: VideoSeries[] = [
 ];
 
 export default function VideosPage() {
-  const { user, isPremium, loading } = useAuth();
+  const { user, profile, isLoading } = useAuth();
+  const isPremium = profile?.is_premium === true;
   const router = useRouter();
   const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
   const [activeTab, setActiveTab] = useState("all");
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!isLoading && !user) {
       router.push("/");
     }
-  }, [user, loading, router]);
+  }, [user, isLoading, router]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
