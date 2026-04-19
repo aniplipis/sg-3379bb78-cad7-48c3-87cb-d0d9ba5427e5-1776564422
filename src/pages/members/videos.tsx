@@ -43,8 +43,8 @@ export default function VideoLibrary() {
   const isPremium = profile?.is_premium || false;
 
   const categories = [
-    { id: "all", label: "All Videos", count: 97 },
-    { id: "class-recordings", label: "Class Recordings", count: 42, icon: Folder },
+    { id: "all", label: "All Videos", count: 99 },
+    { id: "class-recordings", label: "Class Recordings", count: 44, icon: Folder },
     { id: "wyckoff", label: "Wyckoff Lessons", count: 12 },
     { id: "smc", label: "Smart Money Concepts", count: 15 },
     { id: "fcpo", label: "FCPO Strategy", count: 10 },
@@ -56,7 +56,7 @@ export default function VideoLibrary() {
   ];
 
   const subfolders = [
-  { id: "HYBRID SMC APRIL 2026", label: "HYBRID SMC APRIL 2026", count: 2 },
+    { id: "HYBRID SMC APRIL 2026", label: "HYBRID SMC APRIL 2026", count: 2 },
     { id: "PROJEK DUIT RAYA 2026", label: "PROJEK DUIT RAYA 2026", count: 2 },
     { id: "HYBRID SMC JANUARY 2026", label: "HYBRID SMC JANUARY 2026", count: 3 },
     { id: "HYBRID SMC OCTOBER 2025", label: "HYBRID SMC OCTOBER 2025", count: 3 },
@@ -73,7 +73,30 @@ export default function VideoLibrary() {
   ];
 
   const videos = [
-    // PROJEK DUIT RAYA 2026 Series (NEWEST - REPLACES FEATURED)
+    // HYBRID SMC APRIL 2026 Series (NEWEST - FEATURED)
+    {
+      id: "hybrid-smc-apr26-1",
+      title: "HYBRID SMC APRIL 2026 PART 1",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC APRIL 2026",
+      duration: "Video Length",
+      vimeoId: "1184467185",
+      thumbnail: "https://vumbnail.com/1184467185.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1184467185?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC APRIL 2026 PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Latest Hybrid SMC trading strategies and market analysis for April 2026 - Part 1"
+    },
+    {
+      id: "hybrid-smc-apr26-2",
+      title: "HYBRID SMC APRIL 2026 PART 2",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC APRIL 2026",
+      duration: "Video Length",
+      vimeoId: "1184467228",
+      thumbnail: "https://vumbnail.com/1184467228.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1184467228?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC APRIL 2026 PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Latest Hybrid SMC trading strategies and market analysis for April 2026 - Part 2"
+    },
+    // PROJEK DUIT RAYA 2026 Series
     {
       id: "projek-duit-raya-1",
       title: "PROJEK DUIT RAYA 2026 PART 1",
