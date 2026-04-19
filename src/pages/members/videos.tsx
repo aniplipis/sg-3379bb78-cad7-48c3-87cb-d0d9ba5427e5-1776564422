@@ -1,820 +1,469 @@
-import { useAuth } from "@/contexts/AuthContext";
+import { useState, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
-import { Footer } from "@/components/Footer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Video, Play, Lock, Clock, ChevronRight, Folder, X } from "lucide-react";
-import Link from "next/link";
+import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Play, Lock, Clock } from "lucide-react";
+import { SEO } from "@/components/SEO";
 
-export default function VideoLibrary() {
-  const { user, profile, isLoading } = useAuth();
+interface Video {
+  id: string;
+  title: string;
+  duration: string;
+  thumbnail: string;
+  vimeoId: string;
+  description: string;
+}
+
+interface VideoSeries {
+  id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  isPremium: boolean;
+  isFeatured?: boolean;
+  videos: Video[];
+}
+
+const videoData: VideoSeries[] = [
+  {
+    id: "hybrid-smc-april-2026",
+    title: "Hybrid SMC April 2026",
+    description: "Latest Hybrid SMC trading strategies and market analysis for April 2026",
+    thumbnail: "https://vumbnail.com/1184467185.jpg",
+    isPremium: true,
+    isFeatured: true,
+    videos: [
+      {
+        id: "hybrid-smc-apr26-part1",
+        title: "Hybrid SMC April 2026 - Part 1",
+        duration: "TBD",
+        thumbnail: "https://vumbnail.com/1184467185.jpg",
+        vimeoId: "1184467185",
+        description: "Hybrid SMC trading strategies and market analysis - Part 1"
+      },
+      {
+        id: "hybrid-smc-apr26-part2",
+        title: "Hybrid SMC April 2026 - Part 2",
+        duration: "TBD",
+        thumbnail: "https://vumbnail.com/1184467228.jpg",
+        vimeoId: "1184467228",
+        description: "Hybrid SMC trading strategies and market analysis - Part 2"
+      }
+    ]
+  },
+  {
+    id: "hybrid-smc-march-2026",
+    title: "Hybrid SMC March 2026",
+    description: "Advanced Smart Money Concepts combined with hybrid trading strategies for March 2026",
+    thumbnail: "https://vumbnail.com/1158028115.jpg",
+    isPremium: true,
+    isFeatured: false,
+    videos: [
+      {
+        id: "hybrid-smc-mar26-part1",
+        title: "Hybrid SMC March 2026 - Part 1",
+        duration: "1:45:30",
+        thumbnail: "https://vumbnail.com/1158028115.jpg",
+        vimeoId: "1158028115",
+        description: "Introduction to Hybrid SMC methodology and market structure analysis"
+      },
+      {
+        id: "hybrid-smc-mar26-part2",
+        title: "Hybrid SMC March 2026 - Part 2",
+        duration: "1:52:15",
+        thumbnail: "https://vumbnail.com/1158028161.jpg",
+        vimeoId: "1158028161",
+        description: "Advanced order blocks and liquidity concepts"
+      },
+      {
+        id: "hybrid-smc-mar26-part3",
+        title: "Hybrid SMC March 2026 - Part 3",
+        duration: "1:38:45",
+        thumbnail: "https://vumbnail.com/1158028196.jpg",
+        vimeoId: "1158028196",
+        description: "Entry and exit strategies using Hybrid SMC"
+      },
+      {
+        id: "hybrid-smc-mar26-part4",
+        title: "Hybrid SMC March 2026 - Part 4",
+        duration: "1:41:20",
+        thumbnail: "https://vumbnail.com/1158028244.jpg",
+        vimeoId: "1158028244",
+        description: "Risk management and position sizing in Hybrid SMC trading"
+      }
+    ]
+  },
+  {
+    id: "ai-trading-view",
+    title: "AI Trading View Masterclass",
+    description: "Master AI-powered technical analysis using TradingView's advanced features and automation",
+    thumbnail: "https://vumbnail.com/1139134881.jpg",
+    isPremium: true,
+    isFeatured: false,
+    videos: [
+      {
+        id: "ai-tv-part1",
+        title: "AI Trading View - Part 1: Platform Setup",
+        duration: "1:23:45",
+        thumbnail: "https://vumbnail.com/1139134881.jpg",
+        vimeoId: "1139134881",
+        description: "Complete TradingView setup and AI indicator configuration"
+      },
+      {
+        id: "ai-tv-part2",
+        title: "AI Trading View - Part 2: Advanced Indicators",
+        duration: "1:31:20",
+        thumbnail: "https://vumbnail.com/1139134936.jpg",
+        vimeoId: "1139134936",
+        description: "Deep dive into AI-powered indicators and signal generation"
+      },
+      {
+        id: "ai-tv-part3",
+        title: "AI Trading View - Part 3: Strategy Development",
+        duration: "1:28:15",
+        thumbnail: "https://vumbnail.com/1139134992.jpg",
+        vimeoId: "1139134992",
+        description: "Building and backtesting automated trading strategies"
+      },
+      {
+        id: "ai-tv-part4",
+        title: "AI Trading View - Part 4: Alerts & Automation",
+        duration: "1:19:30",
+        thumbnail: "https://vumbnail.com/1139135037.jpg",
+        vimeoId: "1139135037",
+        description: "Setting up smart alerts and trade automation workflows"
+      }
+    ]
+  },
+  {
+    id: "futures-masterclass",
+    title: "Futures Trading Masterclass",
+    description: "Complete guide to trading FCPO futures with proven strategies and risk management",
+    thumbnail: "https://vumbnail.com/1054736134.jpg",
+    isPremium: true,
+    isFeatured: false,
+    videos: [
+      {
+        id: "futures-intro",
+        title: "Introduction to FCPO Futures",
+        duration: "45:30",
+        thumbnail: "https://vumbnail.com/1054736134.jpg",
+        vimeoId: "1054736134",
+        description: "Understanding FCPO futures contracts and market dynamics"
+      },
+      {
+        id: "futures-analysis",
+        title: "Technical Analysis for Futures",
+        duration: "52:15",
+        thumbnail: "https://vumbnail.com/1054736167.jpg",
+        vimeoId: "1054736167",
+        description: "Advanced chart patterns and indicators for futures trading"
+      },
+      {
+        id: "futures-strategies",
+        title: "Proven Trading Strategies",
+        duration: "58:45",
+        thumbnail: "https://vumbnail.com/1054736193.jpg",
+        vimeoId: "1054736193",
+        description: "Battle-tested strategies for consistent profits"
+      },
+      {
+        id: "futures-risk",
+        title: "Risk Management & Psychology",
+        duration: "48:20",
+        thumbnail: "https://vumbnail.com/1054736221.jpg",
+        vimeoId: "1054736221",
+        description: "Protecting your capital and managing trading psychology"
+      }
+    ]
+  },
+  {
+    id: "beginner-basics",
+    title: "Trading Basics for Beginners",
+    description: "Essential foundation for new traders - FREE access for all members",
+    thumbnail: "https://vumbnail.com/1054736134.jpg",
+    isPremium: false,
+    isFeatured: false,
+    videos: [
+      {
+        id: "basics-intro",
+        title: "Getting Started with Trading",
+        duration: "32:15",
+        thumbnail: "https://vumbnail.com/1054736134.jpg",
+        vimeoId: "1054736134",
+        description: "Introduction to financial markets and trading concepts"
+      },
+      {
+        id: "basics-charts",
+        title: "Reading Charts & Candlesticks",
+        duration: "38:45",
+        thumbnail: "https://vumbnail.com/1054736167.jpg",
+        vimeoId: "1054736167",
+        description: "Understanding price action and candlestick patterns"
+      },
+      {
+        id: "basics-indicators",
+        title: "Essential Technical Indicators",
+        duration: "41:30",
+        thumbnail: "https://vumbnail.com/1054736193.jpg",
+        vimeoId: "1054736193",
+        description: "Key indicators every trader should know"
+      }
+    ]
+  }
+];
+
+export default function VideosPage() {
+  const { user, isPremium, loading } = useAuth();
   const router = useRouter();
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedVideo, setSelectedVideo] = useState<any>(null);
-  const [selectedSubfolder, setSelectedSubfolder] = useState<string | null>(null);
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(null);
+  const [activeTab, setActiveTab] = useState("all");
 
   useEffect(() => {
-    if (!isLoading && !user) {
-      router.push("/?login=true");
+    if (!loading && !user) {
+      router.push("/");
     }
-    // Redirect free users to free dashboard
-    if (!isLoading && user && !profile?.is_premium) {
-      router.push("/members/free-dashboard");
-    }
-  }, [user, profile, isLoading, router]);
+  }, [user, loading, router]);
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-gold border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
         </div>
       </div>
     );
   }
 
-  if (!user || !profile?.is_premium) {
+  if (!user) {
     return null;
   }
 
-  const isPremium = profile?.is_premium || false;
+  const filteredSeries = videoData.filter(series => {
+    if (activeTab === "all") return true;
+    if (activeTab === "premium") return series.isPremium;
+    if (activeTab === "free") return !series.isPremium;
+    return true;
+  });
 
-  const categories = [
-    { id: "all", label: "All Videos", count: 101 },
-    { id: "class-recordings", label: "Class Recordings", count: 46, icon: Folder },
-    { id: "wyckoff", label: "Wyckoff Lessons", count: 12 },
-    { id: "smc", label: "Smart Money Concepts", count: 15 },
-    { id: "fcpo", label: "FCPO Strategy", count: 10 },
-    { id: "orderflow", label: "Order Flow & Delta", count: 8 },
-    { id: "volume", label: "Volume Profile", count: 5 },
-    { id: "risk", label: "Risk Management", count: 7 },
-    { id: "live", label: "Live Trading Replays", count: 18 },
-    { id: "psychology", label: "Trading Psychology", count: 6 }
-  ];
-
-  const subfolders = [
-    { id: "HYBRID SMC APRIL 2026", label: "HYBRID SMC APRIL 2026", count: 2 },
-    { id: "PROJEK DUIT RAYA 2026", label: "PROJEK DUIT RAYA 2026", count: 4 },
-    { id: "HYBRID SMC JANUARY 2026", label: "HYBRID SMC JANUARY 2026", count: 3 },
-    { id: "HYBRID SMC OCTOBER 2025", label: "HYBRID SMC OCTOBER 2025", count: 3 },
-    { id: "CHATGPT", label: "CHATGPT", count: 1 },
-    { id: "HYBRID SMC AUGUST 2025", label: "HYBRID SMC AUGUST 2025", count: 3 },
-    { id: "HYBRID SMC JULY 2025", label: "HYBRID SMC JULY 2025", count: 3 },
-    { id: "HYBRID SMC JUNE 2025", label: "HYBRID SMC JUNE 2025", count: 4 },
-    { id: "HYBRID SMC APRIL 2025", label: "HYBRID SMC APRIL 2025", count: 4 },
-    { id: "HYBRID SMC JANUARY 2025", label: "HYBRID SMC JANUARY 2025", count: 4 },
-    { id: "HYBRID SMC NOVEMBER 2024", label: "HYBRID SMC NOVEMBER 2024", count: 4 },
-    { id: "HYBRID SMC OCTOBER 2024", label: "HYBRID SMC OCTOBER 2024", count: 4 },
-    { id: "HYBRID SMC AUGUST 2024", label: "HYBRID SMC AUGUST 2024", count: 4 },
-    { id: "HYBRID SMC MAY 2024", label: "HYBRID SMC MAY 2024", count: 4 }
-  ];
-
-  const videos = [
-    // HYBRID SMC APRIL 2026 Series (NEWEST - FEATURED)
-    {
-      id: "hybrid-apr26-1",
-      title: "HYBRID SMC APRIL 2026 PART 1",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC APRIL 2026",
-      duration: "Video Length",
-      vimeoId: "1184467185",
-      thumbnail: "https://vumbnail.com/1184467185.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1184467185?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC APRIL 2026 PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "First session of the Hybrid SMC April 2026 methodology training"
-    },
-    {
-      id: "hybrid-apr26-2",
-      title: "HYBRID SMC APRIL 2026 PART 2",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC APRIL 2026",
-      duration: "Video Length",
-      vimeoId: "1184467228",
-      thumbnail: "https://vumbnail.com/1184467228.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1184467228?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC APRIL 2026 PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Second session covering advanced Hybrid SMC April 2026 concepts"
-    },
-    // PROJEK DUIT RAYA 2026 Series
-    {
-      id: "projek-duit-raya-1",
-      title: "PROJEK DUIT RAYA 2026 PART 1",
-      category: "class-recordings",
-      subcategory: "PROJEK DUIT RAYA 2026",
-      duration: "Video Length",
-      vimeoId: "1171831741",
-      thumbnail: "https://vumbnail.com/1171831741.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1171831741?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="PROJEK DUIT RAYA 2026 PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "First session of the Projek Duit Raya 2026 special series"
-    },
-    {
-      id: "projek-duit-raya-2",
-      title: "PROJEK DUIT RAYA 2026 PART 2",
-      category: "class-recordings",
-      subcategory: "PROJEK DUIT RAYA 2026",
-      duration: "Video Length",
-      vimeoId: "1171832268",
-      thumbnail: "https://vumbnail.com/1171832268.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1171832268?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="PROJEK DUIT RAYA 2026 PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Second session covering advanced concepts from Projek Duit Raya 2026"
-    },
-    {
-      id: "projek-duit-raya-3",
-      title: "PROJEK DUIT RAYA 2026 PART 3",
-      category: "class-recordings",
-      subcategory: "PROJEK DUIT RAYA 2026",
-      duration: "Video Length",
-      vimeoId: "1173774245",
-      thumbnail: "https://vumbnail.com/1173774245.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1173774245?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="PROJEK DUIT RAYA PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Third session of the Projek Duit Raya 2026 special series"
-    },
-    {
-      id: "projek-duit-raya-4",
-      title: "PROJEK DUIT RAYA 2026 PART 4",
-      category: "class-recordings",
-      subcategory: "PROJEK DUIT RAYA 2026",
-      duration: "Video Length",
-      vimeoId: "1173774455",
-      thumbnail: "https://vumbnail.com/1173774455.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1173774455?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="PROJEK DUIT RAYA PART 4"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Fourth and final session of the Projek Duit Raya 2026 special series"
-    },
-    // Class Recordings - HYBRID SMC JANUARY 2026
-    {
-      id: "hybrid-jan26-1",
-      title: "HYBRID SMC 2026 PART 1",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JANUARY 2026",
-      duration: "Video Length",
-      vimeoId: "1157466337",
-      thumbnail: "https://vumbnail.com/1157466337.jpg",
-      vimeoEmbed: `<div style="padding:75% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1157466337?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC 2026 PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "First session of the Hybrid SMC 2026 methodology training"
-    },
-    {
-      id: "hybrid-jan26-2",
-      title: "HYBRID SMC 2026 PART 2",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JANUARY 2026",
-      duration: "Video Length",
-      vimeoId: "1157467269",
-      thumbnail: "https://vumbnail.com/1157467269.jpg",
-      vimeoEmbed: `<div style="padding:75% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1157467269?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC 2026 PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Second session covering advanced Hybrid SMC 2026 concepts"
-    },
-    {
-      id: "hybrid-jan26-3",
-      title: "HYBRID SMC 2026 PART 3",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JANUARY 2026",
-      duration: "Video Length",
-      vimeoId: "1162132424",
-      thumbnail: "https://vumbnail.com/1162132424.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1162132424?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC 2026 PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Third session completing the Hybrid SMC 2026 methodology training"
-    },
-    // Class Recordings - HYBRID SMC OCTOBER 2025
-    {
-      id: "hybrid-oct-1",
-      title: "HYBRID SMC PART 1",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC OCTOBER 2025",
-      duration: "Video Length",
-      vimeoId: "1144396134",
-      thumbnail: "https://vumbnail.com/1144396134.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144396134?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "First session of the Hybrid SMC methodology training"
-    },
-    {
-      id: "hybrid-oct-2",
-      title: "HYBRID SMC PART 2",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC OCTOBER 2025",
-      duration: "Video Length",
-      vimeoId: "1144395840",
-      thumbnail: "https://vumbnail.com/1144395840.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395840?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Second session covering advanced Hybrid SMC concepts"
-    },
-    {
-      id: "hybrid-oct-3",
-      title: "HYBRID SMC PART 3",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC OCTOBER 2025",
-      duration: "Video Length",
-      vimeoId: "1144395923",
-      thumbnail: "https://vumbnail.com/1144395923.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395923?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Final session with practical application and examples"
-    },
-    // Class Recordings - CHATGPT
-    {
-      id: "chatgpt-1",
-      title: "HARNESS THE POWER OF CHATGPT",
-      category: "class-recordings",
-      subcategory: "CHATGPT",
-      duration: "Video Length",
-      vimeoId: "1144412616",
-      thumbnail: "https://vumbnail.com/1144412616.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144412616?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HARNESS THE POWER OF CHATGPT"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Learn how to leverage ChatGPT for trading analysis and research"
-    },
-    // Class Recordings - HYBRID SMC AUGUST 2025
-    {
-      id: "hybrid-aug-1",
-      title: "HYBRID SMC PART 1",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC AUGUST 2025",
-      duration: "Video Length",
-      vimeoId: "1144395701",
-      thumbnail: "https://vumbnail.com/1144395701.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395701?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "August 2025 session - Introduction to Hybrid SMC methodology"
-    },
-    {
-      id: "hybrid-aug-2",
-      title: "HYBRID SMC PART 2",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC AUGUST 2025",
-      duration: "Video Length",
-      vimeoId: "1144395300",
-      thumbnail: "https://vumbnail.com/1144395300.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395300?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "August 2025 session - Advanced Hybrid SMC concepts"
-    },
-    {
-      id: "hybrid-aug-3",
-      title: "HYBRID SMC PART 3",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC AUGUST 2025",
-      duration: "Video Length",
-      vimeoId: "1144395489",
-      thumbnail: "https://vumbnail.com/1144395489.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395489?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "August 2025 session - Practical applications and examples"
-    },
-    // Class Recordings - HYBRID SMC JULY 2025
-    {
-      id: "hybrid-jul-1",
-      title: "HYBRID SMC PART 1",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JULY 2025",
-      duration: "Video Length",
-      vimeoId: "1142017799",
-      thumbnail: "https://vumbnail.com/1142017799.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1142017799?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "July 2025 session - Introduction to Hybrid SMC methodology"
-    },
-    {
-      id: "hybrid-jul-2",
-      title: "HYBRID SMC PART 2",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JULY 2025",
-      duration: "Video Length",
-      vimeoId: "1142017987",
-      thumbnail: "https://vumbnail.com/1142017987.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1142017987?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "July 2025 session - Advanced Hybrid SMC concepts"
-    },
-    {
-      id: "hybrid-jul-3",
-      title: "HYBRID SMC PART 3",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JULY 2025",
-      duration: "Video Length",
-      vimeoId: "1142018335",
-      thumbnail: "https://vumbnail.com/1142018335.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1142018335?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "July 2025 session - Practical applications and examples"
-    },
-    // Class Recordings - HYBRID SMC JUNE 2025
-    {
-      id: "hybrid-jun-1",
-      title: "KRK FUTURES TRADING (PART 1)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JUNE 2025",
-      duration: "Video Length",
-      vimeoId: "1144426249",
-      thumbnail: "https://vumbnail.com/1144426249.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426249?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 1) KAEDAH HIGH WIN RATE UNTUK MARKET FCPO, ZL & CL"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 16/06/2025"
-    },
-    {
-      id: "hybrid-jun-2",
-      title: "KRK FUTURES TRADING (PART 2)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JUNE 2025",
-      duration: "Video Length",
-      youtubeId: "iFudDnPoh24",
-      thumbnail: "https://img.youtube.com/vi/iFudDnPoh24/maxresdefault.jpg",
-      youtubeEmbed: `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/iFudDnPoh24?si=IakXyM988xoyWB0D" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe>`,
-      description: "Kelas Rancangan Khas Futures Trading - Part 2 (YouTube)"
-    },
-    {
-      id: "hybrid-jun-3",
-      title: "KRK FUTURES TRADING (PART 3)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JUNE 2025",
-      duration: "Video Length",
-      vimeoId: "1144426029",
-      thumbnail: "https://vumbnail.com/1144426029.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426029?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 18_06_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 18/06/2025"
-    },
-    {
-      id: "hybrid-jun-4",
-      title: "KRK FUTURES TRADING (PART 4)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JUNE 2025",
-      duration: "Video Length",
-      vimeoId: "1144426135",
-      thumbnail: "https://vumbnail.com/1144426135.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426135?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 20_06_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 20/06/2025"
-    },
-    // Class Recordings - HYBRID SMC APRIL 2025
-    {
-      id: "hybrid-apr-1",
-      title: "KRK FUTURES TRADING (PART 1)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC APRIL 2025",
-      duration: "Video Length",
-      vimeoId: "1144425810",
-      thumbnail: "https://vumbnail.com/1144425810.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425810?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 1) 21_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 21/04/2025"
-    },
-    {
-      id: "hybrid-apr-2",
-      title: "FCPO SPREAD TRADING 101 (PART 2)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC APRIL 2025",
-      duration: "Video Length",
-      vimeoId: "1144413998",
-      thumbnail: "https://vumbnail.com/1144413998.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413998?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="FCPO SPREAD TRADING 101 - KRK FUTURES TRADING (PART 2)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "FCPO Spread Trading 101 - KRK Futures Trading"
-    },
-    {
-      id: "hybrid-apr-3",
-      title: "KRK FUTURES TRADING (PART 3)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC APRIL 2025",
-      duration: "Video Length",
-      vimeoId: "1144425423",
-      thumbnail: "https://vumbnail.com/1144425423.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425423?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 23_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 23/04/2025"
-    },
-    {
-      id: "hybrid-apr-4",
-      title: "KRK FUTURES TRADING (PART 4)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC APRIL 2025",
-      duration: "Video Length",
-      vimeoId: "1144425527",
-      thumbnail: "https://vumbnail.com/1144425527.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144425527?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 25_04_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 25/04/2025"
-    },
-    // Class Recordings - HYBRID SMC JANUARY 2025
-    {
-      id: "hybrid-jan-1",
-      title: "FUNDAMENTALS OF HYBRID SMC (PART 1)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JANUARY 2025",
-      duration: "Video Length",
-      vimeoId: "1144413911",
-      thumbnail: "https://vumbnail.com/1144413911.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413911?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="MAX SAHAM FUNDAMENTALS OF HYBRID SMC - KRK FUTURES TRADING (PART 1)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "MAX SAHAM Fundamentals of Hybrid SMC - KRK Futures Trading"
-    },
-    {
-      id: "hybrid-jan-2",
-      title: "KRK FUTURES TRADING (PART 2)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JANUARY 2025",
-      duration: "Video Length",
-      vimeoId: "1144413528",
-      thumbnail: "https://vumbnail.com/1144413528.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413528?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 2) 03_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 03/01/2025"
-    },
-    {
-      id: "hybrid-jan-3",
-      title: "KRK FUTURES TRADING (PART 3)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JANUARY 2025",
-      duration: "Video Length",
-      vimeoId: "1144413615",
-      thumbnail: "https://vumbnail.com/1144413615.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413615?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 06_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 06/01/2025"
-    },
-    {
-      id: "hybrid-jan-4",
-      title: "KRK FUTURES TRADING (PART 4)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC JANUARY 2025",
-      duration: "Video Length",
-      vimeoId: "1144413749",
-      thumbnail: "https://vumbnail.com/1144413749.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144413749?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 07_01_2025"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 07/01/2025"
-    },
-    // Class Recordings - HYBRID SMC NOVEMBER 2024
-    {
-      id: "hybrid-nov24-1",
-      title: "FUNDAMENTALS OF HYBRID SMC (PART 1)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC NOVEMBER 2024",
-      duration: "Video Length",
-      vimeoId: "1144428516",
-      thumbnail: "https://vumbnail.com/1144428516.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144428516?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="MAX SAHAM FUNDAMENTALS OF HYBRID SMC - KRK FUTURES TRADING (PART 1)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "MAX SAHAM Fundamentals of Hybrid SMC - KRK Futures Trading - November 2024"
-    },
-    {
-      id: "hybrid-nov24-2",
-      title: "KRK FUTURES TRADING (PART 2)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC NOVEMBER 2024",
-      duration: "Video Length",
-      vimeoId: "1144428652",
-      thumbnail: "https://vumbnail.com/1144428652.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144428652?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 2) 19_11_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 19/11/2024"
-    },
-    {
-      id: "hybrid-nov24-3",
-      title: "KRK FUTURES TRADING (PART 3)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC NOVEMBER 2024",
-      duration: "Video Length",
-      vimeoId: "1144428835",
-      thumbnail: "https://vumbnail.com/1144428835.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144428835?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 20_11_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 20/11/2024"
-    },
-    {
-      id: "hybrid-nov24-4",
-      title: "KRK FUTURES TRADING (PART 4)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC NOVEMBER 2024",
-      duration: "Video Length",
-      vimeoId: "1144428993",
-      thumbnail: "https://vumbnail.com/1144428993.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144428993?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 26_11_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 26/11/2024"
-    },
-    // Class Recordings - HYBRID SMC OCTOBER 2024
-    {
-      id: "hybrid-oct24-1",
-      title: "SCALPING SECRETS FOUNDATIONS (PART 1)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC OCTOBER 2024",
-      duration: "Video Length",
-      vimeoId: "1144427938",
-      thumbnail: "https://vumbnail.com/1144427938.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427938?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="MAX SAHAM X FINLEARN - SCALPING SECRETS FOUNDATIONS OF HYBRID SMC - KRK FUTURES TRADING (PART 1)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "MAX SAHAM X FINLEARN - Scalping Secrets Foundations of Hybrid SMC"
-    },
-    {
-      id: "hybrid-oct24-2",
-      title: "KRK FUTURES TRADING (PART 2)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC OCTOBER 2024",
-      duration: "Video Length",
-      vimeoId: "1144428070",
-      thumbnail: "https://vumbnail.com/1144428070.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144428070?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 2) 01_10_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 01/10/2024"
-    },
-    {
-      id: "hybrid-oct24-3",
-      title: "KRK FUTURES TRADING (PART 3)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC OCTOBER 2024",
-      duration: "Video Length",
-      vimeoId: "1144395300",
-      thumbnail: "https://vumbnail.com/1144395300.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395300?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 04_10_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 04/10/2024"
-    },
-    {
-      id: "hybrid-oct24-4",
-      title: "KRK FUTURES TRADING (PART 4)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC OCTOBER 2024",
-      duration: "Video Length",
-      vimeoId: "1144395489",
-      thumbnail: "https://vumbnail.com/1144395489.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144395489?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 07_10_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 07/10/2024"
-    },
-    // Class Recordings - HYBRID SMC AUGUST 2024
-    {
-      id: "hybrid-aug24-1",
-      title: "FOUNDATIONS OF HYBRID SMC (PART 1)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC AUGUST 2024",
-      duration: "Video Length",
-      vimeoId: "1144427601",
-      thumbnail: "https://vumbnail.com/1144427601.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427601?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="MAX SAHAM X FINLEARN SPOTLIGHT SESSION - FOUNDATIONS OF HYBRID SMC - KRK FUTURES TRADING (PART 1)"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "MAX SAHAM X FINLEARN SPOTLIGHT SESSION - Foundations of Hybrid SMC"
-    },
-    {
-      id: "hybrid-aug24-2",
-      title: "KRK FUTURES TRADING (PART 2)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC AUGUST 2024",
-      duration: "Video Length",
-      vimeoId: "1144427707",
-      thumbnail: "https://vumbnail.com/1144427707.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427707?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 2) 13_08_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 13/08/2024"
-    },
-    {
-      id: "hybrid-aug24-3",
-      title: "KRK FUTURES TRADING (PART 3)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC AUGUST 2024",
-      duration: "Video Length",
-      vimeoId: "1144427817",
-      thumbnail: "https://vumbnail.com/1144427817.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427817?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 14_08_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 14/08/2024"
-    },
-    {
-      id: "hybrid-aug24-4",
-      title: "KRK FUTURES TRADING (PART 4)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC AUGUST 2024",
-      duration: "Video Length",
-      vimeoId: "1144427430",
-      thumbnail: "https://vumbnail.com/1144427430.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427430?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 16_08_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 16/08/2024"
-    },
-    // Class Recordings - HYBRID SMC MAY 2024
-    {
-      id: "hybrid-may24-1",
-      title: "HIGH WIN RATE UNTUK FCPO, ZL & CL (PART 1)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC MAY 2024",
-      duration: "Video Length",
-      vimeoId: "1144427159",
-      thumbnail: "https://vumbnail.com/1144427159.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427159?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS UNTUK FUTURES TRADING (PART 1) KAEDAH HIGH WIN RATE UNTUK MARKET FCPO, ZL & CL"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas - Kaedah High Win Rate untuk Market FCPO, ZL & CL"
-    },
-    {
-      id: "hybrid-may24-2",
-      title: "KRK FUTURES TRADING (PART 2)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC MAY 2024",
-      duration: "Video Length",
-      vimeoId: "1144427293",
-      thumbnail: "https://vumbnail.com/1144427293.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144427293?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 2) 21_05_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 21/05/2024"
-    },
-    {
-      id: "hybrid-may24-3",
-      title: "KRK FUTURES TRADING (PART 3)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC MAY 2024",
-      duration: "Video Length",
-      vimeoId: "1144426503",
-      thumbnail: "https://vumbnail.com/1144426503.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426503?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 3) 22_05_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 22/05/2024"
-    },
-    {
-      id: "hybrid-may24-4",
-      title: "KRK FUTURES TRADING (PART 4)",
-      category: "class-recordings",
-      subcategory: "HYBRID SMC MAY 2024",
-      duration: "Video Length",
-      vimeoId: "1144426917",
-      thumbnail: "https://vumbnail.com/1144426917.jpg",
-      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1144426917?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="KELAS RANCANGAN KHAS FUTURES TRADING (PART 4) 24_05_2024"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
-      description: "Kelas Rancangan Khas Futures Trading - 24/05/2024"
-    }
-  ];
-
-  const filteredVideos = selectedCategory === "all" 
-    ? videos 
-    : selectedSubfolder 
-      ? videos.filter(v => v.category === selectedCategory && v.subcategory === selectedSubfolder)
-      : videos.filter(v => v.category === selectedCategory);
-
-  const handleVideoClick = (video: any) => {
-    if (isPremium && (video.vimeoEmbed || video.youtubeEmbed)) {
-      setSelectedVideo(video);
-    }
-  };
-
-  const handleCategoryClick = (categoryId: string) => {
-    setSelectedCategory(categoryId);
-    setSelectedSubfolder(null);
-  };
+  const featuredSeries = videoData.find(series => series.isFeatured);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      
-      <main className="container mx-auto px-4 py-8 mt-20">
-        <div className="max-w-7xl mx-auto">
-          {/* Back to Dashboard Link */}
-          <Link 
-            href={isPremium ? "/members" : "/members/free-dashboard"} 
-            className="inline-flex items-center gap-2 text-gold hover:text-gold/80 mb-4 transition-colors"
-          >
-            <ChevronRight className="w-4 h-4 rotate-180" />
-            <span>Back to Dashboard</span>
-          </Link>
-
-          {/* Header */}
+    <>
+      <SEO 
+        title="Video Library - Max Saham"
+        description="Access premium trading education videos and courses"
+      />
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        
+        <main className="container mx-auto px-4 py-8 pt-24">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-gold to-yellow-600 bg-clip-text text-transparent">
-              Video Library
-            </h1>
+            <h1 className="text-4xl font-bold mb-2">Video Library</h1>
             <p className="text-muted-foreground">
-              {isPremium ? "Access our complete collection of trading education videos" : "Premium membership required to access video content"}
+              Access our comprehensive collection of trading education videos
             </p>
           </div>
 
-          {/* Categories */}
-          <div className="mb-8">
-            <h2 className="text-lg font-semibold mb-4">Categories</h2>
-            <div className="flex flex-wrap gap-3">
-              {categories.map((category) => (
-                <Button
-                  key={category.id}
-                  variant={selectedCategory === category.id ? "default" : "outline"}
-                  className={`${
-                    selectedCategory === category.id 
-                      ? "bg-gold hover:bg-gold/90 text-black" 
-                      : "hover:bg-gold/10 hover:text-gold"
-                  }`}
-                  onClick={() => handleCategoryClick(category.id)}
-                >
-                  {category.icon && <category.icon className="mr-2 h-4 w-4" />}
-                  {category.label} ({category.count})
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          {/* Subfolder Navigation for Class Recordings */}
-          {selectedCategory === "class-recordings" && (
-            <div className="mb-8 p-6 bg-card rounded-lg border border-border">
-              <div className="flex items-center gap-2 mb-4">
-                <Folder className="h-5 w-5 text-gold" />
-                <h2 className="text-xl font-bold">Class Recording Series</h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {subfolders.map((subfolder) => (
-                  <button
-                    key={subfolder.id}
-                    onClick={() => setSelectedSubfolder(selectedSubfolder === subfolder.id ? null : subfolder.id)}
-                    className={`flex items-center justify-between p-4 rounded-lg border transition-all ${
-                      selectedSubfolder === subfolder.id
-                        ? "bg-gold/10 border-gold text-gold"
-                        : "bg-background border-border hover:border-gold/50 hover:bg-gold/5"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-gold"></div>
-                      <span className="font-medium">{subfolder.label}</span>
-                    </div>
-                    <span className="text-sm text-muted-foreground">
-                      {subfolder.count} video{subfolder.count !== 1 ? 's' : ''}
-                    </span>
-                  </button>
-                ))}
-              </div>
-              {selectedSubfolder && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setSelectedSubfolder(null)}
-                  className="mt-4 text-gold hover:text-gold/90 hover:bg-gold/10"
-                >
-                  Show all class recordings
-                </Button>
-              )}
-            </div>
+          {/* Featured Series */}
+          {featuredSeries && (
+            <Card className="mb-8 border-primary/20 bg-gradient-to-br from-primary/5 to-background">
+              <CardHeader>
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge variant="default">Featured Series</Badge>
+                  {featuredSeries.isPremium && (
+                    <Badge variant="secondary" className="gap-1">
+                      <Lock className="h-3 w-3" />
+                      Premium
+                    </Badge>
+                  )}
+                </div>
+                <CardTitle className="text-2xl">{featuredSeries.title}</CardTitle>
+                <CardDescription>{featuredSeries.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {featuredSeries.videos.slice(0, 2).map((video) => (
+                    <Card key={video.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                      <div className="relative aspect-video">
+                        <img 
+                          src={video.thumbnail} 
+                          alt={video.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/50 transition-colors">
+                          <Button
+                            size="lg"
+                            className="rounded-full"
+                            onClick={() => {
+                              if (!featuredSeries.isPremium || isPremium) {
+                                setSelectedVideo(video);
+                              }
+                            }}
+                            disabled={featuredSeries.isPremium && !isPremium}
+                          >
+                            {featuredSeries.isPremium && !isPremium ? (
+                              <>
+                                <Lock className="mr-2 h-5 w-5" />
+                                Premium Only
+                              </>
+                            ) : (
+                              <>
+                                <Play className="mr-2 h-5 w-5" />
+                                Play
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                        <div className="absolute bottom-2 right-2 bg-black/80 px-2 py-1 rounded text-xs text-white flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {video.duration}
+                        </div>
+                      </div>
+                      <CardHeader>
+                        <CardTitle className="text-lg">{video.title}</CardTitle>
+                        <CardDescription>{video.description}</CardDescription>
+                      </CardHeader>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           )}
 
-          {/* Video Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredVideos.map((video) => (
-              <Card 
-                key={video.id}
-                className={`overflow-hidden transition-all ${
-                  isPremium && (video.vimeoEmbed || video.youtubeEmbed)
-                    ? "hover:shadow-lg hover:border-gold cursor-pointer" 
-                    : ""
-                }`}
-                onClick={() => handleVideoClick(video)}
-              >
-                <div className="relative aspect-video bg-muted">
-                  <img
-                    src={video.thumbnail}
-                    alt={video.title}
+          {/* Tabs for filtering */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+            <TabsList>
+              <TabsTrigger value="all">All Videos</TabsTrigger>
+              <TabsTrigger value="premium">Premium</TabsTrigger>
+              <TabsTrigger value="free">Free</TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          {/* Video Series Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredSeries.map((series) => (
+              <Card key={series.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="relative aspect-video">
+                  <img 
+                    src={series.thumbnail} 
+                    alt={series.title}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    {isPremium ? (
-                      <div className="w-16 h-16 rounded-full bg-gold/90 flex items-center justify-center">
-                        <Play className="h-8 w-8 text-black" />
-                      </div>
-                    ) : (
-                      <div className="w-16 h-16 rounded-full bg-red-500/90 flex items-center justify-center">
-                        <Lock className="h-8 w-8 text-white" />
-                      </div>
-                    )}
-                  </div>
-                  {video.subcategory && (
-                    <div className="absolute top-2 right-2 bg-black/80 text-gold text-xs px-2 py-1 rounded">
-                      {video.subcategory}
-                    </div>
+                  {series.isPremium && (
+                    <Badge className="absolute top-2 right-2 gap-1">
+                      <Lock className="h-3 w-3" />
+                      Premium
+                    </Badge>
                   )}
                 </div>
                 <CardHeader>
-                  <CardTitle className="text-lg line-clamp-2">{video.title}</CardTitle>
+                  <CardTitle>{series.title}</CardTitle>
+                  <CardDescription>{series.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      <span>{video.duration}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Video className="h-4 w-4" />
-                      <span>{video.category.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</span>
+                  <div className="space-y-2">
+                    <p className="text-sm text-muted-foreground">
+                      {series.videos.length} video{series.videos.length !== 1 ? "s" : ""}
+                    </p>
+                    <div className="space-y-2">
+                      {series.videos.map((video) => (
+                        <Button
+                          key={video.id}
+                          variant="outline"
+                          className="w-full justify-start"
+                          onClick={() => {
+                            if (!series.isPremium || isPremium) {
+                              setSelectedVideo(video);
+                            }
+                          }}
+                          disabled={series.isPremium && !isPremium}
+                        >
+                          {series.isPremium && !isPremium ? (
+                            <>
+                              <Lock className="mr-2 h-4 w-4" />
+                              {video.title}
+                            </>
+                          ) : (
+                            <>
+                              <Play className="mr-2 h-4 w-4" />
+                              {video.title}
+                            </>
+                          )}
+                        </Button>
+                      ))}
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {video.description}
-                  </p>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          {/* Premium CTA */}
+          {/* Upgrade prompt for non-premium users */}
           {!isPremium && (
-            <Card className="mt-8 border-gold bg-gradient-to-br from-gold/5 to-transparent">
-              <CardContent className="p-8 text-center">
-                <Lock className="h-12 w-12 text-gold mx-auto mb-4" />
-                <h3 className="text-2xl font-bold mb-2">Unlock Full Video Library</h3>
-                <p className="text-muted-foreground mb-6">
-                  Get premium access to all {categories.find(c => c.id === "all")?.count || 0} trading education videos
-                </p>
-                <Link href="/#membership">
-                  <Button className="bg-gold hover:bg-gold/90 text-black">
-                    Upgrade to Premium
-                    <ChevronRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
+            <Card className="mt-8 border-primary/20 bg-gradient-to-br from-primary/5 to-background">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Lock className="h-5 w-5" />
+                  Unlock Premium Content
+                </CardTitle>
+                <CardDescription>
+                  Get access to all premium video series and advanced trading strategies
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button onClick={() => router.push("/profile")}>
+                  Upgrade to Premium
+                </Button>
               </CardContent>
             </Card>
           )}
-        </div>
-      </main>
+        </main>
 
-      {/* Video Player Modal */}
-      {selectedVideo && isPremium && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setSelectedVideo(null)}>
-          <div className="bg-background rounded-lg max-w-6xl w-full max-h-[90vh] overflow-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="p-4 border-b border-border flex items-center justify-between">
-              <h3 className="text-xl font-bold">{selectedVideo.title}</h3>
-              <Button variant="ghost" size="icon" onClick={() => setSelectedVideo(null)}>
-                <X className="h-6 w-6" />
-              </Button>
-            </div>
-            <div className="aspect-video bg-black">
-              {selectedVideo.vimeoEmbed && (
-                <div dangerouslySetInnerHTML={{ __html: selectedVideo.vimeoEmbed }} className="w-full h-full" />
-              )}
-              {selectedVideo.youtubeEmbed && !selectedVideo.vimeoEmbed && (
-                <div dangerouslySetInnerHTML={{ __html: selectedVideo.youtubeEmbed }} className="w-full h-full" />
-              )}
-            </div>
-            <div className="p-6">
-              <p className="text-muted-foreground">{selectedVideo.description}</p>
+        {/* Video Player Modal */}
+        {selectedVideo && (
+          <div 
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+            onClick={() => setSelectedVideo(null)}
+          >
+            <div 
+              className="bg-background rounded-lg max-w-4xl w-full overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="aspect-video">
+                <iframe
+                  src={`https://player.vimeo.com/video/${selectedVideo.vimeoId}?badge=0&autopause=0&player_id=0&app_id=58479`}
+                  className="w-full h-full"
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                  title={selectedVideo.title}
+                ></iframe>
+              </div>
+              <div className="p-6">
+                <h2 className="text-2xl font-bold mb-2">{selectedVideo.title}</h2>
+                <p className="text-muted-foreground mb-4">{selectedVideo.description}</p>
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-4 w-4" />
+                    {selectedVideo.duration}
+                  </div>
+                </div>
+                <Button 
+                  variant="outline" 
+                  className="mt-4"
+                  onClick={() => setSelectedVideo(null)}
+                >
+                  Close
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-
-      <Footer />
-    </div>
+        )}
+      </div>
+    </>
   );
 }
