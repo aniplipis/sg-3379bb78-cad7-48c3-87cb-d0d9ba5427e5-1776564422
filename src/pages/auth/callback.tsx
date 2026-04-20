@@ -10,6 +10,16 @@ export default function AuthCallback() {
     const handleAuthCallback = async () => {
       try {
         console.log('🔐 Auth callback started...');
+        console.log('📍 Full URL:', window.location.href);
+        console.log('📍 Hash:', window.location.hash);
+        
+        // Check if this is a password recovery flow
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const type = hashParams.get('type');
+        const isPasswordRecovery = type === 'recovery';
+        
+        console.log('🔍 Auth type:', type);
+        console.log('🔍 Is password recovery:', isPasswordRecovery);
         
         // Wait a bit for the hash to be processed by Supabase
         await new Promise(resolve => setTimeout(resolve, 500));
@@ -19,8 +29,12 @@ export default function AuthCallback() {
 
         if (sessionError) {
           console.error("❌ Session error:", sessionError);
-          // Don't block redirect on session errors - just go home
-          router.push("/");
+          // Don't block redirect on session errors
+          if (isPasswordRecovery) {
+            router.push("/auth/reset-password");
+          } else {
+            router.push("/");
+          }
           return;
         }
 
@@ -30,14 +44,21 @@ export default function AuthCallback() {
           console.log('⚠️ No session found, but redirecting anyway');
         }
 
-        // Always redirect to home - let AuthContext handle the rest
-        console.log('➡️ Redirecting to home...');
-        router.push("/");
+        // Redirect based on auth type
+        if (isPasswordRecovery) {
+          console.log('➡️ Password recovery detected - redirecting to reset password page...');
+          router.push("/auth/reset-password");
+        } else {
+          console.log('➡️ Regular auth - redirecting to home...');
+          router.push("/");
+        }
         
       } catch (err) {
         console.error("❌ Callback error:", err);
-        // Even on error, redirect to home
-        router.push("/");
+        // Even on error, try to redirect appropriately
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const isPasswordRecovery = hashParams.get('type') === 'recovery';
+        router.push(isPasswordRecovery ? "/auth/reset-password" : "/");
       }
     };
 
