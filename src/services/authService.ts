@@ -13,12 +13,18 @@ export interface AuthError {
   code?: string;
 }
 
-// Send welcome email after registration
+// Send welcome email after registration (non-blocking with timeout)
 export async function sendWelcomeEmail(email: string, userName: string) {
   try {
     console.log('📧 Attempting to send welcome email to:', email, 'userName:', userName);
     
-    const { data, error } = await supabase.functions.invoke('send-email', {
+    // Create a timeout promise (10 seconds max)
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Email send timeout')), 10000)
+    );
+    
+    // Create the email send promise
+    const emailPromise = supabase.functions.invoke('send-email', {
       body: {
         to: email,
         subject: 'Welcome to Team Max Saham! 🎉',
@@ -26,6 +32,12 @@ export async function sendWelcomeEmail(email: string, userName: string) {
         userName: userName,
       },
     });
+
+    // Race between timeout and email send
+    const { data, error } = await Promise.race([
+      emailPromise,
+      timeoutPromise
+    ]) as any;
 
     if (error) {
       console.error('❌ Error sending welcome email:', error);
