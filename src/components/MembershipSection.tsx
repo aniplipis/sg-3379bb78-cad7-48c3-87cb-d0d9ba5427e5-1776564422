@@ -53,7 +53,12 @@ export function MembershipSection({ onOpenAuthModal }: { onOpenAuthModal?: () =>
           return;
         }
         
-        throw new Error(data.error || data.details || 'Failed to create checkout session');
+        // Show detailed error with code if available
+        const errorMsg = data.code 
+          ? `${data.details || data.error} (Error: ${data.code})`
+          : data.details || data.error || 'Failed to create checkout session';
+        
+        throw new Error(errorMsg);
       }
 
       // Redirect to Stripe Checkout

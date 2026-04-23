@@ -174,7 +174,7 @@ export default async function handler(
       return res.status(500).json({
         error: 'Database error',
         details: `Failed to fetch profile: ${profileFetchError.message}`,
-        supabaseError: profileFetchError
+        code: 'PROFILE_FETCH_ERROR'
       });
     }
 
@@ -210,8 +210,8 @@ export default async function handler(
         });
         return res.status(500).json({
           error: 'Failed to create user profile',
-          details: `Database error: ${createError.message}. Code: ${createError.code}`,
-          supabaseError: createError
+          details: `Database error: ${createError.message}`,
+          code: 'PROFILE_CREATE_ERROR'
         });
       }
 
@@ -219,7 +219,8 @@ export default async function handler(
         console.error('❌ Profile creation returned null');
         return res.status(500).json({
           error: 'Profile creation failed',
-          details: 'Database returned no data after insert.'
+          details: 'Database returned no data after insert.',
+          code: 'PROFILE_NULL_ERROR'
         });
       }
 
@@ -263,7 +264,8 @@ export default async function handler(
         console.error('❌ Stripe customer creation failed:', stripeError);
         return res.status(500).json({
           error: 'Payment system error',
-          details: stripeError instanceof Error ? stripeError.message : 'Failed to create Stripe customer'
+          details: stripeError instanceof Error ? stripeError.message : 'Failed to create Stripe customer',
+          code: 'STRIPE_CUSTOMER_ERROR'
         });
       }
     } else {
@@ -327,7 +329,8 @@ export default async function handler(
       console.error('❌ Stripe checkout session creation failed:', stripeError);
       return res.status(500).json({
         error: 'Payment system error',
-        details: stripeError instanceof Error ? stripeError.message : 'Failed to create checkout session'
+        details: stripeError instanceof Error ? stripeError.message : 'Failed to create checkout session',
+        code: 'STRIPE_SESSION_ERROR'
       });
     }
 
@@ -338,7 +341,7 @@ export default async function handler(
     return res.status(500).json({
       error: 'Checkout failed',
       details: error instanceof Error ? error.message : 'An unexpected error occurred',
-      fullError: error
+      code: 'UNEXPECTED_ERROR'
     });
   }
 }
