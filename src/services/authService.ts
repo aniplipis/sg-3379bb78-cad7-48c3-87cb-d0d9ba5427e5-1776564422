@@ -22,7 +22,7 @@ export async function sendWelcomeEmail(email: string, userName: string) {
       body: {
         to: email,
         subject: 'Welcome to Team Max Saham! 🎉',
-        type: 'registration',
+        type: 'welcome',
         userName: userName,
       },
     });
