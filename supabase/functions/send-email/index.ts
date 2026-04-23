@@ -717,8 +717,13 @@ serve(async (req) => {
       `;
     }
 
-    // Send email via Resend
-    const response = await fetch("https://api.resend.com/emails", {
+    // Create timeout promise for Resend API call (8 seconds max)
+    const timeoutPromise = new Promise<never>((_, reject) => 
+      setTimeout(() => reject(new Error('Email send timeout after 8 seconds')), 8000)
+    );
+
+    // Send email via Resend with timeout
+    const sendEmailPromise = fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -734,13 +739,16 @@ serve(async (req) => {
           'X-Entity-Ref-ID': Math.random().toString(36).substring(7),
         },
       }),
+    }).then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to send email");
+      }
+      return data;
     });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || "Failed to send email");
-    }
+    // Race between timeout and email send
+    const data = await Promise.race([sendEmailPromise, timeoutPromise]);
 
     return new Response(JSON.stringify({ success: true, data }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -748,13 +756,16 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error("Error sending email:", error);
+    
+    // Return error response but don't block
     return new Response(
       JSON.stringify({
         error: error.message || "Failed to send email",
+        note: "Email may be sent with delay"
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 400,
+        status: 200, // Return 200 even on error to prevent blocking registration
       }
     );
   }
