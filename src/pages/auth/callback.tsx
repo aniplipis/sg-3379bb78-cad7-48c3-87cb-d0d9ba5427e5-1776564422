@@ -39,37 +39,47 @@ export default function AuthCallback() {
           return;
         }
         
-        // For other auth flows, wait for session
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // For OAuth flows, add timeout to prevent hanging
+        console.log('⏱️ Waiting for session with 5 second timeout...');
         
-        // Get the session
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        const sessionTimeout = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Session timeout after 5 seconds')), 5000)
+        );
+        
+        const getSessionPromise = supabase.auth.getSession();
+        
+        // Race between timeout and session fetch
+        const { data: { session }, error: sessionError } = await Promise.race([
+          getSessionPromise,
+          sessionTimeout
+        ]) as any;
 
         if (sessionError) {
           console.error("❌ Session error:", sessionError);
+          // Don't block - redirect anyway
+          console.log('➡️ Redirecting despite session error...');
           router.push("/");
           return;
         }
 
         if (session) {
           console.log('✅ Session found for:', session.user.email);
+          console.log('➡️ Redirecting to home...');
+          router.push("/");
         } else {
-          console.log('⚠️ No session found, redirecting to home');
+          console.log('⚠️ No session found after timeout, redirecting to home...');
+          router.push("/");
         }
-
-        console.log('➡️ Regular auth - redirecting to home...');
-        router.push("/");
         
       } catch (err) {
         console.error("❌ Callback error:", err);
         setError(err instanceof Error ? err.message : "Unknown error");
         
-        // Check for recovery type even on error
-        const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        const queryParams = new URLSearchParams(window.location.search);
-        const isPasswordRecovery = hashParams.get('type') === 'recovery' || queryParams.get('type') === 'recovery';
-        
-        router.push(isPasswordRecovery ? "/auth/reset-password" : "/");
+        // Don't stay stuck - redirect to home even on error
+        console.log('➡️ Redirecting to home after error...');
+        setTimeout(() => {
+          router.push("/");
+        }, 1500);
       }
     };
 
@@ -88,7 +98,7 @@ export default function AuthCallback() {
             <h2 className="text-xl font-bold text-red-400 mb-2">Authentication Error</h2>
             <p className="text-muted-foreground mb-4">{error}</p>
             <p className="text-sm text-muted-foreground mb-2">Debug: {debugInfo}</p>
-            <p className="text-sm text-muted-foreground">Redirecting...</p>
+            <p className="text-sm text-muted-foreground">Redirecting to home...</p>
           </>
         ) : (
           <>
