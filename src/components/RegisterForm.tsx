@@ -57,23 +57,26 @@ export function RegisterForm({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
     try {
       await registerUser(data.name, data.email, data.password, data.phone, data.tradingview_username);
 
-      // Send welcome email with better error handling
-      console.log('📧 Sending welcome email to:', data.email);
-      const emailResult = await sendWelcomeEmail(data.email, data.name);
-      
-      if (emailResult.success) {
-        console.log('✅ Welcome email sent successfully');
-        toast({
-          title: "Registration successful!",
-          description: "Please check your email to verify your account. We've also sent you a welcome email!",
+      // Send welcome email asynchronously (non-blocking)
+      // Don't wait for it to complete - registration should succeed regardless of email status
+      console.log('📧 Triggering welcome email (non-blocking)...');
+      sendWelcomeEmail(data.email, data.name)
+        .then((result) => {
+          if (result.success) {
+            console.log('✅ Welcome email sent successfully');
+          } else {
+            console.error('❌ Welcome email failed (non-blocking):', result.error);
+          }
+        })
+        .catch((err) => {
+          console.error('❌ Welcome email error (non-blocking):', err);
         });
-      } else {
-        console.error('❌ Welcome email failed:', emailResult.error);
-        toast({
-          title: "Registration successful!",
-          description: "Please check your email to verify your account. (Note: Welcome email may be delayed)",
-        });
-      }
+
+      // Show success immediately without waiting for email
+      toast({
+        title: "Registration successful!",
+        description: "Please check your email to verify your account.",
+      });
 
       setSuccess(true);
       setTimeout(() => {
