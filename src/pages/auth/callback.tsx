@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { supabase } from "@/integrations/supabase/client";
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -36,44 +35,29 @@ export default function AuthCallback() {
           return;
         }
         
-        // For OAuth flows, let Supabase process the token exchange first
-        console.log('⏱️ Exchanging OAuth token...');
-        setStatus("Completing sign in...");
-        
-        // This triggers Supabase to exchange the OAuth code for a session
-        // and store it in localStorage
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (error) {
-          console.error('❌ Session error:', error);
-        }
-        
-        if (session) {
-          console.log('✅ Session created for:', session.user.email);
-        } else {
-          console.log('⚠️ No session found, but continuing...');
-        }
-        
-        // Wait a bit to ensure session is stored
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        console.log('➡️ Redirecting to home...');
+        // For OAuth flows, the Supabase SDK handles everything automatically
+        // via the onAuthStateChange listener in AuthContext
+        // Just redirect - don't try to fetch the session manually
+        console.log('➡️ OAuth callback - redirecting to home...');
+        console.log('✅ Supabase SDK will handle session creation automatically');
         setStatus("Sign in successful! Redirecting...");
+        
+        // Small delay for UX
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
         router.push("/");
         
       } catch (err) {
         console.error("❌ Callback error:", err);
         setStatus("Redirecting...");
-        // Redirect anyway
         setTimeout(() => {
           router.push("/");
-        }, 1000);
+        }, 500);
       }
     };
 
-    // Only run once when component mounts
     handleAuthCallback();
-  }, []); // Empty dependency array - run only once
+  }, [router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
