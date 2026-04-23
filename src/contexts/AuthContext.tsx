@@ -186,10 +186,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           return;
         }
 
+        // Handle INITIAL_SESSION only if it comes AFTER we've already initialized
+        // This catches OAuth redirects that happen after the page is already loaded
         if (event === 'INITIAL_SESSION') {
-          // Skip - already handled by initAuth
-          console.log('⏭️ Skipping INITIAL_SESSION - already handled');
-          return;
+          // If we already have a user and it's the same user, skip
+          if (user && session?.user && user.id === session.user.id) {
+            console.log('⏭️ Skipping INITIAL_SESSION - same user already loaded');
+            return;
+          }
+          // Otherwise, it's a new session (OAuth redirect) - process it
+          console.log('🔄 Processing INITIAL_SESSION - new OAuth session detected');
         }
 
         if (session?.user) {
