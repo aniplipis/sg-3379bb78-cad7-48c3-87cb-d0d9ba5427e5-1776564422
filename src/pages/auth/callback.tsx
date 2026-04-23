@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -35,10 +36,29 @@ export default function AuthCallback() {
           return;
         }
         
-        // For OAuth flows, just redirect - Supabase handles session automatically
-        console.log('➡️ OAuth callback - redirecting to home...');
+        // For OAuth flows, let Supabase process the token exchange first
+        console.log('⏱️ Exchanging OAuth token...');
+        setStatus("Completing sign in...");
+        
+        // This triggers Supabase to exchange the OAuth code for a session
+        // and store it in localStorage
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('❌ Session error:', error);
+        }
+        
+        if (session) {
+          console.log('✅ Session created for:', session.user.email);
+        } else {
+          console.log('⚠️ No session found, but continuing...');
+        }
+        
+        // Wait a bit to ensure session is stored
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        console.log('➡️ Redirecting to home...');
         setStatus("Sign in successful! Redirecting...");
-        await new Promise(resolve => setTimeout(resolve, 1000));
         router.push("/");
         
       } catch (err) {
