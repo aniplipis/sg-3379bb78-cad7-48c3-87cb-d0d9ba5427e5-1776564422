@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { Loader2, User, Mail, Lock, Chrome, Phone, TrendingUp, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { sendWelcomeEmail } from "@/services/authService";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -55,24 +54,10 @@ export function RegisterForm({ onSuccess, onSwitchToLogin }: RegisterFormProps) 
     setShowAlreadyRegistered(false);
 
     try {
+      // Register user - AuthContext will handle welcome email automatically
       await registerUser(data.name, data.email, data.password, data.phone, data.tradingview_username);
 
-      // Send welcome email asynchronously (non-blocking)
-      // Don't wait for it to complete - registration should succeed regardless of email status
-      console.log('📧 Triggering welcome email (non-blocking)...');
-      sendWelcomeEmail(data.email, data.name)
-        .then((result) => {
-          if (result.success) {
-            console.log('✅ Welcome email sent successfully');
-          } else {
-            console.error('❌ Welcome email failed (non-blocking):', result.error);
-          }
-        })
-        .catch((err) => {
-          console.error('❌ Welcome email error (non-blocking):', err);
-        });
-
-      // Show success immediately without waiting for email
+      // Show success immediately
       toast({
         title: "Registration successful!",
         description: "Please check your email to verify your account.",
