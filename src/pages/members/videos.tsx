@@ -56,7 +56,7 @@ export default function VideoLibrary() {
   ];
 
   const subfolders = [
-    { id: "HYBRID SMC APRIL 2026", label: "HYBRID SMC APRIL 2026", count: 2 },
+    { id: "HYBRID SMC APRIL 2026", label: "HYBRID SMC APRIL 2026", count: 3 },
     { id: "PROJEK DUIT RAYA 2026", label: "PROJEK DUIT RAYA 2026", count: 4 },
     { id: "HYBRID SMC JANUARY 2026", label: "HYBRID SMC JANUARY 2026", count: 3 },
     { id: "HYBRID SMC OCTOBER 2025", label: "HYBRID SMC OCTOBER 2025", count: 3 },
@@ -95,6 +95,17 @@ export default function VideoLibrary() {
       thumbnail: "https://vumbnail.com/1184467228.jpg",
       vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1184467228?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC APRIL 2026 PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
       description: "Latest Hybrid SMC trading strategies and market analysis for April 2026 - Part 2"
+    },
+    {
+      id: "hybrid-smc-apr26-3",
+      title: "HYBRID SMC APRIL 2026 PART 3",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC APRIL 2026",
+      duration: "Video Length",
+      vimeoId: "1190393196",
+      thumbnail: "https://vumbnail.com/1190393196.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1190393196?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC APRIL 2026 PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Latest Hybrid SMC trading strategies and market analysis for April 2026 - Part 3"
     },
     // PROJEK DUIT RAYA 2026 Series
     {
