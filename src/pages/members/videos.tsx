@@ -56,6 +56,7 @@ export default function VideoLibrary() {
   ];
 
   const subfolders = [
+    { id: "HYBRID SMC JUNE 2026", label: "HYBRID SMC JUNE 2026", count: 3 },
     { id: "HYBRID SMC APRIL 2026", label: "HYBRID SMC APRIL 2026", count: 3 },
     { id: "PROJEK DUIT RAYA 2026", label: "PROJEK DUIT RAYA 2026", count: 4 },
     { id: "HYBRID SMC JANUARY 2026", label: "HYBRID SMC JANUARY 2026", count: 3 },
@@ -73,7 +74,41 @@ export default function VideoLibrary() {
   ];
 
   const videos = [
-    // HYBRID SMC APRIL 2026 Series (NEWEST - FEATURED)
+    // HYBRID SMC JUNE 2026 Series (NEWEST - FEATURED)
+    {
+      id: "hybrid-smc-jun26-1",
+      title: "HYBRID SMC JUNE 2026 PART 1",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JUNE 2026",
+      duration: "Video Length",
+      vimeoId: "1204368602",
+      thumbnail: "https://vumbnail.com/1204368602.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1204368602?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC JUNE 2026 PART 1"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Latest Hybrid SMC trading strategies and market analysis for June 2026 - Part 1"
+    },
+    {
+      id: "hybrid-smc-jun26-2",
+      title: "HYBRID SMC JUNE 2026 PART 2",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JUNE 2026",
+      duration: "Video Length",
+      vimeoId: "1204368749",
+      thumbnail: "https://vumbnail.com/1204368749.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1204368749?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC JUNE 2026 PART 2"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Latest Hybrid SMC trading strategies and market analysis for June 2026 - Part 2"
+    },
+    {
+      id: "hybrid-smc-jun26-3",
+      title: "HYBRID SMC JUNE 2026 PART 3",
+      category: "class-recordings",
+      subcategory: "HYBRID SMC JUNE 2026",
+      duration: "Video Length",
+      vimeoId: "1204368812",
+      thumbnail: "https://vumbnail.com/1204368812.jpg",
+      vimeoEmbed: `<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1204368812?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HYBRID SMC JUNE 2026 PART 3"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>`,
+      description: "Latest Hybrid SMC trading strategies and market analysis for June 2026 - Part 3"
+    },
+    // HYBRID SMC APRIL 2026 Series
     {
       id: "hybrid-smc-apr26-1",
       title: "HYBRID SMC APRIL 2026 PART 1",
